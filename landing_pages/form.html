@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <script src="https://kit.fontawesome.com/3e8ecf57db.js" async crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="dashboard.css" />
+    <link rel="stylesheet" href="form.css" />
+    <link rel="stylesheet" href="mobile-version.css" />
+    <script src="app.js" defer></script>
+    <title > To Do list</title>
+  </head>
+  <body>
+    <div class="bg-white" id="container-left">
+      <div class="menu">
+        
+          <a href="index.html"><i class="fab fa-optin-monster fa-3x" style="color:black"></i></a>
+          <h1>To-do list</h1>
+          <div class="nav-buttons">
+            <button class="btn btn-primary">task +</button>
+            <button class="btn btn-success">kanban</button>
+          </div>
+      </div>
+      <div class="menu tags">
+        <p><i class="fas fa-chevron-circle-down" style="color:black"></i> List (10)</p>
+        <button class="tags edit">edit</button>
+        <button class="tags add">+</button>
+        <div class="dropdown ">
+          <li>Priority</li>
+          <li>Not important</li>
+          <li>medium</li>
+        
+        </div>
+      </div>
+    </div>
+    <div class="container-right">
+      <div class="modal greeting">
+        <h1>Hello Yenni - 18/09/2021 EEST</h1>
+      </div>
+      <div class="modal parent">
+        <div class="title">
+          <h2>All</h2>
+          <i class="fas fa-sort-amount-down">
+
+            <div class="sort-tags">
+              <div onclick="">a-z</div>
+              <div onclick="">z-a</div>
+            </div>
+          </i>
+        </div>
+       
+        <div class="task-list">
+
+          <div class="task-item">
+            <p>Do laundry, dodweqqweqwewqewqewqeqweqwsfsdfsdfsdfsdfsd</p>
+            <div class="control-btns">
+              <button>Edit</button>
+              <button>X</button>
+              <button><i class="far fa-calendar-alt"></i></button>
+            </div>
+            <small> 9am Sunday</small>
+          </div>
+          <div class="task-item">
+            <p>Do laundry, dodweqqweqwewqewqewqeqweqwsfsdfsdfsdfsdfsd</p>
+            <div class="control-btns">
+              <button>Edit</button>
+              <button>X</button>
+              <button><i class="far fa-calendar-alt"></i></button>
+            </div>
+            <small> 9am Sunday</small>
+          </div>
+          
+          <div class="task-item">
+            <p>Do laundry, do</p>
+            <div class="control-btns">
+              <button>Edit</button>
+              <button>X</button>
+              <button><i class="far fa-calendar-alt"></i></button>
+            </div>
+              <small>9am Sunday</small>
+          </div>
+          <div class="task-item" >
+            <p>Do laundry, do</p>
+            <div class="control-btns">
+              <button>Edit</button>
+              <button>X</button>
+              <button><i class="far fa-calendar-alt"></i></button>
+            </div>
+              <small>9am Sunday</small>
+          </div>
+          
+        
+        
+        </div>
+        <div class="enter-bar">
+          <input class="input" type="text" placeholder="quickly add a task"/><i class="far fa-heart"></i>
+        </div>
+      </div>
+    
+      
+    </div>
+    <div class="backdrop visible "></div>
+        <div class="modal__content visible">
+            <div class="modal__header">
+                <label>
+                    Mark as done
+                    <input type="checkbox" checked="checked"/>
+                </label>
+            </div>
+            <div class="modal__layout">
+
+                <label>Task
+                </label>
+                <input type="text" name="task-title" placeholder="enter your task"/>
+                <label>Tag
+                </label>
+                <div>
+                  <div class="tag" >
+
+                    <input
+                    type="text"
+                    name="tag"
+                    placeholder="enter new tag"
+                    />
+                    <div class="tag-dropdown ">
+                      <li>Priority</li>
+                      <li>Priority</li>
+                      <li>Priority</li>
+                    </div>
+                  </div>
+                  <button class="btn btn-dark">
+                    <i class="fas fa-caret-down"></i>
+                  </button>
+                 
+                </div>
+            
+              </div>
+            <div class="reminder">
+
+                <label>
+                    Reminder
+                    <input type="checkbox" checked="checked"/>
+                </label>
+                <div class="visible">
+                    <input type="number" min="0" class="hour disable"  placeholder="hour"/>
+                    <input type="number" min="0" class="minute disable" max="60" placeholder="minute"/>
+                </div>
+            </div>
+            <div class="modal__actions">
+                <button class="btn btn-primary">Cancel</button>
+                <button class="btn btn-success">Save New</button>
+            </div>
+        </div>
+          
+    
+  </body>
+</html>
