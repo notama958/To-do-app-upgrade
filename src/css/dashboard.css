@@ -36,10 +36,12 @@
   margin-top: 0;
 }
 .nav-buttons {
-  display: block;
+  display: flex;
+  flex-direction: row;
   height: auto;
   position: relative;
   border: 4px solid black;
+  justify-content: space-evenly;
 }
 .nav-buttons button {
   border-radius: 2em;
@@ -97,23 +99,7 @@
   box-shadow: 0 2px #666;
   transform: translateY(2px);
 }
-.dropdown {
-  display: block;
-  border-bottom: 1px solid black;
-  width: 100%;
-  height: 200px;
-  float: left;
-  list-style-type: none;
-}
-.dropdown li {
-  cursor: pointer;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  padding: 1px;
-  margin: 1px;
-}
-.menu.tags p {
+.tags.header {
   float: left;
   text-transform: uppercase;
 }
@@ -125,6 +111,34 @@
 }
 .menu.tags i:active {
   background-color: white;
+  transform: translateX(3px);
+}
+.dropdown {
+  display: block;
+  width: 100%;
+  height: 200px;
+  float: left;
+  list-style-type: none;
+}
+.dropdown li {
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 3px;
+  margin: 1px;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dropdown li:hover {
+  background-color: gold;
+  color: grey;
+}
+.dropdown li:active {
+  background-color: whitesmoke;
   transform: translateX(3px);
 }
 
@@ -296,12 +310,26 @@
   justify-content: space-evenly;
   max-width: 30%;
 }
+.task-item button {
+  padding: 5px;
+  margin: 3px;
+  background-color: antiquewhite;
+  border-radius: 2em;
+  box-shadow: 3px 0px #999;
+}
 .task-item small {
   /* border: 1px solid black; */
   flex: 1 100%;
   order: 3;
   font-style: italic;
   padding-left: 5px;
+}
+.task-item.checked {
+  background-color: #ccc;
+  opacity: 0.5;
+}
+.task-item.checked p {
+  text-decoration: line-through;
 }
 .task-list::-webkit-scrollbar {
   width: 8px;

@@ -8,8 +8,8 @@ import Routes from './components/main/Routes';
 import './css/app.css';
 import './css/index.css';
 import './css/dashboard.css';
-import './css/mobile-version.css';
 import './css/form.css';
+import './css/mobile-version.css';
 const App = () => {
   return (
     <Provider store={store}>
