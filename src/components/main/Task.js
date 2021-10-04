@@ -9,6 +9,7 @@ import {
   delTask,
   toggleBackDrop,
   toggleTaskForm,
+  toggleEditTaskForm,
   setEditTask,
 } from '../../actions/dashboard';
 const Task = ({
@@ -16,6 +17,7 @@ const Task = ({
   delTask,
   toggleBackDrop,
   toggleTaskForm,
+  toggleEditTaskForm,
   setEditTask,
 }) => {
   return (
@@ -26,7 +28,7 @@ const Task = ({
           onClick={(e) => {
             setEditTask(task);
             toggleBackDrop();
-            toggleTaskForm();
+            toggleEditTaskForm();
           }}
         >
           <i className="fas fa-edit"></i>
@@ -49,6 +51,7 @@ Task.propTypes = {
   delTask: PropTypes.func.isRequired,
   toggleBackDrop: PropTypes.func.isRequired,
   toggleTaskForm: PropTypes.func.isRequired,
+  toggleEditTaskForm: PropTypes.func.isRequired,
   setEditTask: PropTypes.func.isRequired,
 };
 
@@ -57,4 +60,5 @@ export default connect(mapStateToProps, {
   toggleBackDrop,
   toggleTaskForm,
   setEditTask,
+  toggleEditTaskForm,
 })(Task);

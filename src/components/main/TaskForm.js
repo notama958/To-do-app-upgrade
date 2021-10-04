@@ -6,10 +6,17 @@ import {
   toggleTaskForm,
   toggleBackDrop,
   addTask,
+  loadTaskList,
 } from '../../actions/dashboard';
 import { v4 as uuidv4 } from 'uuid';
 
-const TaskForm = ({ tags, toggleBackDrop, toggleTaskForm, addTask }) => {
+const TaskForm = ({
+  tags,
+  toggleBackDrop,
+  toggleTaskForm,
+  addTask,
+  loadTaskList,
+}) => {
   const [tagDropDown, setTagDropDown] = useState(false);
   const [chosenTag, setChosenTag] = useState('normal');
   const [hour, setHour] = useState(0);
@@ -38,6 +45,7 @@ const TaskForm = ({ tags, toggleBackDrop, toggleTaskForm, addTask }) => {
     );
     // console.log(taskForm);
     addTask(taskForm);
+    loadTaskList('all');
   };
   return (
     <div className="modal__content ">
@@ -159,10 +167,12 @@ TaskForm.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,
   toggleTaskForm: PropTypes.func.isRequired,
   addTask: PropTypes.func.isRequired,
+  loadTaskList: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {
   toggleBackDrop,
   toggleTaskForm,
   addTask,
+  loadTaskList,
 })(TaskForm);

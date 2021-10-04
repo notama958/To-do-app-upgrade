@@ -15,7 +15,6 @@ import {
   MODIFY_TASK,
   REMOVE_TASK,
   SORT_LIST,
-  TAG_SELECTED,
   EDIT_TASK,
 } from '../actions/types';
 
@@ -37,7 +36,7 @@ export default function (state = initState, action) {
     case LOAD_TAGS_LIST:
       return { ...state, tags: [...payload] };
     case LOAD_TASKS_LIST:
-      return { ...state, tasks: [...payload], currentTag: 'all' };
+      return { ...state, tasks: [...payload.data], currentTag: payload.tag };
     case ADD_TAG:
       return {
         ...state,
@@ -69,31 +68,19 @@ export default function (state = initState, action) {
         ...state,
       };
     case MODIFY_TASK:
-      if (state.currentTag === payload.tag) {
-        return {
-          ...state,
-          tasks: state.tasks.maps((el) => {
-            if (el.id === payload.id) {
-              return payload;
-            }
-            return el;
-          }),
-        };
-      }
+      let arr = state.tasks.filter((el) => el.id !== payload.id);
+      arr.push(payload);
       return {
         ...state,
+        tasks: arr,
       };
+
     case REMOVE_TASK:
       return {
         ...state,
         tasks: state.tasks.filter((el) => el.id !== payload),
       };
-    case TAG_SELECTED:
-      return {
-        ...state,
-        tasks: payload.data,
-        currentTag: payload.tag,
-      };
+
     case SORT_LIST:
       return { ...state, tasks: payload };
     case EDIT_TASK:

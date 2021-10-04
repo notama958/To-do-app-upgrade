@@ -2,21 +2,35 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  editTask,
   toggleBackDrop,
   toggleEditTaskForm,
+  modifyTask,
 } from '../../actions/dashboard';
-const EditForm = ({ editTask, tags, toggleBackDrop, toggleEditTaskForm }) => {
-  console.log('hasdkjsadk');
-  const [done, setDone] = useState(
-    editTask.created === 'checked' ? true : false
-  );
+import { form } from '../layout/form';
+const EditForm = ({
+  editTask: { id, desc, tag, created, alarm, status },
+  tags,
+  toggleBackDrop,
+  toggleEditTaskForm,
+  modifyTask,
+}) => {
+  const [done, setDone] = useState(status === 'checked' ? true : false);
   const [tagDropDown, setTagDropDown] = useState(false);
-  const [chosenTag, setChosenTag] = useState(editTask.tag);
-  const [reminder, setReminder] = useState(false);
-  const [hour, setHour] = useState(editTask.alarm / 1);
-  const [minute, setMinute] = useState((editTask.alarm % 1) * 60);
-  const onSubmit = () => {};
+  const [chosenTag, setChosenTag] = useState(tag);
+  const [reminder, setReminder] = useState(alarm !== null ? true : false);
+  const [hour, setHour] = useState(alarm / 1);
+  const [minute, setMinute] = useState((alarm % 1) * 60);
+  const [content, setContent] = useState(desc);
+  const onSubmit = () => {
+    let taskForm = form();
+    taskForm.id = id;
+    taskForm.desc = content;
+    taskForm.status = done ? 'checked' : 'unchecked';
+    taskForm.alarm = hour + minute / 60;
+    taskForm.tag = chosenTag;
+    taskForm.created = new Date();
+    modifyTask(id, taskForm);
+  };
   return (
     <div className="modal__content ">
       <div className="modal__header">
@@ -37,8 +51,8 @@ const EditForm = ({ editTask, tags, toggleBackDrop, toggleEditTaskForm }) => {
           type="text"
           name="task-title"
           placeholder="enter your task"
-          value={editTask.desc}
-          //   onChange={(e) => setDesc(e.target.value)}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         />
         <label>Tag</label>
         <div>
@@ -82,7 +96,7 @@ const EditForm = ({ editTask, tags, toggleBackDrop, toggleEditTaskForm }) => {
           <input
             type="checkbox"
             checked={reminder}
-            // onChange={(e) => setReminder(!reminder)}
+            onChange={(e) => setReminder(!reminder)}
           />
         </label>
         {reminder ? (
@@ -93,7 +107,7 @@ const EditForm = ({ editTask, tags, toggleBackDrop, toggleEditTaskForm }) => {
               className="hour "
               placeholder="hour"
               value={hour}
-              //   onChange={(e) => setHour(parseFloat(e.target.value))}
+              onChange={(e) => setHour(parseFloat(e.target.value))}
             />
             <input
               type="number"
@@ -102,7 +116,7 @@ const EditForm = ({ editTask, tags, toggleBackDrop, toggleEditTaskForm }) => {
               max="60"
               placeholder="minute"
               value={minute}
-              //   onChange={(e) => setMinute(parseFloat(e.target.value))}
+              onChange={(e) => setMinute(parseFloat(e.target.value))}
             />
           </div>
         ) : (
@@ -122,12 +136,12 @@ const EditForm = ({ editTask, tags, toggleBackDrop, toggleEditTaskForm }) => {
         <button
           className="btn btn-success"
           onClick={(e) => {
-            // onSubmit(e);
+            onSubmit(e);
             toggleEditTaskForm();
             toggleBackDrop();
           }}
         >
-          Save
+          Edit
         </button>
       </div>
     </div>
@@ -137,14 +151,15 @@ const EditForm = ({ editTask, tags, toggleBackDrop, toggleEditTaskForm }) => {
 EditForm.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,
   toggleEditTaskForm: PropTypes.func.isRequired,
+  modifyTask: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   tags: dashboard.tags,
   editTask: dashboard.editTask,
 });
 
-export default connect(
-  mapStateToProps,
+export default connect(mapStateToProps, {
   toggleBackDrop,
-  toggleEditTaskForm
-)(EditForm);
+  toggleEditTaskForm,
+  modifyTask,
+})(EditForm);
