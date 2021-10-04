@@ -11,7 +11,6 @@ import {
   loadTagList,
   toggleBackDrop,
   toggleTaskForm,
-  toggleEditTaskForm,
   toggleTagForm,
   delTask,
   sortByTime,
@@ -48,21 +47,15 @@ const Dashboard = ({
   loadTagList,
   toggleBackDrop,
   toggleTaskForm,
-  toggleEditTaskForm,
   toggleTagForm,
   delTask,
   addTask,
   sortByTime,
 }) => {
   const [enterBar, setEnterBar] = useState('');
-  // setTime();
   useEffect(() => {
     loadTaskList(currentTag);
     loadTagList();
-    // const interval = setInterval(() => {
-    //   setTime();
-    // }, 5000);
-    // return () => clearInterval(interval);
   }, []);
   const quickAdd = () => {
     if (enterBar !== '') {
@@ -71,10 +64,10 @@ const Dashboard = ({
       createdForm.desc = enterBar;
       createdForm.status = 'unchecked';
       createdForm.created = new Date();
-      createdForm.tag = currentTag;
-      console.log(createdForm);
+      createdForm.tag = currentTag === 'all' ? 'normal' : currentTag;
       addTask(createdForm);
       setEnterBar('');
+      currentTag === 'all' ? loadTaskList('all') : loadTaskList(currentTag);
     }
   };
   return (
@@ -202,7 +195,6 @@ Dashboard.propTypes = {
   loadTagList: PropTypes.func.isRequired,
   toggleBackDrop: PropTypes.func.isRequired,
   toggleTaskForm: PropTypes.func.isRequired,
-  toggleEditTaskForm: PropTypes.func.isRequired,
   toggleTagForm: PropTypes.func.isRequired,
   delTask: PropTypes.func.isRequired,
   sortByTime: PropTypes.func.isRequired,
@@ -225,7 +217,6 @@ export default connect(mapStateToProps, {
   loadTagList,
   toggleBackDrop,
   toggleTaskForm,
-  toggleEditTaskForm,
   toggleTagForm,
   delTask,
   sortByTime,

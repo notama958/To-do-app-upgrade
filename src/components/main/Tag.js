@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  setChosenTag,
+  loadTaskList,
   delTag,
   loadTagList,
   chosenTag,
@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 const Tag = ({
   tag: { name, id },
-  setChosenTag,
+  loadTaskList,
   delTag,
   loadTagList,
   chosenTag,
@@ -22,7 +22,7 @@ const Tag = ({
   //   console.log(taskFilteredByTag);
   // };
   return (
-    <li onClick={(e) => setChosenTag(name)}>
+    <li onClick={(e) => loadTaskList(name)}>
       <p>{name}</p>
       <div>
         {name !== 'priority' && name !== 'normal' && name !== 'important' ? (
@@ -50,7 +50,7 @@ const Tag = ({
 };
 
 Tag.propTypes = {
-  setChosenTag: PropTypes.func.isRequired,
+  loadTaskList: PropTypes.func.isRequired,
   delTag: PropTypes.func.isRequired,
   loadTagList: PropTypes.func.isRequired,
   chosenTag: PropTypes.func.isRequired,
@@ -58,7 +58,7 @@ Tag.propTypes = {
 };
 
 export default connect(null, {
-  setChosenTag,
+  loadTaskList,
   delTag,
   editTag,
   loadTagList,

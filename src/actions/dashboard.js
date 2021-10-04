@@ -6,7 +6,6 @@ import {
   LOAD_TAGS_LIST,
   LOAD_TASKS_LIST,
   SERVER_ERROR,
-  TAG_SELECTED,
   TOGGLE_BACKDROP,
   TOGGLE_TASK_FORM,
   TOGGLE_TAG_FORM,
@@ -32,7 +31,7 @@ export const loadTaskList = (tag) => async (dispatch) => {
     else res = await axios.get('list');
     dispatch({
       type: LOAD_TASKS_LIST,
-      payload: res.data,
+      payload: { tag: tag, data: res.data },
     });
   } catch (err) {
     dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB'));
@@ -148,9 +147,9 @@ export const addTask = (taskForm) => async (dispatch) => {
   }
 };
 //edit task
-export const editTask = (id, taskForm) => async (dispatch) => {
+export const modifyTask = (id, taskForm) => async (dispatch) => {
   try {
-    const res = await axios.put(`list/${id}`, taskForm);
+    const res = await axios.patch(`list/${id}`, taskForm);
     dispatch({
       type: MODIFY_TASK,
       payload: res.data,
@@ -199,25 +198,6 @@ export const chosenTag = async (tag) => {
     return res.data;
   } catch (err) {
     console.log(err);
-  }
-};
-export const setChosenTag = (tag) => async (dispatch) => {
-  try {
-    const res = await axios.get(`list?tag=${tag}`);
-    dispatch({
-      type: TAG_SELECTED,
-      payload: { tag: tag, data: res.data },
-    });
-  } catch (err) {
-    dispatch(setAlert('CANNOT SET TAG'));
-    console.log(err);
-    dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
-    });
   }
 };
 
