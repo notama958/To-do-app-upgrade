@@ -1,0 +1,56 @@
+.kanban-container {
+  display: flex;
+  flex-direction: column;
+}
+.kanban {
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  height: fit-content;
+  color: black;
+  border-radius: 1px solid black;
+  margin-top: 100px;
+  flex-wrap: wrap;
+}
+.to-do,
+.on-going,
+.completed {
+  width: auto;
+  height: 200px;
+  border: 2px solid black;
+  border-radius: 0.3rem;
+  margin: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  color: black;
+  position: relative;
+}
+.to-do .kanban-header,
+.on-going .kanban-header,
+.completed .kanban-header {
+  background-color: white;
+  font-weight: bold;
+  border-bottom: 1px solid grey;
+  border-radius: 0.3rem 0.3rem 0 0;
+  text-align: left;
+  box-shadow: inset -2em 1em gold;
+}
+.to-do label,
+.on-going label,
+.completed label {
+  margin: 10px;
+}
+.to-do {
+  order: 1;
+  flex: 1 20%;
+}
+
+.on-going {
+  order: 2;
+  flex: 1 20%;
+}
+.completed {
+  order: 3;
+  flex: 1 20%;
+}

@@ -22,8 +22,8 @@ const Tag = ({
   //   console.log(taskFilteredByTag);
   // };
   return (
-    <li>
-      <p onClick={(e) => setChosenTag(name)}>{name}</p>
+    <li onClick={(e) => setChosenTag(name)}>
+      <p>{name}</p>
       <div>
         {name !== 'priority' && name !== 'normal' && name !== 'important' ? (
           <button

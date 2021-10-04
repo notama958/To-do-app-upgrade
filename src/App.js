@@ -9,6 +9,7 @@ import './css/app.css';
 import './css/index.css';
 import './css/dashboard.css';
 import './css/form.css';
+import './css/kanban.css';
 import './css/mobile-version.css';
 const App = () => {
   return (

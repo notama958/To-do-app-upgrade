@@ -1,11 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { manualToggle } from '../../actions/alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 // import '../../css/index.css';
 
 const Navbar = ({ manualToggle }) => {
+  const [location, setLocation] = useState(useLocation());
   return (
     <nav className="navbar bg-white">
       <h1>
@@ -16,12 +17,18 @@ const Navbar = ({ manualToggle }) => {
       </h1>
       <ul>
         <li>
-          <button
-            className="btn btn-white learn-more "
-            onClick={(e) => manualToggle(e)}
-          >
-            Learn more
-          </button>
+          {location.pathname.split('/')[1] !== 'kanban' ? (
+            <button
+              className="btn btn-white learn-more "
+              onClick={(e) => manualToggle(e)}
+            >
+              Learn more
+            </button>
+          ) : (
+            <Link to="/dashboard">
+              <i class="fas fa-arrow-circle-left fa-2x"></i>
+            </Link>
+          )}
         </li>
       </ul>
     </nav>

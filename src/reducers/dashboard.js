@@ -5,6 +5,7 @@ import {
   LOAD_TAGS_LIST,
   TOGGLE_BACKDROP,
   TOGGLE_TASK_FORM,
+  TOGGLE_EDIT_TASK_FORM,
   TOGGLE_TAG_FORM,
   SERVER_ERROR,
   ADD_TAG,
@@ -15,6 +16,7 @@ import {
   REMOVE_TASK,
   SORT_LIST,
   TAG_SELECTED,
+  EDIT_TASK,
 } from '../actions/types';
 
 // set alert messages
@@ -22,9 +24,11 @@ const initState = {
   local_time: '',
   tasks: [],
   currentTag: 'all',
+  editTask: null,
   tags: [],
   backdrop: false,
   task_form: false,
+  edit_form: false,
   tag_form: false,
 };
 export default function (state = initState, action) {
@@ -92,13 +96,16 @@ export default function (state = initState, action) {
       };
     case SORT_LIST:
       return { ...state, tasks: payload };
-
+    case EDIT_TASK:
+      return { ...state, editTask: payload };
     case GET_TIME:
       return { ...state, local_time: payload };
     case TOGGLE_BACKDROP:
       return { ...state, backdrop: !state.backdrop };
     case TOGGLE_TASK_FORM:
       return { ...state, task_form: !state.task_form };
+    case TOGGLE_EDIT_TASK_FORM:
+      return { ...state, edit_form: !state.edit_form };
     case TOGGLE_TAG_FORM:
       return { ...state, tag_form: !state.tag_form };
     case SERVER_ERROR:

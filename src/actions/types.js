@@ -15,8 +15,10 @@ export const MODIFY_TAG = 'MODIFY_TAG';
 export const SORT_LIST = 'SORT_LIST';
 
 export const TAG_SELECTED = 'TAG_SELECTED';
+export const EDIT_TASK = 'EDIT_TASK';
 
 export const TOGGLE_BACKDROP = 'TOGGLE_BACKDROP';
 export const TOGGLE_TASK_FORM = 'TOGGLE_TASK_FORM';
+export const TOGGLE_EDIT_TASK_FORM = 'TOGGLE_EDIT_TASK_FORM';
 export const TOGGLE_TAG_FORM = 'TOGGLE_TAG_FORM';
 export const SERVER_ERROR = 'SERVER_ERROR';
