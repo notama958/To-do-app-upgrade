@@ -17,6 +17,8 @@ import {
   REMOVE_TAG,
   MODIFY_TAG,
   SORT_LIST,
+  TOGGLE_EDIT_TASK_FORM,
+  EDIT_TASK,
 } from './types';
 /**
  * GET: /all
@@ -183,6 +185,13 @@ export const delTask = (id) => async (dispatch) => {
     });
   }
 };
+export const setEditTask = (task) => (dispatch) => {
+  dispatch({
+    type: EDIT_TASK,
+    payload: task,
+  });
+};
+//
 export const chosenTag = async (tag) => {
   try {
     const res = await axios.get(`list?tag=${tag}`);
@@ -246,6 +255,11 @@ export const toggleBackDrop = () => (dispatch) => {
 export const toggleTaskForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_TASK_FORM,
+  });
+};
+export const toggleEditTaskForm = () => (dispatch) => {
+  dispatch({
+    type: TOGGLE_EDIT_TASK_FORM,
   });
 };
 export const toggleTagForm = () => (dispatch) => {

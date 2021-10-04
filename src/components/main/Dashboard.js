@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { form } from '../layout/form';
+import { v4 as uuidv4 } from 'uuid';
 import { setTime } from '../../actions/alert';
 import {
   loadTaskList,
   loadTagList,
   toggleBackDrop,
   toggleTaskForm,
+  toggleEditTaskForm,
   toggleTagForm,
   delTask,
   sortByTime,
@@ -18,9 +21,7 @@ import Task from './Task';
 import Tag from './Tag';
 import TaskForm from './TaskForm';
 import TagForm from './TagForm';
-
-import { form } from '../layout/form';
-import { v4 as uuidv4 } from 'uuid';
+import EditForm from './EditForm';
 
 const linkStyle = {
   borderRadius: '2rem',
@@ -41,11 +42,13 @@ const Dashboard = ({
   backdrop,
   task_form,
   tag_form,
+  edit_form,
   currentTag,
   loadTaskList,
   loadTagList,
   toggleBackDrop,
   toggleTaskForm,
+  toggleEditTaskForm,
   toggleTagForm,
   delTask,
   addTask,
@@ -150,10 +153,10 @@ const Dashboard = ({
             </div>
             <i className="fas fa-sort-amount-down">
               <div className="sort-tags">
-                <div onClick={(e) => sortByTime('asc', currentTag)}>
+                <div onClick={(e) => sortByTime('desc', currentTag)}>
                   time a-z
                 </div>
-                <div onClick={(e) => sortByTime('desc', currentTag)}>
+                <div onClick={(e) => sortByTime('asc', currentTag)}>
                   time z-a
                 </div>
               </div>
@@ -161,17 +164,12 @@ const Dashboard = ({
           </div>
 
           <div className="task-list">
-            {tasks.map((el) => (
-              <Task
-                id={el.id}
-                desc={el.desc}
-                created={el.created}
-                status={el.status}
-                key={el.id}
-                tag={el.tag}
-                delTask={delTask}
-              />
-            ))}
+            {tasks
+              .slice(0)
+              .reverse()
+              .map((el) => (
+                <Task task={el} key={el.id} />
+              ))}
             <div className="enter-bar">
               <input
                 className="input"
@@ -194,6 +192,7 @@ const Dashboard = ({
       {/* {tag_form ? <TagForm /> : ''} */}
       {tag_form ? <TagForm /> : ''}
       {task_form ? <TaskForm /> : ''}
+      {edit_form ? <EditForm /> : ''}
     </section>
   );
 };
@@ -203,9 +202,12 @@ Dashboard.propTypes = {
   loadTagList: PropTypes.func.isRequired,
   toggleBackDrop: PropTypes.func.isRequired,
   toggleTaskForm: PropTypes.func.isRequired,
+  toggleEditTaskForm: PropTypes.func.isRequired,
   toggleTagForm: PropTypes.func.isRequired,
   delTask: PropTypes.func.isRequired,
   sortByTime: PropTypes.func.isRequired,
+
+  addTask: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   local_time: dashboard.local_time,
@@ -215,7 +217,7 @@ const mapStateToProps = ({ dashboard }) => ({
   task_form: dashboard.task_form,
   tag_form: dashboard.tag_form,
   currentTag: dashboard.currentTag,
-  addTask: PropTypes.func.isRequired,
+  edit_form: dashboard.edit_form,
 });
 export default connect(mapStateToProps, {
   setTime,
@@ -223,8 +225,9 @@ export default connect(mapStateToProps, {
   loadTagList,
   toggleBackDrop,
   toggleTaskForm,
+  toggleEditTaskForm,
+  toggleTagForm,
   delTask,
   sortByTime,
   addTask,
-  toggleTagForm,
 })(Dashboard);

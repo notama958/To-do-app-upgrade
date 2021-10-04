@@ -274,7 +274,7 @@
 .modal.parent .enter-bar i:active {
   background-color: pink;
   border-radius: 2em;
-  transform: translateY(-10px);
+  transform: translateY(-5px);
 }
 .task-list {
   overflow-y: scroll;
