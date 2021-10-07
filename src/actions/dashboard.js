@@ -16,6 +16,7 @@ import {
   REMOVE_TAG,
   MODIFY_TAG,
   SORT_LIST,
+  FILTER_BY_DESC,
   TOGGLE_EDIT_TASK_FORM,
   EDIT_TASK,
 } from './types';
@@ -128,7 +129,7 @@ export const delTag = (id) => async (dispatch) => {
 //add tag
 export const addTask = (taskForm) => async (dispatch) => {
   try {
-    console.log(taskForm);
+    // console.log(taskForm);
     const res = await axios.post('list', taskForm);
     dispatch({
       type: ADD_TASK,
@@ -213,7 +214,7 @@ export const sortByTime = (order, tag) => async (dispatch) => {
     // else res = await axios.get(`list?_sort=created&_order=${order}`);
     dispatch({
       type: SORT_LIST,
-      payload: res.data,
+      payload: { data: res.data, order: order },
     });
   } catch (err) {
     dispatch(setAlert('SERVER ERROR'));
@@ -226,7 +227,12 @@ export const sortByTime = (order, tag) => async (dispatch) => {
     });
   }
 };
-
+export const filterByDesc = (pattern) => (dispatch) => {
+  dispatch({
+    type: FILTER_BY_DESC,
+    payload: pattern,
+  });
+};
 export const toggleBackDrop = () => (dispatch) => {
   dispatch({
     type: TOGGLE_BACKDROP,

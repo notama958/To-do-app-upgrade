@@ -1,6 +1,4 @@
-import { setChosenTag } from '../actions/dashboard';
 import {
-  GET_TIME,
   LOAD_TASKS_LIST,
   LOAD_TAGS_LIST,
   TOGGLE_BACKDROP,
@@ -16,11 +14,11 @@ import {
   REMOVE_TASK,
   SORT_LIST,
   EDIT_TASK,
+  FILTER_BY_DESC,
 } from '../actions/types';
 
 // set alert messages
 const initState = {
-  local_time: '',
   tasks: [],
   currentTag: 'all',
   editTask: null,
@@ -29,6 +27,8 @@ const initState = {
   task_form: false,
   edit_form: false,
   tag_form: false,
+  filterTasks: [],
+  keyword: '',
 };
 export default function (state = initState, action) {
   const { type, payload } = action;
@@ -36,7 +36,12 @@ export default function (state = initState, action) {
     case LOAD_TAGS_LIST:
       return { ...state, tags: [...payload] };
     case LOAD_TASKS_LIST:
-      return { ...state, tasks: [...payload.data], currentTag: payload.tag };
+      return {
+        ...state,
+        tasks: [...payload.data],
+        currentTag: payload.tag,
+        filterTasks: [...payload.data],
+      };
     case ADD_TAG:
       return {
         ...state,
@@ -45,7 +50,6 @@ export default function (state = initState, action) {
     case REMOVE_TAG:
       return {
         ...state,
-
         tags: state.tags.filter((el) => el.id !== payload),
       };
     case MODIFY_TAG:
@@ -63,6 +67,9 @@ export default function (state = initState, action) {
         return {
           ...state,
           tasks: [...state.tasks, payload],
+          filterTasks: state.tasks.filter((e) =>
+            e.desc.includes(state.keyword)
+          ),
         };
       return {
         ...state,
@@ -73,20 +80,31 @@ export default function (state = initState, action) {
       return {
         ...state,
         tasks: arr,
+        filterTasks: state.tasks.filter((e) => e.desc.includes(state.keyword)),
       };
 
     case REMOVE_TASK:
       return {
         ...state,
         tasks: state.tasks.filter((el) => el.id !== payload),
+        filterTasks: state.filterTasks.filter((el) => el.id !== payload),
       };
 
     case SORT_LIST:
-      return { ...state, tasks: payload };
+      return {
+        ...state,
+        tasks: payload.data,
+        filterTasks: payload.data.filter((e) => e.desc.includes(state.keyword)),
+      };
+    case FILTER_BY_DESC:
+      return {
+        ...state,
+        keyword: payload,
+        filterTasks: state.tasks.filter((e) => e.desc.includes(payload)),
+      };
     case EDIT_TASK:
       return { ...state, editTask: payload };
-    case GET_TIME:
-      return { ...state, local_time: payload };
+
     case TOGGLE_BACKDROP:
       return { ...state, backdrop: !state.backdrop };
     case TOGGLE_TASK_FORM:

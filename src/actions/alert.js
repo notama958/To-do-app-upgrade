@@ -36,3 +36,11 @@ export const getCurrentTime = (label, date) => {
   }
   return currentDate;
 };
+
+export const Greeting = () => {
+  const current = new Date();
+  const hh = current.getHours();
+  if (hh < 12) return 'Morning';
+  else if (hh < 18) return 'Afternoon';
+  else return 'Evening';
+};

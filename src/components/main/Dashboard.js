@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { form } from '../layout/form';
 import { v4 as uuidv4 } from 'uuid';
-import { getCurrentTime } from '../../actions/alert';
+import { getCurrentTime, Greeting } from '../../actions/alert';
 import {
   loadTaskList,
   loadTagList,
@@ -14,6 +14,7 @@ import {
   toggleTagForm,
   delTask,
   sortByTime,
+  filterByDesc,
   addTask,
 } from '../../actions/dashboard';
 import Task from './Task';
@@ -23,20 +24,18 @@ import TagForm from './TagForm';
 import EditForm from './EditForm';
 
 const linkStyle = {
-  borderRadius: '2rem',
-  paddingLeft: '1rem',
-  paddingRight: '1rem',
-  paddingTop: '0',
-  paddingBottom: '0',
-  boxShadow: '0 3px #999',
-  border: '3px solid white',
-  textAlign: 'center',
-  itemAlign: 'center',
+  padding: '0',
+  margin: '0',
+  // borderRadius: '2rem',
+  // paddingLeft: '1rem',
+  // paddingRight: '1rem',
+  // border: '3px solid white',
+  // textAlign: 'center',
+  // itemAlign: 'center',
 };
 const Dashboard = ({
-  local_time,
-  getCurrentTime,
   tasks,
+  filterTasks,
   tags,
   backdrop,
   task_form,
@@ -48,14 +47,25 @@ const Dashboard = ({
   toggleBackDrop,
   toggleTaskForm,
   toggleTagForm,
-  delTask,
   addTask,
   sortByTime,
+  filterByDesc,
 }) => {
   const [enterBar, setEnterBar] = useState('');
+  const [greeting, updateGreeting] = useState(Greeting());
+  const [filterValue, setFilter] = useState('');
+  const filterBtn = () => {
+    // console.log(filter);
+    filterByDesc(filterValue);
+    // setFilterTasks(tasks.filter((e) => e.desc.includes(filterValue)));
+    setFilter('');
+  };
   useEffect(() => {
     loadTaskList(currentTag);
     loadTagList();
+    filterByDesc('');
+    const interval = setInterval(() => Greeting(), 18000000);
+    return () => clearInterval(interval);
   }, []);
   const quickAdd = () => {
     if (enterBar !== '') {
@@ -66,6 +76,7 @@ const Dashboard = ({
       createdForm.created = new Date();
       createdForm.tag = currentTag === 'all' ? 'normal' : currentTag;
       addTask(createdForm);
+      filterByDesc('');
       setEnterBar('');
       currentTag === 'all' ? loadTaskList('all') : loadTaskList(currentTag);
     }
@@ -74,13 +85,15 @@ const Dashboard = ({
     <section id="dashboard">
       <div className="bg-white" id="container-left">
         <div className="menu">
-          <a href="/">
-            <i
-              className="fab fa-optin-monster fa-3x"
-              style={{ color: 'black' }}
-            ></i>
-          </a>
-          <h1>To-do list</h1>
+          <div id="logo">
+            <a href="/">
+              <i
+                className="fab fa-optin-monster fa-2x"
+                style={{ color: 'black' }}
+              ></i>
+            </a>
+            <h1>To-do list</h1>
+          </div>
           <div className="nav-buttons">
             <button
               className="btn btn-primary"
@@ -91,8 +104,8 @@ const Dashboard = ({
             >
               task +
             </button>
-            <Link className="btn btn-success" to="/kanban" style={linkStyle}>
-              kanban
+            <Link to="/kanban" style={linkStyle}>
+              <button className="btn btn-success">kanban</button>
             </Link>
           </div>
         </div>
@@ -113,7 +126,12 @@ const Dashboard = ({
           >
             +
           </button>
-          <button className="tags add" onClick={(e) => loadTaskList('all')}>
+          <button
+            className="tags add"
+            onClick={(e) => {
+              loadTaskList('all');
+            }}
+          >
             show all
           </button>
           <ul className="dropdown ">
@@ -126,23 +144,24 @@ const Dashboard = ({
       </div>
       <div className="container-right">
         <div className="modal greeting">
-          {/* <h1>Hello Master - {local_time}</h1> */}
-          <h1>Hello Master - Good Morning</h1>
+          <h1>Good {greeting} ~ Master ~</h1>
         </div>
         <div className="modal parent">
           <div className="title">
             <h3>
               {currentTag.charAt(0).toUpperCase() +
                 currentTag.slice(1).toLowerCase()}
-              {'   '}({tasks.length})
+              {'   '}({filterTasks.length})
             </h3>
-            <div>
+            <div className="filter">
               <input
                 className="desc-filter"
                 placeholder="filter by description"
                 type="text"
+                value={filterValue}
+                onChange={(e) => setFilter(e.target.value)}
               />
-              <i className="fas fa-filter"></i>{' '}
+              <i className="fas fa-filter" onClick={(e) => filterBtn(e)}></i>
             </div>
             <i className="fas fa-sort-amount-down">
               <div className="sort-tags">
@@ -157,7 +176,7 @@ const Dashboard = ({
           </div>
 
           <div className="task-list">
-            {tasks
+            {filterTasks
               .slice(0)
               .reverse()
               .map((el) => (
@@ -197,12 +216,13 @@ Dashboard.propTypes = {
   toggleTagForm: PropTypes.func.isRequired,
   delTask: PropTypes.func.isRequired,
   sortByTime: PropTypes.func.isRequired,
-
+  filterByDesc: PropTypes.func.isRequired,
   addTask: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   local_time: dashboard.local_time,
   tasks: dashboard.tasks,
+  filterTasks: dashboard.filterTasks,
   tags: dashboard.tags,
   backdrop: dashboard.backdrop,
   task_form: dashboard.task_form,
@@ -219,5 +239,6 @@ export default connect(mapStateToProps, {
   toggleTagForm,
   delTask,
   sortByTime,
+  filterByDesc,
   addTask,
 })(Dashboard);

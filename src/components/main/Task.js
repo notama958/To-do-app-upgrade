@@ -12,6 +12,7 @@ import {
   toggleTaskForm,
   toggleEditTaskForm,
   setEditTask,
+  filterByDesc,
 } from '../../actions/dashboard';
 const Task = ({
   task,
@@ -58,6 +59,7 @@ Task.propTypes = {
   toggleTaskForm: PropTypes.func.isRequired,
   toggleEditTaskForm: PropTypes.func.isRequired,
   setEditTask: PropTypes.func.isRequired,
+  filterByDesc: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {
@@ -66,4 +68,5 @@ export default connect(mapStateToProps, {
   toggleTaskForm,
   setEditTask,
   toggleEditTaskForm,
+  filterByDesc,
 })(Task);
