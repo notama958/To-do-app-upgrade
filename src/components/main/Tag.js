@@ -6,6 +6,7 @@ import {
   loadTagList,
   chosenTag,
   editTag,
+  filterByDesc,
 } from '../../actions/dashboard';
 import { connect } from 'react-redux';
 
@@ -16,13 +17,18 @@ const Tag = ({
   loadTagList,
   chosenTag,
   editTag,
+  filterByDesc,
 }) => {
   // const delTagHandler = async (name, id) => {
   //   let taskFilteredByTag = await chosenTag(id);
   //   console.log(taskFilteredByTag);
   // };
   return (
-    <li onClick={(e) => loadTaskList(name)}>
+    <li
+      onClick={(e) => {
+        loadTaskList(name);
+      }}
+    >
       <p>{name}</p>
       <div>
         {name !== 'priority' && name !== 'normal' && name !== 'important' ? (
@@ -55,6 +61,7 @@ Tag.propTypes = {
   loadTagList: PropTypes.func.isRequired,
   chosenTag: PropTypes.func.isRequired,
   editTag: PropTypes.func.isRequired,
+  filterByDesc: PropTypes.func.isRequired,
 };
 
 export default connect(null, {
@@ -63,4 +70,5 @@ export default connect(null, {
   editTag,
   loadTagList,
   chosenTag,
+  filterByDesc,
 })(Tag);
