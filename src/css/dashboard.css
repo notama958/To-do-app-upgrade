@@ -299,6 +299,9 @@
   line-height: 1.2;
   width: 70%;
 }
+.task-item b {
+  font-weight: bold;
+}
 .task-item div {
   /* border: 1px solid black; */
   padding-left: 3px;

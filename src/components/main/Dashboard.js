@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { form } from '../layout/form';
 import { v4 as uuidv4 } from 'uuid';
-import { setTime } from '../../actions/alert';
+import { getCurrentTime } from '../../actions/alert';
 import {
   loadTaskList,
   loadTagList,
@@ -35,7 +35,7 @@ const linkStyle = {
 };
 const Dashboard = ({
   local_time,
-  setTime,
+  getCurrentTime,
   tasks,
   tags,
   backdrop,
@@ -190,7 +190,6 @@ const Dashboard = ({
   );
 };
 Dashboard.propTypes = {
-  setTime: PropTypes.func.isRequired,
   loadTaskList: PropTypes.func.isRequired,
   loadTagList: PropTypes.func.isRequired,
   toggleBackDrop: PropTypes.func.isRequired,
@@ -212,7 +211,7 @@ const mapStateToProps = ({ dashboard }) => ({
   edit_form: dashboard.edit_form,
 });
 export default connect(mapStateToProps, {
-  setTime,
+  getCurrentTime,
   loadTaskList,
   loadTagList,
   toggleBackDrop,

@@ -16,32 +16,23 @@ export const manualToggle = () => (dispatch) => {
     type: TOGGLE_MANUAL,
   });
 };
-export const setTime = () => (dispatch) => {
-  let currentDate = new Date();
-  let tzone = currentDate
-    .toString()
-    .match(/\(([A-Za-z\s].*)\)/)[1]
-    .split(' ')
-    .map((substr) => {
-      return substr[0].toUpperCase();
-    })
-    .join('');
-  let dtime =
-    currentDate.getDate() +
-    '/' +
-    (currentDate.getMonth() + 1) +
-    '/' +
-    currentDate.getFullYear() +
-    ' ' +
-    currentDate.getHours() +
-    ':' +
-    currentDate.getMinutes() +
-    ':' +
-    currentDate.getSeconds() +
-    ' ' +
-    tzone;
-  dispatch({
-    type: GET_TIME,
-    payload: dtime,
-  });
+export const getCurrentTime = (label, date) => {
+  let currentDate = date === null ? new Date() : new Date(date);
+
+  if (label == 'time') {
+    return currentDate.getHours() + ':' + currentDate.getMinutes() + ':00';
+  } else if (label == 'date') {
+    return (
+      currentDate.getFullYear() +
+      '-' +
+      (currentDate.getMonth() + 1 < 10
+        ? '0' + (currentDate.getMonth() + 1)
+        : currentDate.getMonth() + 1) +
+      '-' +
+      (currentDate.getDate() < 10
+        ? '0' + currentDate.getDate()
+        : currentDate.getDate())
+    ).toString();
+  }
+  return currentDate;
 };
