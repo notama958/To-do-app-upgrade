@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Moment from 'react-moment';
 import { Fragment, Link, useRef } from 'react';
 import {
   loadTagList,
@@ -22,7 +23,12 @@ const Task = ({
 }) => {
   return (
     <div className={`task-item ${task.status}`} key={task.id}>
-      <p>{task.desc}</p>
+      <p>
+        <b>{task.desc}</b>
+        {' - '}
+        {task.tag}{' '}
+        {task.alarm !== null ? <i className="far fa-calendar-alt"></i> : ''}
+      </p>
       <div className="control-btns">
         <button
           onClick={(e) => {
@@ -36,11 +42,10 @@ const Task = ({
         <button onClick={(e) => delTask(task.id)}>
           <i className="fas fa-times"></i>
         </button>
-        <button>
-          <i className="far fa-calendar-alt"></i>
-        </button>
       </div>
-      <small>- {task.created}</small>
+      <small>
+        Created on <Moment format="DD/MM/YYYY hh:mm A">{task.created}</Moment>
+      </small>
     </div>
   );
 };

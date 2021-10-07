@@ -4,7 +4,7 @@ export const form = () => {
     desc: '',
     created: null,
     status: '',
-    alarm: 0,
+    alarm: null,
     tag: '',
   };
   return taskForm;

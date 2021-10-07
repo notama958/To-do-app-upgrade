@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import TimePicker from 'react-time-picker/dist/entry.nostyle';
 import { connect } from 'react-redux';
 import {
   toggleBackDrop,
   toggleEditTaskForm,
   modifyTask,
 } from '../../actions/dashboard';
+import { getCurrentTime } from '../../actions/alert';
 import { form } from '../layout/form';
+
 const EditForm = ({
   editTask: { id, desc, tag, created, alarm, status },
   tags,
@@ -18,15 +21,15 @@ const EditForm = ({
   const [tagDropDown, setTagDropDown] = useState(false);
   const [chosenTag, setChosenTag] = useState(tag);
   const [reminder, setReminder] = useState(alarm !== null ? true : false);
-  const [hour, setHour] = useState(alarm / 1);
-  const [minute, setMinute] = useState((alarm % 1) * 60);
+  const [date, setDate] = useState(getCurrentTime('date', alarm));
+  const [time, setTime] = useState(getCurrentTime('time', alarm));
   const [content, setContent] = useState(desc);
   const onSubmit = () => {
     let taskForm = form();
     taskForm.id = id;
     taskForm.desc = content;
     taskForm.status = done ? 'checked' : 'unchecked';
-    taskForm.alarm = hour + minute / 60;
+    taskForm.alarm = reminder ? date + ' ' + time : null;
     taskForm.tag = chosenTag;
     taskForm.created = new Date();
     modifyTask(id, taskForm);
@@ -55,33 +58,31 @@ const EditForm = ({
           onChange={(e) => setContent(e.target.value)}
         />
         <label>Tag</label>
-        <div>
-          <div className="tag">
-            <input
-              type="text"
-              name="tag"
-              value={chosenTag}
-              readOnly={true}
-              placeholder="enter new tag"
-            />
-            {tagDropDown ? (
-              <div className="tag-dropdown visible ">
-                {tags.map((el, id) => (
-                  <li
-                    key={id}
-                    onClick={(e) => {
-                      setChosenTag(el['name']);
-                      setTagDropDown(!tagDropDown);
-                    }}
-                  >
-                    {el['name']}
-                  </li>
-                ))}
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
+        <div className="tag">
+          <input
+            type="text"
+            name="tag"
+            value={chosenTag}
+            readOnly={true}
+            placeholder="enter new tag"
+          />
+          {tagDropDown ? (
+            <div className="tag-dropdown visible ">
+              {tags.map((el, id) => (
+                <li
+                  key={id}
+                  onClick={(e) => {
+                    setChosenTag(el['name']);
+                    setTagDropDown(!tagDropDown);
+                  }}
+                >
+                  {el['name']}
+                </li>
+              ))}
+            </div>
+          ) : (
+            ''
+          )}
           <button
             className="btn btn-dark"
             onClick={(e) => setTagDropDown(!tagDropDown)}
@@ -99,30 +100,21 @@ const EditForm = ({
             onChange={(e) => setReminder(!reminder)}
           />
         </label>
-        {reminder ? (
-          <div className="visible">
-            <input
-              type="number"
-              min="0"
-              className="hour "
-              placeholder="hour"
-              value={hour}
-              onChange={(e) => setHour(parseFloat(e.target.value))}
-            />
-            <input
-              type="number"
-              min="0"
-              className="minute "
-              max="60"
-              placeholder="minute"
-              value={minute}
-              onChange={(e) => setMinute(parseFloat(e.target.value))}
-            />
-          </div>
-        ) : (
-          ''
-        )}
       </div>
+      {reminder ? (
+        <div className="reminder-visible">
+          <input
+            type="date"
+            min={date}
+            value={date}
+            className="calendar"
+            onChange={(e) => setDate(e.target.value)}
+          />
+          <TimePicker value={time} onChange={setTime} format="hh:mm a" />
+        </div>
+      ) : (
+        ''
+      )}
       <div className="modal__actions">
         <button
           className="btn btn-primary"
