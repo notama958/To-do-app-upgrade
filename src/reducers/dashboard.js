@@ -80,7 +80,7 @@ export default function (state = initState, action) {
       return {
         ...state,
         tasks: arr,
-        filterTasks: state.tasks.filter((e) => e.desc.includes(state.keyword)),
+        filterTasks: arr.filter((e) => e.desc.includes(state.keyword)),
       };
 
     case REMOVE_TASK:
