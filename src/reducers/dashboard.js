@@ -15,6 +15,7 @@ import {
   SORT_LIST,
   EDIT_TASK,
   FILTER_BY_DESC,
+  REMOVE_KEYWORD,
 } from '../actions/types';
 
 // set alert messages
@@ -102,6 +103,7 @@ export default function (state = initState, action) {
         keyword: payload,
         filterTasks: state.tasks.filter((e) => e.desc.includes(payload)),
       };
+
     case EDIT_TASK:
       return { ...state, editTask: payload };
 
