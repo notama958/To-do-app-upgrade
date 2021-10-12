@@ -14,7 +14,7 @@ const getItemStyle = (isDragging, draggableStyle, droppableId) => ({
   border: ' thin solid black',
   textDecoration: droppableId === 'finished' ? 'line-through' : 'none',
   // change background colour if dragging
-  background: isDragging ? '#fec5bb' : '#F3F3F4',
+  background: isDragging ? 'gold' : 'white',
   borderRadius: '0.5em',
   // styles we need to apply on draggables
   ...draggableStyle,

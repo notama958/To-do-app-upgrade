@@ -16,7 +16,7 @@ const getData = (list) => {
 };
 // styling for drag container
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? 'gold' : 'red',
+  background: isDraggingOver ? 'grey' : 'whitesmoke',
   padding: '5px',
   width: '100%',
   height: '100%',
@@ -60,10 +60,13 @@ const Kanban = ({ tasks, loadTaskList, modifyTask }) => {
   let [onGoing, setOnGoing] = useState([]);
   let [finished, setFinished] = useState([]);
   useEffect(() => {
-    loadTaskList('all');
-    loadTagList();
-    setOnGoing(getData(tasks).onGoing);
-    setFinished(getData(tasks).finished);
+    setTimeout(() => {
+      loadTaskList('all');
+      loadTagList();
+      setOnGoing(getData(tasks).onGoing);
+      setFinished(getData(tasks).finished);
+      console.log('finished loading');
+    }, 1500);
   }, []);
   const onDragEnd = (result) => {
     // console.log(result);
