@@ -26,7 +26,7 @@ const Navbar = ({ manualToggle }) => {
             </button>
           ) : (
             <Link to="/dashboard">
-              <i class="fas fa-arrow-circle-left fa-2x"></i>
+              <i className="fas fa-arrow-circle-left fa-2x"></i>
             </Link>
           )}
         </li>

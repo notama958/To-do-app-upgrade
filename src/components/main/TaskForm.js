@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { form } from '../layout/form';
-import TimePicker from 'react-time-picker/dist/entry.nostyle';
 import {
   toggleTaskForm,
   toggleBackDrop,
@@ -22,11 +21,13 @@ const TaskForm = ({
   const [tagDropDown, setTagDropDown] = useState(false);
   const [chosenTag, setChosenTag] = useState('normal');
   const [date, setDate] = useState(getCurrentTime('date', null));
-  const [time, setTime] = useState(new Date());
+  const [minute, setMinute] = useState(
+    getCurrentTime('time', null).split(':')[1]
+  );
+  const [hour, setHour] = useState(getCurrentTime('time', null).split(':')[0]);
   const [done, setDone] = useState(false);
   const [alarm, setAlarm] = useState(false);
   const [desc, setDesc] = useState('');
-  console.log(time);
   let taskForm = form();
   const setTagForm = (desc, status, alarm, tag) => {
     taskForm.id = uuidv4();
@@ -39,17 +40,17 @@ const TaskForm = ({
 
   const onSubmit = (e) => {
     //submit form
-    // e.preventDefault();
     setTagForm(
       desc,
       done ? 'checked' : 'unchecked',
-      alarm ? new Date(date + ' ' + time) : null,
+      alarm ? new Date(date + ' ' + hour + ':' + minute) : null,
       chosenTag
     );
     // console.log(taskForm);
     addTask(taskForm);
     loadTaskList('all');
   };
+
   return (
     <div className="modal__content ">
       <div className="modal__header">
@@ -121,12 +122,44 @@ const TaskForm = ({
         <div className="reminder-visible">
           <input
             type="date"
-            min={date}
+            min={getCurrentTime('date', null)}
             value={date}
             className="calendar"
             onChange={(e) => setDate(e.target.value)}
           />
-          <TimePicker value={time} onChange={setTime} format="hh:mm a" />
+          <div className="hour-minute">
+            <input
+              type="number"
+              min={0}
+              max={23}
+              placeholder="hour"
+              value={hour}
+              onChange={(e) =>
+                e.target.value < 24 &&
+                e.target.value >= 0 &&
+                !isNaN(e.target.value)
+                  ? setHour(e.target.value)
+                  : alert('Invalid hour input')
+              }
+            />
+            <p>:</p>
+            <input
+              type="number"
+              min={0}
+              max={59}
+              placeholder="minute"
+              value={minute}
+              onChange={(e) =>
+                e.target.value < 60 &&
+                e.target.value >= 0 &&
+                !isNaN(e.target.value)
+                  ? setMinute(e.target.value)
+                  : alert('Invalid minute input')
+              }
+            />
+          </div>
+
+          {/* <TimePicker onChange={(e) => setTimeValue(e)} value={timeValue} /> */}
         </div>
       ) : (
         ''

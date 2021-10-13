@@ -22,14 +22,21 @@ const EditForm = ({
   const [chosenTag, setChosenTag] = useState(tag);
   const [reminder, setReminder] = useState(alarm !== null ? true : false);
   const [date, setDate] = useState(getCurrentTime('date', alarm));
-  const [time, setTime] = useState(getCurrentTime('time', alarm));
+  const [minute, setMinute] = useState(
+    alarm !== null ? new Date(alarm).getMinutes() : '00'
+  );
+  const [hour, setHour] = useState(
+    alarm !== null ? new Date(alarm).getHours() : '00'
+  );
   const [content, setContent] = useState(desc);
   const onSubmit = () => {
     let taskForm = form();
     taskForm.id = id;
     taskForm.desc = content;
     taskForm.status = done ? 'checked' : 'unchecked';
-    taskForm.alarm = reminder ? date + ' ' + time : null;
+    taskForm.alarm = reminder
+      ? new Date(date + ' ' + hour + ':' + minute)
+      : null;
     taskForm.tag = chosenTag;
     taskForm.created = new Date();
     modifyTask(id, taskForm);
@@ -110,7 +117,37 @@ const EditForm = ({
             className="calendar"
             onChange={(e) => setDate(e.target.value)}
           />
-          <TimePicker value={time} onChange={setTime} format="hh:mm a" />
+          <div className="hour-minute">
+            <input
+              type="number"
+              min={0}
+              max={23}
+              placeholder="hour"
+              value={hour}
+              onChange={(e) =>
+                e.target.value < 24 &&
+                e.target.value >= 0 &&
+                !isNaN(e.target.value)
+                  ? setHour(e.target.value)
+                  : alert('Invalid hour input')
+              }
+            />
+            <p>:</p>
+            <input
+              type="number"
+              min={0}
+              max={59}
+              placeholder="minute"
+              value={minute}
+              onChange={(e) =>
+                e.target.value < 60 &&
+                e.target.value >= 0 &&
+                !isNaN(e.target.value)
+                  ? setMinute(e.target.value)
+                  : alert('Invalid minute input')
+              }
+            />
+          </div>{' '}
         </div>
       ) : (
         ''

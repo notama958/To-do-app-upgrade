@@ -19,6 +19,7 @@ import {
   FILTER_BY_DESC,
   TOGGLE_EDIT_TASK_FORM,
   EDIT_TASK,
+  REMOVE_KEYWORD,
 } from './types';
 /**
  * GET: /all
@@ -253,3 +254,8 @@ export const toggleTagForm = () => (dispatch) => {
     type: TOGGLE_TAG_FORM,
   });
 };
+// export const delKeyword = () => (dispatch) => {
+//   dispatch({
+//     type: REMOVE_KEYWORD,
+//   });
+// };

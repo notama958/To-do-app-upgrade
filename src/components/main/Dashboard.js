@@ -58,7 +58,6 @@ const Dashboard = ({
     // console.log(filter);
     filterByDesc(filterValue);
     // setFilterTasks(tasks.filter((e) => e.desc.includes(filterValue)));
-    setFilter('');
   };
   useEffect(() => {
     loadTaskList(currentTag);
