@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { form } from '../layout/form';
 import { v4 as uuidv4 } from 'uuid';
-import { getCurrentTime, Greeting } from '../../actions/alert';
+import { getCurrentTime, Greeting, setLoading } from '../../actions/alert';
 import {
   loadTaskList,
   loadTagList,
@@ -22,7 +22,8 @@ import Tag from './Tag';
 import TaskForm from './TaskForm';
 import TagForm from './TagForm';
 import EditForm from './EditForm';
-
+import Spinner from '../layout/Spinner';
+import Alert from '../layout/Alert';
 const linkStyle = {
   padding: '0',
   margin: '0',
@@ -35,6 +36,7 @@ const linkStyle = {
 };
 const Dashboard = ({
   tasks,
+  loading,
   filterTasks,
   tags,
   backdrop,
@@ -50,16 +52,19 @@ const Dashboard = ({
   addTask,
   sortByTime,
   filterByDesc,
+  setLoading,
 }) => {
   const [enterBar, setEnterBar] = useState('');
   const [greeting, updateGreeting] = useState(Greeting());
   const [filterValue, setFilter] = useState('');
   const filterBtn = () => {
     // console.log(filter);
+    setLoading();
     filterByDesc(filterValue);
     // setFilterTasks(tasks.filter((e) => e.desc.includes(filterValue)));
   };
   useEffect(() => {
+    setLoading();
     loadTaskList(currentTag);
     loadTagList();
     filterByDesc('');
@@ -74,6 +79,7 @@ const Dashboard = ({
       createdForm.status = 'unchecked';
       createdForm.created = new Date();
       createdForm.tag = currentTag === 'all' ? 'normal' : currentTag;
+      setLoading();
       addTask(createdForm);
       filterByDesc('');
       setEnterBar('');
@@ -128,20 +134,24 @@ const Dashboard = ({
           <button
             className="tags add"
             onClick={(e) => {
+              setLoading();
               loadTaskList('all');
             }}
           >
             show all
           </button>
           <ul className="dropdown ">
-            {tags.map((el) => (
-              <Tag key={el.id} tag={el} />
-            ))}
+            {loading ? (
+              <Spinner />
+            ) : (
+              tags.map((el) => <Tag key={el.id} tag={el} />)
+            )}
             {/* {console.log(tags)} */}
           </ul>
         </div>
       </div>
       <div className="container-right">
+        <Alert />
         <div className="modal greeting">
           <h1>Good {greeting} ~ Master ~</h1>
         </div>
@@ -164,10 +174,20 @@ const Dashboard = ({
             </div>
             <i className="fas fa-sort-amount-down">
               <div className="sort-tags">
-                <div onClick={(e) => sortByTime('desc', currentTag)}>
+                <div
+                  onClick={(e) => {
+                    setLoading();
+                    sortByTime('desc', currentTag);
+                  }}
+                >
                   time a-z
                 </div>
-                <div onClick={(e) => sortByTime('asc', currentTag)}>
+                <div
+                  onClick={(e) => {
+                    setLoading();
+                    sortByTime('asc', currentTag);
+                  }}
+                >
                   time z-a
                 </div>
               </div>
@@ -175,12 +195,15 @@ const Dashboard = ({
           </div>
 
           <div className="task-list">
-            {filterTasks
-              .slice(0)
-              .reverse()
-              .map((el) => (
-                <Task task={el} key={el.id} />
-              ))}
+            {loading ? (
+              <Spinner />
+            ) : (
+              filterTasks
+                .slice(0)
+                .reverse()
+                .map((el) => <Task task={el} key={el.id} />)
+            )}
+
             <div className="enter-bar">
               <input
                 className="input"
@@ -217,6 +240,7 @@ Dashboard.propTypes = {
   sortByTime: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
   addTask: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   local_time: dashboard.local_time,
@@ -228,6 +252,7 @@ const mapStateToProps = ({ dashboard }) => ({
   tag_form: dashboard.tag_form,
   currentTag: dashboard.currentTag,
   edit_form: dashboard.edit_form,
+  loading: dashboard.loading,
 });
 export default connect(mapStateToProps, {
   getCurrentTime,
@@ -240,4 +265,5 @@ export default connect(mapStateToProps, {
   sortByTime,
   filterByDesc,
   addTask,
+  setLoading,
 })(Dashboard);

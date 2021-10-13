@@ -1,4 +1,10 @@
-import { SET_ALERT, REMOVE_ALERT, TOGGLE_MANUAL, GET_TIME } from './types';
+import {
+  SET_ALERT,
+  REMOVE_ALERT,
+  TOGGLE_MANUAL,
+  GET_TIME,
+  SET_LOADING,
+} from './types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const setAlert =
@@ -11,6 +17,13 @@ export const setAlert =
     });
     setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), timeout);
   };
+
+export const setLoading = () => (dispatch) => {
+  dispatch({
+    type: SET_LOADING,
+    payload: true,
+  });
+};
 export const manualToggle = () => (dispatch) => {
   dispatch({
     type: TOGGLE_MANUAL,

@@ -5,6 +5,9 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Navbar from '../layout/Navbar';
 import DragItem from '../layout/DragItem';
 import { loadTaskList, loadTagList, modifyTask } from '../../actions/dashboard';
+import { setLoading } from '../../actions/alert';
+import Spinner from '../layout/Spinner';
+
 // get onGoing list and Finished list
 const getData = (list) => {
   // console.log(list);
@@ -56,17 +59,17 @@ const move = (
   return result;
 };
 
-const Kanban = ({ tasks, loadTaskList, modifyTask }) => {
+const Kanban = ({ tasks, loadTaskList, modifyTask, setLoading, loading }) => {
+  const [list, setList] = useState(tasks);
   let [onGoing, setOnGoing] = useState([]);
   let [finished, setFinished] = useState([]);
   useEffect(() => {
-    setTimeout(() => {
-      loadTaskList('all');
-      loadTagList();
-      setOnGoing(getData(tasks).onGoing);
-      setFinished(getData(tasks).finished);
-      console.log('finished loading');
-    }, 1500);
+    setLoading();
+    console.log('finish this first');
+    // some bugs here
+    setList(tasks);
+    setOnGoing(getData(tasks).onGoing);
+    setFinished(getData(tasks).finished);
   }, []);
   const onDragEnd = (result) => {
     // console.log(result);
@@ -120,13 +123,17 @@ const Kanban = ({ tasks, loadTaskList, modifyTask }) => {
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {onGoing.map((item, index) => (
-                      <DragItem
-                        item={item}
-                        index={index}
-                        droppableId="ongoing"
-                      />
-                    ))}
+                    {loading || tasks.length === 0 ? (
+                      <Spinner />
+                    ) : (
+                      onGoing.map((item, index) => (
+                        <DragItem
+                          item={item}
+                          index={index}
+                          droppableId="ongoing"
+                        />
+                      ))
+                    )}
                     {provided.placeholder}
                   </div>
                 )}
@@ -146,14 +153,18 @@ const Kanban = ({ tasks, loadTaskList, modifyTask }) => {
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {finished.map((item, index) => (
-                      <DragItem
-                        item={item}
-                        index={index}
-                        droppableId="ongoing"
-                        droppableId="finished"
-                      />
-                    ))}
+                    {loading || tasks.length === 0 ? (
+                      <Spinner />
+                    ) : (
+                      finished.map((item, index) => (
+                        <DragItem
+                          item={item}
+                          index={index}
+                          droppableId="ongoing"
+                          droppableId="finished"
+                        />
+                      ))
+                    )}
                     {provided.placeholder}
                   </div>
                 )}
@@ -169,13 +180,16 @@ Kanban.propTypes = {
   loadTagList: PropTypes.func.isRequired,
   loadTaskList: PropTypes.func.isRequired,
   modifyTask: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   tasks: dashboard.tasks,
   filterTasks: dashboard.filterTasks,
+  loading: dashboard.loading,
 });
 export default connect(mapStateToProps, {
   loadTaskList,
   loadTagList,
   modifyTask,
+  setLoading,
 })(Kanban);

@@ -3,10 +3,17 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
 import { addTag, toggleBackDrop, toggleTagForm } from '../../actions/dashboard';
-import { setAlert } from '../../actions/alert';
-const TagForm = ({ addTag, toggleBackDrop, toggleTagForm, setAlert }) => {
+import { setAlert, setLoading } from '../../actions/alert';
+const TagForm = ({
+  addTag,
+  toggleBackDrop,
+  toggleTagForm,
+  setAlert,
+  setLoading,
+}) => {
   const [tag, setTag] = useState();
   const onSubmit = () => {
+    setLoading();
     if (tag !== '') {
       let tagObj = { id: uuidv4(), name: tag };
       addTag(tagObj);
@@ -58,8 +65,14 @@ TagForm.propTypes = {
   addTag: PropTypes.func.isRequired,
   toggleBackDrop: PropTypes.func.isRequired,
   toggleTagForm: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 
-export default connect(null, { addTag, toggleBackDrop, toggleTagForm })(
-  TagForm
-);
+export default connect(null, {
+  addTag,
+  toggleBackDrop,
+  toggleTagForm,
+  setAlert,
+  setLoading,
+})(TagForm);
