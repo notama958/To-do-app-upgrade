@@ -44,7 +44,7 @@ const DragItem = ({ item, index, droppableId, loadTaskList, loadTagList }) => {
             droppableId
           )}
         >
-          {item.desc}
+          {item.desc} <small>- {item.tag}</small>
         </div>
       )}
     </Draggable>

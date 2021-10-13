@@ -20,7 +20,11 @@ export const getCurrentTime = (label, date) => {
   let currentDate = date === null ? new Date() : new Date(date);
 
   if (label == 'time') {
-    return currentDate.getHours() + ':' + currentDate.getMinutes() + ':00';
+    return (
+      currentDate.getHours().toString() +
+      ':' +
+      currentDate.getMinutes().toString()
+    );
   } else if (label == 'date') {
     return (
       currentDate.getFullYear() +
