@@ -87,17 +87,16 @@ img {
   /* padding: 0.8rem; */
   margin: 5px;
   opacity: 0.9;
-  /* background: var(--light-color); */
-  color: #333;
+  background: var(--light-color);
+  color: whitesmoke;
   text-align: center;
   align-items: center;
-  background: rebeccapurple;
 }
-.alert .alert-danger {
+.alert-danger {
   background: #dc3545;
 }
-.alert .alert-success {
-  background: yellowgreen;
+.alert-success {
+  background: green;
 }
 
 .btn-primary,
