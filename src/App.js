@@ -11,7 +11,6 @@ import './css/dashboard.css';
 import './css/form.css';
 import './css/kanban.css';
 import './css/mobile-version.css';
-import './css/clock.css';
 const App = () => {
   return (
     <Provider store={store}>

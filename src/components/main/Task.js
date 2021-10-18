@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
-import { Fragment, Link, useRef } from 'react';
+import { setLoading } from '../../actions/alert';
 import {
   loadTagList,
   loadTaskList,
@@ -21,6 +21,7 @@ const Task = ({
   toggleTaskForm,
   toggleEditTaskForm,
   setEditTask,
+  setLoading,
 }) => {
   return (
     <div className={`task-item ${task.status}`} key={task.id}>
@@ -33,6 +34,7 @@ const Task = ({
       <div className="control-btns">
         <button
           onClick={(e) => {
+            setLoading();
             setEditTask(task);
             toggleBackDrop();
             toggleEditTaskForm();
@@ -40,7 +42,12 @@ const Task = ({
         >
           <i className="fas fa-edit"></i>
         </button>
-        <button onClick={(e) => delTask(task.id)}>
+        <button
+          onClick={(e) => {
+            setLoading();
+            delTask(task.id);
+          }}
+        >
           <i className="fas fa-times"></i>
         </button>
       </div>
@@ -60,6 +67,7 @@ Task.propTypes = {
   toggleEditTaskForm: PropTypes.func.isRequired,
   setEditTask: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {
@@ -69,4 +77,5 @@ export default connect(mapStateToProps, {
   setEditTask,
   toggleEditTaskForm,
   filterByDesc,
+  setLoading,
 })(Task);

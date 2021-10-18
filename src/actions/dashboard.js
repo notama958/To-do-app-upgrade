@@ -36,7 +36,7 @@ export const loadTaskList = (tag) => async (dispatch) => {
       payload: { tag: tag, data: res.data },
     });
   } catch (err) {
-    dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB'));
+    dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB', 'danger'));
     dispatch({
       type: EMPTY_LIST,
       payload: {
@@ -58,7 +58,7 @@ export const loadTagList = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB'));
+    dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB', 'danger'));
     dispatch({
       type: EMPTY_TAGS,
       payload: {
@@ -78,7 +78,7 @@ export const editTag = (id, tagData) => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    dispatch(setAlert('CANNOT MODIFY TAG'));
+    dispatch(setAlert('CANNOT MODIFY TAG', 'danger'));
     dispatch({
       type: SERVER_ERROR,
       payload: {
@@ -97,7 +97,7 @@ export const addTag = (tag) => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
-    dispatch(setAlert('CANNOT ADD TAG'));
+    dispatch(setAlert('CANNOT ADD TAG', 'danger'));
     dispatch({
       type: SERVER_ERROR,
       payload: {
@@ -116,7 +116,7 @@ export const delTag = (id) => async (dispatch) => {
       payload: id,
     });
   } catch (err) {
-    dispatch(setAlert('CANNOT DELETE TAG'));
+    dispatch(setAlert('CANNOT DELETE TAG', 'danger'));
     dispatch({
       type: SERVER_ERROR,
       payload: {
@@ -136,8 +136,9 @@ export const addTask = (taskForm) => async (dispatch) => {
       type: ADD_TASK,
       payload: res.data,
     });
+    dispatch(setAlert('Added Task', 'success'));
   } catch (err) {
-    dispatch(setAlert('CANNOT ADD TASK'));
+    dispatch(setAlert('CANNOT ADD TASK', 'danger'));
     console.log(err);
     dispatch({
       type: SERVER_ERROR,
@@ -156,8 +157,9 @@ export const modifyTask = (id, taskForm) => async (dispatch) => {
       type: MODIFY_TASK,
       payload: res.data,
     });
+    dispatch(setAlert('Modified Task', 'success'));
   } catch (err) {
-    dispatch(setAlert('CANNOT EDIT TASK'));
+    dispatch(setAlert('CANNOT EDIT TASK', 'danger'));
     dispatch({
       type: SERVER_ERROR,
       payload: {
@@ -175,8 +177,9 @@ export const delTask = (id) => async (dispatch) => {
       type: REMOVE_TASK,
       payload: id,
     });
+    dispatch(setAlert('Removed Task', 'success'));
   } catch (err) {
-    dispatch(setAlert('CANNOT DELETE TASK'));
+    dispatch(setAlert('CANNOT DELETE TASK', 'danger'));
     dispatch({
       type: SERVER_ERROR,
       payload: {
@@ -217,8 +220,9 @@ export const sortByTime = (order, tag) => async (dispatch) => {
       type: SORT_LIST,
       payload: { data: res.data, order: order },
     });
+    dispatch(setAlert('Sorted', 'success'));
   } catch (err) {
-    dispatch(setAlert('SERVER ERROR'));
+    dispatch(setAlert('SERVER ERROR', 'danger'));
     dispatch({
       type: SERVER_ERROR,
       payload: {

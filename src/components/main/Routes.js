@@ -7,9 +7,7 @@ import Kanban from './Kanban';
 const Routes = () => {
   return (
     <section>
-      {/* <Alert /> */}
       <Switch>
-        {/* <Navbar /> */}
         <Route exact path="/dashboard" component={Dashboard} />
         <Route exact path="/kanban" component={Kanban} />
         <Route component={NotFound} />

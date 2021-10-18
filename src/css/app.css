@@ -84,17 +84,24 @@ img {
 }
 
 .alert {
-  padding: 0.8rem;
-  margin: 1rem 0;
+  /* padding: 0.8rem; */
+  margin: 5px;
   opacity: 0.9;
   background: var(--light-color);
-  color: #333;
+  color: whitesmoke;
+  text-align: center;
+  align-items: center;
+}
+.alert-danger {
+  background: #dc3545;
+}
+.alert-success {
+  background: green;
 }
 
 .btn-primary,
 .bg-primary,
-.badge-primary,
-.alert-primary {
+.badge-primary {
   background: var(--primary-color);
   color: #fff;
   border-width: 1px var(--pr);
@@ -102,40 +109,35 @@ img {
 
 .btn-light,
 .bg-light,
-.badge-light,
-.alert-light {
+.badge-light {
   background: var(--light-color);
   color: #333;
 }
 
 .btn-dark,
 .bg-dark,
-.badge-dark,
-.alert-dark {
+.badge-dark {
   background: var(--dark-color);
   color: rgb(192, 186, 186);
 }
 
 .btn-danger,
 .bg-danger,
-.badge-danger,
-.alert-danger {
+.badge-danger {
   background: var(--danger-color);
   color: #fff;
 }
 
 .btn-success,
 .bg-success,
-.badge-success,
-.alert-success {
+.badge-success {
   background: var(--success-color);
   color: #fff;
 }
 
 .btn-white,
 .bg-white,
-.badge-white,
-.alert-white {
+.badge-white {
   background: #fff;
   color: #333;
   border: #ccc solid 1px;
@@ -165,4 +167,28 @@ img {
   border-radius: 1rem;
   color: white;
   font-weight: bold;
+}
+
+#spinner {
+  position: relative;
+  -moz-transform: rotate(320deg);
+  -webkit-transform: rotate(320deg);
+  -o-transform: rotate(320deg);
+  -ms-transform: rotate(320deg);
+  animation: spin1 1s infinite linear;
+  -webkit-animation: spin1 1s infinite linear;
+}
+@keyframes spin1 {
+  0% {
+    -moz-transform: rotate(320deg);
+    -webkit-transform: rotate(320deg);
+    -o-transform: rotate(320deg);
+    -ms-transform: rotate(320deg);
+  }
+  100% {
+    -moz-transform: rotate(680deg);
+    -webkit-transform: rotate(680deg);
+    -o-transform: rotate(680deg);
+    -ms-transform: rotate(680deg);
+  }
 }
