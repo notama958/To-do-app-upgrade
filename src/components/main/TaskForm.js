@@ -8,15 +8,17 @@ import {
   addTask,
   loadTaskList,
 } from '../../actions/dashboard';
-import { getCurrentTime } from '../../actions/alert';
+import { getCurrentTime, setLoading } from '../../actions/alert';
 import { v4 as uuidv4 } from 'uuid';
-
+import Spinner from '../layout/Spinner';
 const TaskForm = ({
   tags,
   toggleBackDrop,
   toggleTaskForm,
   addTask,
   loadTaskList,
+  setLoading,
+  loading,
 }) => {
   const [tagDropDown, setTagDropDown] = useState(false);
   const [chosenTag, setChosenTag] = useState('normal');
@@ -47,6 +49,7 @@ const TaskForm = ({
       chosenTag
     );
     // console.log(taskForm);
+    setLoading();
     addTask(taskForm);
     loadTaskList('all');
   };
@@ -84,17 +87,21 @@ const TaskForm = ({
           />
           {tagDropDown ? (
             <div className="tag-dropdown visible ">
-              {tags.map((el, id) => (
-                <li
-                  key={id}
-                  onClick={(e) => {
-                    setChosenTag(el['name']);
-                    setTagDropDown(!tagDropDown);
-                  }}
-                >
-                  {el['name']}
-                </li>
-              ))}
+              {loading ? (
+                <Spinner />
+              ) : (
+                tags.map((el, id) => (
+                  <li
+                    key={id}
+                    onClick={(e) => {
+                      setChosenTag(el['name']);
+                      setTagDropDown(!tagDropDown);
+                    }}
+                  >
+                    {el['name']}
+                  </li>
+                ))
+              )}
             </div>
           ) : (
             ''
@@ -190,12 +197,14 @@ const TaskForm = ({
 };
 const mapStateToProps = ({ dashboard }) => ({
   tags: dashboard.tags,
+  loading: dashboard.loading,
 });
 TaskForm.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,
   toggleTaskForm: PropTypes.func.isRequired,
   addTask: PropTypes.func.isRequired,
   loadTaskList: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {
@@ -203,4 +212,5 @@ export default connect(mapStateToProps, {
   toggleTaskForm,
   addTask,
   loadTaskList,
+  setLoading,
 })(TaskForm);

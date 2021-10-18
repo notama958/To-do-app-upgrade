@@ -16,6 +16,7 @@ import {
   EDIT_TASK,
   FILTER_BY_DESC,
   REMOVE_KEYWORD,
+  SET_LOADING,
 } from '../actions/types';
 
 // set alert messages
@@ -30,28 +31,32 @@ const initState = {
   tag_form: false,
   filterTasks: [],
   keyword: '',
+  loading: false,
 };
 export default function (state = initState, action) {
   const { type, payload } = action;
   switch (type) {
     case LOAD_TAGS_LIST:
-      return { ...state, tags: [...payload] };
+      return { ...state, tags: [...payload], loading: false };
     case LOAD_TASKS_LIST:
       return {
         ...state,
         tasks: [...payload.data],
         currentTag: payload.tag,
         filterTasks: [...payload.data],
+        loading: false,
       };
     case ADD_TAG:
       return {
         ...state,
         tags: [...state.tags, payload],
+        loading: false,
       };
     case REMOVE_TAG:
       return {
         ...state,
         tags: state.tags.filter((el) => el.id !== payload),
+        loading: false,
       };
     case MODIFY_TAG:
       return {
@@ -62,6 +67,7 @@ export default function (state = initState, action) {
           }
           return el;
         }),
+        loading: false,
       };
     case ADD_TASK:
       if (state.currentTag === payload.tag)
@@ -71,9 +77,11 @@ export default function (state = initState, action) {
           filterTasks: state.tasks.filter((e) =>
             e.desc.includes(state.keyword)
           ),
+          loading: false,
         };
       return {
         ...state,
+        loading: false,
       };
     case MODIFY_TASK:
       let arr = state.tasks.filter((el) => el.id !== payload.id);
@@ -82,6 +90,7 @@ export default function (state = initState, action) {
         ...state,
         tasks: arr,
         filterTasks: arr.filter((e) => e.desc.includes(state.keyword)),
+        loading: false,
       };
 
     case REMOVE_TASK:
@@ -89,6 +98,7 @@ export default function (state = initState, action) {
         ...state,
         tasks: state.tasks.filter((el) => el.id !== payload),
         filterTasks: state.filterTasks.filter((el) => el.id !== payload),
+        loading: false,
       };
 
     case SORT_LIST:
@@ -96,16 +106,18 @@ export default function (state = initState, action) {
         ...state,
         tasks: payload.data,
         filterTasks: payload.data.filter((e) => e.desc.includes(state.keyword)),
+        loading: false,
       };
     case FILTER_BY_DESC:
       return {
         ...state,
         keyword: payload,
         filterTasks: state.tasks.filter((e) => e.desc.includes(payload)),
+        loading: false,
       };
 
     case EDIT_TASK:
-      return { ...state, editTask: payload };
+      return { ...state, editTask: payload, loading: false };
 
     case TOGGLE_BACKDROP:
       return { ...state, backdrop: !state.backdrop };
@@ -115,6 +127,8 @@ export default function (state = initState, action) {
       return { ...state, edit_form: !state.edit_form };
     case TOGGLE_TAG_FORM:
       return { ...state, tag_form: !state.tag_form };
+    case SET_LOADING:
+      return { ...state, loading: payload };
     case SERVER_ERROR:
     default:
       return { ...state };

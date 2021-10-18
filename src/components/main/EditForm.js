@@ -1,21 +1,23 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import TimePicker from 'react-time-picker/dist/entry.nostyle';
 import { connect } from 'react-redux';
 import {
   toggleBackDrop,
   toggleEditTaskForm,
   modifyTask,
 } from '../../actions/dashboard';
-import { getCurrentTime } from '../../actions/alert';
+import { getCurrentTime, setLoading } from '../../actions/alert';
 import { form } from '../layout/form';
+import Spinner from '../layout/Spinner';
 
 const EditForm = ({
   editTask: { id, desc, tag, created, alarm, status },
   tags,
   toggleBackDrop,
   toggleEditTaskForm,
+  setLoading,
   modifyTask,
+  loading,
 }) => {
   const [done, setDone] = useState(status === 'checked' ? true : false);
   const [tagDropDown, setTagDropDown] = useState(false);
@@ -39,6 +41,7 @@ const EditForm = ({
       : null;
     taskForm.tag = chosenTag;
     taskForm.created = new Date();
+    setLoading();
     modifyTask(id, taskForm);
   };
   return (
@@ -75,17 +78,21 @@ const EditForm = ({
           />
           {tagDropDown ? (
             <div className="tag-dropdown visible ">
-              {tags.map((el, id) => (
-                <li
-                  key={id}
-                  onClick={(e) => {
-                    setChosenTag(el['name']);
-                    setTagDropDown(!tagDropDown);
-                  }}
-                >
-                  {el['name']}
-                </li>
-              ))}
+              {loading ? (
+                <Spinner />
+              ) : (
+                tags.map((el, id) => (
+                  <li
+                    key={id}
+                    onClick={(e) => {
+                      setChosenTag(el['name']);
+                      setTagDropDown(!tagDropDown);
+                    }}
+                  >
+                    {el['name']}
+                  </li>
+                ))
+              )}
             </div>
           ) : (
             ''
@@ -181,14 +188,17 @@ EditForm.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,
   toggleEditTaskForm: PropTypes.func.isRequired,
   modifyTask: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   tags: dashboard.tags,
   editTask: dashboard.editTask,
+  loading: dashboard.loading,
 });
 
 export default connect(mapStateToProps, {
   toggleBackDrop,
   toggleEditTaskForm,
   modifyTask,
+  setLoading,
 })(EditForm);
