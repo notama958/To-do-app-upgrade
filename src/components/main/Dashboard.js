@@ -12,10 +12,11 @@ import {
   toggleBackDrop,
   toggleTaskForm,
   toggleTagForm,
-  delTask,
   sortByTime,
   filterByDesc,
   addTask,
+  delTag,
+  delTask,
 } from '../../actions/dashboard';
 import Task from './Task';
 import Tag from './Tag';
@@ -24,6 +25,7 @@ import TagForm from './TagForm';
 import EditForm from './EditForm';
 import Spinner from '../layout/Spinner';
 import Alert from '../layout/Alert';
+import DelForm from './DelForm';
 const linkStyle = {
   padding: '0',
   margin: '0',
@@ -53,6 +55,10 @@ const Dashboard = ({
   sortByTime,
   filterByDesc,
   setLoading,
+  del_form,
+  delItem,
+  delTag,
+  delTask,
 }) => {
   const [enterBar, setEnterBar] = useState('');
   const [greeting, updateGreeting] = useState(Greeting());
@@ -136,6 +142,7 @@ const Dashboard = ({
             onClick={(e) => {
               setLoading();
               loadTaskList('all');
+              loadTagList();
             }}
           >
             show all
@@ -227,6 +234,16 @@ const Dashboard = ({
       {tag_form ? <TagForm /> : ''}
       {task_form ? <TaskForm /> : ''}
       {edit_form ? <EditForm /> : ''}
+      {delItem !== null && delItem.type === 'task' && del_form ? (
+        <DelForm delFunc={(e) => delTask(e)} type="task" />
+      ) : (
+        ''
+      )}
+      {delItem !== null && delItem.type === 'tag' && del_form ? (
+        <DelForm delFunc={(e) => delTag(e)} type="tag" />
+      ) : (
+        ''
+      )}
     </section>
   );
 };
@@ -236,11 +253,12 @@ Dashboard.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,
   toggleTaskForm: PropTypes.func.isRequired,
   toggleTagForm: PropTypes.func.isRequired,
-  delTask: PropTypes.func.isRequired,
   sortByTime: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
   addTask: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
+  delTask: PropTypes.func.isRequired,
+  delTag: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   local_time: dashboard.local_time,
@@ -253,6 +271,8 @@ const mapStateToProps = ({ dashboard }) => ({
   currentTag: dashboard.currentTag,
   edit_form: dashboard.edit_form,
   loading: dashboard.loading,
+  del_form: dashboard.del_form,
+  delItem: dashboard.delItem,
 });
 export default connect(mapStateToProps, {
   getCurrentTime,
@@ -262,6 +282,7 @@ export default connect(mapStateToProps, {
   toggleTaskForm,
   toggleTagForm,
   delTask,
+  delTag,
   sortByTime,
   filterByDesc,
   addTask,

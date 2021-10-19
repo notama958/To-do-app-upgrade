@@ -20,6 +20,7 @@ import {
   TOGGLE_EDIT_TASK_FORM,
   EDIT_TASK,
   REMOVE_KEYWORD,
+  TOGGLE_DEL_FORM,
 } from './types';
 /**
  * GET: /all
@@ -77,6 +78,7 @@ export const editTag = (id, tagData) => async (dispatch) => {
       type: MODIFY_TAG,
       payload: res.data,
     });
+    dispatch(setAlert('TAG MODIFED', 'success'));
   } catch (err) {
     dispatch(setAlert('CANNOT MODIFY TAG', 'danger'));
     dispatch({
@@ -96,6 +98,7 @@ export const addTag = (tag) => async (dispatch) => {
       type: ADD_TAG,
       payload: res.data,
     });
+    dispatch(setAlert('TAG ADDED', 'success'));
   } catch (err) {
     dispatch(setAlert('CANNOT ADD TAG', 'danger'));
     dispatch({
@@ -112,9 +115,10 @@ export const delTag = (id) => async (dispatch) => {
   try {
     const res = await axios.delete(`tags/${id}`);
     dispatch({
-      type: REMOVE_TASK,
+      type: REMOVE_TAG,
       payload: id,
     });
+    dispatch(setAlert('TAG REMOVED', 'success'));
   } catch (err) {
     dispatch(setAlert('CANNOT DELETE TAG', 'danger'));
     dispatch({
@@ -258,8 +262,9 @@ export const toggleTagForm = () => (dispatch) => {
     type: TOGGLE_TAG_FORM,
   });
 };
-// export const delKeyword = () => (dispatch) => {
-//   dispatch({
-//     type: REMOVE_KEYWORD,
-//   });
-// };
+export const toggleDelForm = (status, delItem) => (dispatch) => {
+  dispatch({
+    type: TOGGLE_DEL_FORM,
+    payload: { status: status, delItem: delItem },
+  });
+};

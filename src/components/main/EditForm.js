@@ -119,7 +119,7 @@ const EditForm = ({
         <div className="reminder-visible">
           <input
             type="date"
-            min={date}
+            min={getCurrentTime('date', null)}
             value={date}
             className="calendar"
             onChange={(e) => setDate(e.target.value)}

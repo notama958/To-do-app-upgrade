@@ -17,6 +17,7 @@ import {
   FILTER_BY_DESC,
   REMOVE_KEYWORD,
   SET_LOADING,
+  TOGGLE_DEL_FORM,
 } from '../actions/types';
 
 // set alert messages
@@ -32,6 +33,8 @@ const initState = {
   filterTasks: [],
   keyword: '',
   loading: false,
+  del_form: false,
+  delItem: null,
 };
 export default function (state = initState, action) {
   const { type, payload } = action;
@@ -127,6 +130,12 @@ export default function (state = initState, action) {
       return { ...state, edit_form: !state.edit_form };
     case TOGGLE_TAG_FORM:
       return { ...state, tag_form: !state.tag_form };
+    case TOGGLE_DEL_FORM:
+      return {
+        ...state,
+        del_form: payload.status,
+        delItem: payload.delItem,
+      };
     case SET_LOADING:
       return { ...state, loading: payload };
     case SERVER_ERROR:

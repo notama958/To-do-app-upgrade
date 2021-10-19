@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   loadTaskList,
@@ -7,51 +7,56 @@ import {
   chosenTag,
   editTag,
   filterByDesc,
+  toggleDelForm,
+  toggleBackDrop,
 } from '../../actions/dashboard';
 import { connect } from 'react-redux';
 
 const Tag = ({
-  tag: { name, id },
+  tag,
   loadTaskList,
   delTag,
+  toggleDelForm,
+  toggleBackDrop,
   loadTagList,
-  chosenTag,
-  editTag,
-  filterByDesc,
 }) => {
   // const delTagHandler = async (name, id) => {
   //   let taskFilteredByTag = await chosenTag(id);
   //   console.log(taskFilteredByTag);
   // };
   return (
-    <li
-      onClick={(e) => {
-        loadTaskList(name);
-      }}
-    >
-      <p>{name}</p>
-      <div>
-        {name !== 'priority' && name !== 'normal' && name !== 'important' ? (
-          <button
-            onClick={(e) => {
-              // console.log(id);
-              delTag(id);
-              loadTagList();
-              // delTagHandler(name, id);
-            }}
-          >
-            x
-          </button>
-        ) : (
-          ''
-        )}{' '}
-        {name !== 'priority' && name !== 'normal' && name !== 'important' ? (
-          <i className="fas fa-edit"></i>
-        ) : (
-          ''
-        )}
-      </div>
-    </li>
+    <Fragment>
+      <li
+        onClick={(e) => {
+          loadTaskList(tag.name);
+        }}
+      >
+        <p>{tag.name}</p>
+        <div>
+          {tag.name !== 'priority' &&
+          tag.name !== 'normal' &&
+          tag.name !== 'important' ? (
+            <button
+              onClick={(e) => {
+                toggleBackDrop();
+                toggleDelForm(true, { type: 'tag', item: tag });
+              }}
+            >
+              x
+            </button>
+          ) : (
+            ''
+          )}{' '}
+          {tag.name !== 'priority' &&
+          tag.name !== 'normal' &&
+          tag.name !== 'important' ? (
+            <i className="fas fa-edit"></i>
+          ) : (
+            ''
+          )}
+        </div>
+      </li>
+    </Fragment>
   );
 };
 
@@ -62,13 +67,20 @@ Tag.propTypes = {
   chosenTag: PropTypes.func.isRequired,
   editTag: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
+  toggleDelForm: PropTypes.func.isRequired,
+  toggleBackDrop: PropTypes.func.isRequired,
 };
-
-export default connect(null, {
+const mapStateToProps = ({ dashboard }) => ({
+  del_form: dashboard.del_form,
+  delItem: dashboard.delItem,
+});
+export default connect(mapStateToProps, {
   loadTaskList,
   delTag,
   editTag,
   loadTagList,
   chosenTag,
   filterByDesc,
+  toggleDelForm,
+  toggleBackDrop,
 })(Tag);
