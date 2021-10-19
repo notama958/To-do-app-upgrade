@@ -301,18 +301,47 @@
   flex-direction: row;
   flex-flow: row wrap;
 }
-
 .task-item p {
   /* border: 1px solid black; */
-  flex: 1 70%;
   order: 1;
   /* width: 100%; */
   word-wrap: break-word;
   line-height: 1.2;
   width: 70%;
 }
-.task-item b {
-  font-weight: bold;
+.due {
+  background-image: linear-gradient(to top left, #9fa0ff, #757bc8);
+  color: whitesmoke;
+}
+.due-reminder {
+  /* border: 1px solid black; */
+
+  animation: flicker 1.5s infinite alternate;
+  color: #fff;
+  padding-bottom: 5px;
+}
+/* Flickering animation */
+@keyframes flicker {
+  0%,
+  18%,
+  22%,
+  25%,
+  53%,
+  57%,
+  100% {
+    text-shadow: 0 0 4px #fff, 0 0 10px #fff, 0 0 20px #fad2e1, 0 0 10px #fad2e1;
+  }
+
+  20%,
+  24%,
+  55% {
+    text-shadow: none;
+  }
+}
+
+.task-item small {
+  font-style: normal;
+  order: 2;
 }
 .task-item div {
   /* border: 1px solid black; */
@@ -324,6 +353,9 @@
   align-self: baseline;
   justify-content: space-evenly;
   max-width: 30%;
+}
+.task-item p {
+  padding: auto;
 }
 .task-item button {
   padding: 5px;
@@ -337,7 +369,8 @@
   flex: 1 100%;
   order: 3;
   font-style: italic;
-  padding-left: 5px;
+  padding-left: 3px;
+  padding-top: 5px;
 }
 .task-item.checked {
   background-color: #ccc;
