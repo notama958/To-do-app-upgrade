@@ -5,10 +5,11 @@ import {
   delTag,
   loadTagList,
   chosenTag,
-  editTag,
   filterByDesc,
   toggleDelForm,
   toggleBackDrop,
+  toggleTagForm,
+  toggleEditTagForm,
 } from '../../actions/dashboard';
 import { connect } from 'react-redux';
 
@@ -18,12 +19,15 @@ const Tag = ({
   delTag,
   toggleDelForm,
   toggleBackDrop,
+  toggleTagForm,
+  toggleEditTagForm,
   loadTagList,
 }) => {
   // const delTagHandler = async (name, id) => {
   //   let taskFilteredByTag = await chosenTag(id);
   //   console.log(taskFilteredByTag);
   // };
+
   return (
     <Fragment>
       <li
@@ -50,7 +54,15 @@ const Tag = ({
           {tag.name !== 'priority' &&
           tag.name !== 'normal' &&
           tag.name !== 'important' ? (
-            <i className="fas fa-edit"></i>
+            <button>
+              <i
+                className="fas fa-edit"
+                onClick={(e) => {
+                  toggleBackDrop();
+                  toggleEditTagForm(tag);
+                }}
+              ></i>
+            </button>
           ) : (
             ''
           )}
@@ -65,10 +77,11 @@ Tag.propTypes = {
   delTag: PropTypes.func.isRequired,
   loadTagList: PropTypes.func.isRequired,
   chosenTag: PropTypes.func.isRequired,
-  editTag: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
   toggleDelForm: PropTypes.func.isRequired,
   toggleBackDrop: PropTypes.func.isRequired,
+  toggleTagForm: PropTypes.func.isRequired,
+  toggleEditTagForm: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   del_form: dashboard.del_form,
@@ -77,10 +90,11 @@ const mapStateToProps = ({ dashboard }) => ({
 export default connect(mapStateToProps, {
   loadTaskList,
   delTag,
-  editTag,
   loadTagList,
   chosenTag,
   filterByDesc,
   toggleDelForm,
   toggleBackDrop,
+  toggleTagForm,
+  toggleEditTagForm,
 })(Tag);

@@ -40,7 +40,7 @@ const EditForm = ({
       ? new Date(date + ' ' + hour + ':' + minute)
       : null;
     taskForm.tag = chosenTag;
-    taskForm.created = new Date();
+    delete taskForm['created'];
     setLoading();
     modifyTask(id, taskForm);
   };

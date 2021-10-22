@@ -26,6 +26,7 @@ import EditForm from './EditForm';
 import Spinner from '../layout/Spinner';
 import Alert from '../layout/Alert';
 import DelForm from './DelForm';
+import EditTagForm from './EditTagForm';
 const linkStyle = {
   padding: '0',
   margin: '0',
@@ -44,6 +45,8 @@ const Dashboard = ({
   backdrop,
   task_form,
   tag_form,
+  editTag,
+  edit_tag_form,
   edit_form,
   currentTag,
   loadTaskList,
@@ -232,6 +235,7 @@ const Dashboard = ({
       {backdrop ? <div className="backdrop visible "></div> : ''}
       {/* {tag_form ? <TagForm /> : ''} */}
       {tag_form ? <TagForm /> : ''}
+      {edit_tag_form ? <EditTagForm /> : ''}
       {task_form ? <TaskForm /> : ''}
       {edit_form ? <EditForm /> : ''}
       {delItem !== null && delItem.type === 'task' && del_form ? (
@@ -273,6 +277,8 @@ const mapStateToProps = ({ dashboard }) => ({
   loading: dashboard.loading,
   del_form: dashboard.del_form,
   delItem: dashboard.delItem,
+  edit_tag_form: dashboard.edit_tag_form,
+  editTag: dashboard.editTag,
 });
 export default connect(mapStateToProps, {
   getCurrentTime,
