@@ -18,6 +18,7 @@ import {
   REMOVE_KEYWORD,
   SET_LOADING,
   TOGGLE_DEL_FORM,
+  TOGGLE_EDIT_TAG_FORM,
 } from '../actions/types';
 
 // set alert messages
@@ -25,10 +26,12 @@ const initState = {
   tasks: [],
   currentTag: 'all',
   editTask: null,
+  editTag: null,
   tags: [],
   backdrop: false,
   task_form: false,
   edit_form: false,
+  edit_tag_form: false,
   tag_form: false,
   filterTasks: [],
   keyword: '',
@@ -62,14 +65,16 @@ export default function (state = initState, action) {
         loading: false,
       };
     case MODIFY_TAG:
+      console.log(state.tags);
       return {
         ...state,
-        tags: state.tags.maps((el) => {
+        tags: state.tags.map((el) => {
           if (el.id === payload.id) {
             return payload;
           }
           return el;
         }),
+
         loading: false,
       };
     case ADD_TASK:
@@ -89,10 +94,14 @@ export default function (state = initState, action) {
     case MODIFY_TASK:
       let arr = state.tasks.filter((el) => el.id !== payload.id);
       arr.push(payload);
+      let filterByTag = arr.filter((e) => {
+        if (state.currentTag === 'all') return e;
+        if (state.currentTag === e.tag) return e;
+      });
       return {
         ...state,
         tasks: arr,
-        filterTasks: arr.filter((e) => e.desc.includes(state.keyword)),
+        filterTasks: filterByTag.filter((e) => e.desc.includes(state.keyword)),
         loading: false,
       };
 
@@ -130,6 +139,12 @@ export default function (state = initState, action) {
       return { ...state, edit_form: !state.edit_form };
     case TOGGLE_TAG_FORM:
       return { ...state, tag_form: !state.tag_form };
+    case TOGGLE_EDIT_TAG_FORM:
+      return {
+        ...state,
+        editTag: payload,
+        edit_tag_form: !state.edit_tag_form,
+      };
     case TOGGLE_DEL_FORM:
       return {
         ...state,

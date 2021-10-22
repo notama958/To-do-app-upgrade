@@ -16,6 +16,7 @@ const DelForm = ({
   type,
   setLoading,
   delFunc,
+  tasks,
 }) => {
   const [isTask, setIsTask] = useState(type === 'task' ? true : false);
   const [isTag, setIsTag] = useState(type === 'tag' ? true : false);
@@ -57,7 +58,9 @@ const DelForm = ({
               height: '50px',
             }}
           >
-            {delItem.item.name}
+            Delete this <small>{delItem.item.name}</small> means{' '}
+            {tasks.filter((e) => e.tag === delItem.item.name).length} (tasks)
+            will be changed to normal
           </p>
         ) : (
           ''
@@ -77,7 +80,7 @@ const DelForm = ({
           className="btn btn-danger"
           onClick={(e) => {
             setLoading();
-            delFunc(id);
+            delFunc(delItem.item);
             toggleDelForm(false, null);
             toggleBackDrop();
             loadTagList();
@@ -100,6 +103,7 @@ const mapStateToProps = ({ dashboard }) => ({
   loading: dashboard.loading,
   del_form: dashboard.del_form,
   delItem: dashboard.delItem,
+  tasks: dashboard.tasks,
 });
 export default connect(mapStateToProps, {
   toggleDelForm,
