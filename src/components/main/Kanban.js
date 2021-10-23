@@ -22,9 +22,10 @@ const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? 'grey' : 'whitesmoke',
   padding: '5px',
   width: '100%',
-  height: '100%',
   margin: 'auto',
   position: 'relative',
+  height: '300px',
+  overflowY: 'scroll',
 });
 // reorder within droppable container
 const reorder = (list, startIndex, endIndex) => {

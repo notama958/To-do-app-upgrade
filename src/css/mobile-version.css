@@ -278,4 +278,25 @@
   .filter input {
     font-size: 10px;
   }
+
+  .reminder-visible {
+    flex: 1 100%;
+    color: black;
+    padding: 3px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    justify-content: space-around;
+    /* background: red; */
+  }
+  .hour-minute {
+    padding: 10px;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-around;
+  }
+  .hour-minute input {
+    width: 50px;
+  }
 }
