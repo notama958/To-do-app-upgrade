@@ -9,7 +9,7 @@ import {
 import { getCurrentTime, setLoading } from '../../actions/alert';
 import { form } from '../layout/form';
 import Spinner from '../layout/Spinner';
-
+import DatePicker from 'react-date-picker';
 const EditForm = ({
   editTask: { id, desc, tag, created, alarm, status },
   tags,
@@ -23,7 +23,8 @@ const EditForm = ({
   const [tagDropDown, setTagDropDown] = useState(false);
   const [chosenTag, setChosenTag] = useState(tag);
   const [reminder, setReminder] = useState(alarm !== null ? true : false);
-  const [date, setDate] = useState(getCurrentTime('date', alarm));
+  // const [date, setDate] = useState(getCurrentTime('date', alarm));
+  const [date, setDate] = useState(new Date(alarm));
   const [minute, setMinute] = useState(
     alarm !== null ? new Date(alarm).getMinutes() : '00'
   );
@@ -37,7 +38,7 @@ const EditForm = ({
     taskForm.desc = content;
     taskForm.status = done ? 'checked' : 'unchecked';
     taskForm.alarm = reminder
-      ? new Date(date + ' ' + hour + ':' + minute)
+      ? new Date(getCurrentTime('date', date) + ' ' + hour + ':' + minute)
       : null;
     taskForm.tag = chosenTag;
     delete taskForm['created'];
@@ -117,19 +118,20 @@ const EditForm = ({
       </div>
       {reminder ? (
         <div className="reminder-visible">
-          <input
+          {/* <input
             type="date"
             min={getCurrentTime('date', null)}
             value={date}
             className="calendar"
             onChange={(e) => setDate(e.target.value)}
-          />
+          /> */}
+          <DatePicker value={date} onChange={setDate} minDate={new Date()} />
           <div className="hour-minute">
             <input
               type="number"
               min={0}
               max={23}
-              placeholder="hour"
+              placeholder="hh"
               value={hour}
               onChange={(e) =>
                 e.target.value < 24 &&
@@ -144,7 +146,7 @@ const EditForm = ({
               type="number"
               min={0}
               max={59}
-              placeholder="minute"
+              placeholder="mm"
               value={minute}
               onChange={(e) =>
                 e.target.value < 60 &&

@@ -51,10 +51,7 @@ export const loadTaskList = (tag) => async (dispatch) => {
 export const loadTagList = () => async (dispatch) => {
   try {
     const res = await axios.get('tags');
-    // const tagSet = new Set();
-    // res.data.forEach((element) => {
-    //   tagSet.add(element.tag);
-    // });
+
     dispatch({
       type: LOAD_TAGS_LIST,
       payload: res.data,

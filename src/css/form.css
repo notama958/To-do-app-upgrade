@@ -119,7 +119,6 @@ label {
 
 .reminder-visible {
   flex: 1 100%;
-  /* border: 1px solid black; */
   color: black;
   padding: 3px;
   cursor: pointer;
@@ -131,18 +130,16 @@ label {
   /* background: red; */
 }
 
-.calendar {
-  flex: 1 20%;
-  padding-left: 10px;
-  border: thin solid grey;
-  border-radius: 2em;
-}
 .hour-minute {
-  flex: 1 20%;
+  flex: 1 50%;
   padding-left: 10px;
+
   flex-direction: row;
   display: flex;
   justify-content: space-around;
+}
+.hour-minute input {
+  width: 50px;
 }
 .modal__content .header {
   display: block;

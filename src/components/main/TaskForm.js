@@ -11,6 +11,8 @@ import {
 import { getCurrentTime, setLoading } from '../../actions/alert';
 import { v4 as uuidv4 } from 'uuid';
 import Spinner from '../layout/Spinner';
+import DatePicker from 'react-date-picker';
+// import DatePicker from 'react-date-picker/dist/entry.nostyle';
 const TaskForm = ({
   tags,
   toggleBackDrop,
@@ -22,7 +24,7 @@ const TaskForm = ({
 }) => {
   const [tagDropDown, setTagDropDown] = useState(false);
   const [chosenTag, setChosenTag] = useState('normal');
-  const [date, setDate] = useState(getCurrentTime('date', null));
+  const [date, setDate] = useState(new Date());
   const [minute, setMinute] = useState(
     getCurrentTime('time', null).split(':')[1]
   );
@@ -45,7 +47,9 @@ const TaskForm = ({
     setTagForm(
       desc,
       done ? 'checked' : 'unchecked',
-      alarm ? new Date(date + ' ' + hour + ':' + minute) : null,
+      alarm
+        ? new Date(getCurrentTime('date', date) + ' ' + hour + ':' + minute)
+        : null,
       chosenTag
     );
     // console.log(taskForm);
@@ -127,19 +131,18 @@ const TaskForm = ({
       </div>
       {alarm ? (
         <div className="reminder-visible">
-          <input
-            type="date"
-            min={getCurrentTime('date', null)}
+          <DatePicker
             value={date}
+            onChange={setDate}
+            minDate={new Date()}
             className="calendar"
-            onChange={(e) => setDate(e.target.value)}
           />
           <div className="hour-minute">
             <input
               type="number"
               min={0}
               max={23}
-              placeholder="hour"
+              placeholder="hh"
               value={hour}
               onChange={(e) =>
                 e.target.value < 24 &&
@@ -154,7 +157,7 @@ const TaskForm = ({
               type="number"
               min={0}
               max={59}
-              placeholder="minute"
+              placeholder="mm"
               value={minute}
               onChange={(e) =>
                 e.target.value < 60 &&
