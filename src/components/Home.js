@@ -1,9 +1,8 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import Navbar from './layout/Navbar';
 import { Link } from 'react-router-dom';
-import store from '../store';
-import { connect, Provider } from 'react-redux';
-
+import { connect } from 'react-redux';
+import Guide from './layout/Guide';
 const Home = ({ manual }) => {
   return (
     <Fragment>
@@ -23,7 +22,7 @@ const Home = ({ manual }) => {
         {manual ? (
           <div className={`dark-overlay readme `}>
             <div className="landing-inner">
-              <p>Instruction for usage updated later on</p>
+              <Guide />
             </div>
           </div>
         ) : (

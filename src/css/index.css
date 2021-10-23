@@ -76,3 +76,59 @@
 .readme.hidden {
   visibility: hidden;
 }
+.guide {
+  color: white;
+  height: 700px;
+  width: 100%;
+  padding: auto;
+  text-align: center;
+  align-items: center;
+  z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow-y: scroll;
+  word-wrap: break-word;
+}
+.tip {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-items: center;
+  width: 100%;
+  margin: 10px;
+}
+.tip-child {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+.tip p {
+  font-size: medium;
+  font-weight: normal;
+  margin: 5px;
+  max-width: 300px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  text-align: left;
+}
+.tip .x1 {
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+}
+.tip .x2 {
+  width: 200px;
+  height: 200px;
+  margin: 5px;
+}
+.tip .x1-2 {
+  width: 200px;
+  height: 100px;
+  margin: 5px;
+}
+.tip .xX {
+  width: 50%;
+  height: 300px;
+  margin: 5px;
+}
