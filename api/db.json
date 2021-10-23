@@ -12,7 +12,7 @@
       "id": "52b7ded7-2c6e-4eff-acfb-f6b5812bc17a",
       "desc": "do laundry",
       "created": "2021-10-22T19:16:32.676Z",
-      "status": "unchecked",
+      "status": "checked",
       "alarm": "2021-10-22T21:00:00.000Z",
       "tag": "priority"
     },
@@ -44,7 +44,7 @@
       "id": "cb35a97f-aec8-4740-893d-6e86cc6da62a",
       "desc": "meomay",
       "created": "2021-10-23T18:09:16.426Z",
-      "status": "checked",
+      "status": "unchecked",
       "alarm": "2021-10-26T12:45:00.000Z",
       "tag": "hobby"
     }

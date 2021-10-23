@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import Navbar from './Navbar';
+import { connect } from 'react-redux';
 // import Spinner from '../layout/Spinner';
-
-const NotFound = (props) => {
+import Guide from './Guide';
+const NotFound = ({ manual }) => {
   return (
     <Fragment>
       <Navbar />
@@ -13,9 +14,19 @@ const NotFound = (props) => {
           </h1>
         </div>
       </section>
-      {/* <Spinner /> */}
+      {manual ? (
+        <div className={`dark-overlay readme `}>
+          <div className="landing-inner">
+            <Guide />
+          </div>
+        </div>
+      ) : (
+        console.log(manual)
+      )}
     </Fragment>
   );
 };
-
-export default NotFound;
+const mapStateToProps = ({ home }) => ({
+  manual: home.manual,
+});
+export default connect(mapStateToProps)(NotFound);
