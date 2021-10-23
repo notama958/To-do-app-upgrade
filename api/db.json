@@ -21,7 +21,7 @@
       "desc": "read books",
       "created": "2021-10-22T19:17:06.741Z",
       "status": "unchecked",
-      "alarm": "2021-10-24T19:16:00.000Z",
+      "alarm": "2021-10-25T19:16:00.000Z",
       "tag": "important"
     },
     {
@@ -31,14 +31,6 @@
       "status": "checked",
       "alarm": "2021-10-23T19:30:00.000Z",
       "tag": "meomeo"
-    },
-    {
-      "id": "bce1acf2-f071-4539-9ffe-198c4f679cc4",
-      "desc": "I tested with dummy test",
-      "created": "2021-10-22T19:18:38.267Z",
-      "status": "unchecked",
-      "alarm": "2021-10-30T21:00:00.000Z",
-      "tag": "normal"
     },
     {
       "id": "2944a0b9-ee3e-4d13-b245-0024f477a23b",
@@ -52,7 +44,7 @@
       "id": "cb35a97f-aec8-4740-893d-6e86cc6da62a",
       "desc": "meomay",
       "created": "2021-10-23T18:09:16.426Z",
-      "status": "unchecked",
+      "status": "checked",
       "alarm": "2021-10-26T12:45:00.000Z",
       "tag": "hobby"
     }
