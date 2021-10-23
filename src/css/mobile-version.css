@@ -269,16 +269,12 @@
   .on-going,
   .completed {
     width: auto;
-    height: 200px;
+    /* height: 200px; */
     border: 1px solid black;
     text-align: center;
     margin: 1rem;
-    padding: 10px;
   }
-  .completed {
-    flex: none;
-    flex-basis: auto;
-  }
+
   .filter input {
     font-size: 10px;
   }
