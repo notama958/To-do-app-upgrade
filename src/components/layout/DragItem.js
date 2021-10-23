@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
 import { loadTaskList, loadTagList } from '../../actions/dashboard';
+import Moment from 'react-moment';
 
 const getItemStyle = (isDragging, draggableStyle, droppableId) => ({
   // some basic styles to make the items look a bit nicer
@@ -45,6 +46,12 @@ const DragItem = ({ item, index, droppableId, loadTaskList, loadTagList }) => {
           )}
         >
           {item.desc} <small>- {item.tag}</small>
+          <p>
+            <i>
+              created on{' '}
+              <Moment format="DD/MM/YYYY hh:mm A">{item.created}</Moment>
+            </i>
+          </p>
         </div>
       )}
     </Draggable>
