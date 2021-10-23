@@ -79,7 +79,7 @@ const Dashboard = ({
     filterByDesc('');
     const interval = setInterval(() => Greeting(), 18000000);
     return () => clearInterval(interval);
-  }, []);
+  }, [loadTaskList, loadTagList, filterByDesc]);
   const quickAdd = () => {
     if (enterBar !== '') {
       let createdForm = form();

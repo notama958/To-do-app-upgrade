@@ -4,7 +4,7 @@
       "id": "e064a006-ef8f-4050-a1f7-036bec83751a",
       "desc": "mangaholic",
       "created": "2021-10-22T19:05:16.608Z",
-      "status": "unchecked",
+      "status": "checked",
       "alarm": "2021-10-28T21:00:00.000Z",
       "tag": "hobby"
     },
@@ -28,7 +28,7 @@
       "id": "b9b00d82-70e0-441d-8edf-ebe0b150371c",
       "desc": "read manga",
       "created": "2021-10-22T19:17:37.979Z",
-      "status": "unchecked",
+      "status": "checked",
       "alarm": "2021-10-23T19:30:00.000Z",
       "tag": "hobby"
     },
