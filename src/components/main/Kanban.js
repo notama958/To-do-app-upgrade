@@ -5,9 +5,9 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Navbar from '../layout/Navbar';
 import DragItem from '../layout/DragItem';
 import { loadTaskList, loadTagList, modifyTask } from '../../actions/dashboard';
-import { setLoading } from '../../actions/alert';
+import { setAlert, setLoading } from '../../actions/alert';
 import Spinner from '../layout/Spinner';
-
+import axios from 'axios';
 // get onGoing list and Finished list
 const getData = (list) => {
   // console.log(list);
@@ -59,17 +59,29 @@ const move = (
   return result;
 };
 
-const Kanban = ({ tasks, loadTaskList, modifyTask, setLoading, loading }) => {
-  const [list, setList] = useState(tasks);
-  let [onGoing, setOnGoing] = useState([]);
-  let [finished, setFinished] = useState([]);
+const Kanban = ({ modifyTask }) => {
+  const [list, setList] = useState([]);
+  const [onGoing, setOnGoing] = useState([]);
+  const [finished, setFinished] = useState([]);
+  const [isLoading, setIsloading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  // setLoading();
   useEffect(() => {
-    setLoading();
-    console.log('finish this first');
-    // some bugs here
-    setList(tasks);
-    setOnGoing(getData(tasks).onGoing);
-    setFinished(getData(tasks).finished);
+    const res = async () => {
+      setIsError(false);
+      setIsloading(true);
+      try {
+        const result = await axios('/list');
+        setList(result.data);
+        setOnGoing(getData(result.data).onGoing);
+        setFinished(getData(result.data).finished);
+      } catch (err) {
+        setIsError(true);
+        setAlert('SOMETHING WRONG', 'danger');
+      }
+      setIsloading(false);
+    };
+    res();
   }, []);
   const onDragEnd = (result) => {
     // console.log(result);
@@ -103,7 +115,6 @@ const Kanban = ({ tasks, loadTaskList, modifyTask, setLoading, loading }) => {
           ? setOnGoing(result[key])
           : setFinished(result[key]);
       });
-      // fix this one
     }
   };
   return (
@@ -116,14 +127,14 @@ const Kanban = ({ tasks, loadTaskList, modifyTask, setLoading, loading }) => {
               <label>On-going</label>
             </div>
             <div className="kanban-content">
-              <Droppable droppableId="droppable-1">
+              <Droppable droppableId="droppable-1" key="droppable-1">
                 {(provided, snapshot) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {loading || tasks.length === 0 ? (
+                    {isLoading || list.length === 0 ? (
                       <Spinner />
                     ) : (
                       onGoing.map((item, index) => (
@@ -131,6 +142,7 @@ const Kanban = ({ tasks, loadTaskList, modifyTask, setLoading, loading }) => {
                           item={item}
                           index={index}
                           droppableId="ongoing"
+                          key={index}
                         />
                       ))
                     )}
@@ -146,14 +158,14 @@ const Kanban = ({ tasks, loadTaskList, modifyTask, setLoading, loading }) => {
               <label>Completed</label>
             </div>
             <div className="kanban-content">
-              <Droppable droppableId="droppable-2">
+              <Droppable droppableId="droppable-2" key="droppable-2">
                 {(provided, snapshot) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {loading || tasks.length === 0 ? (
+                    {isLoading || list.length === 0 ? (
                       <Spinner />
                     ) : (
                       finished.map((item, index) => (
@@ -162,6 +174,7 @@ const Kanban = ({ tasks, loadTaskList, modifyTask, setLoading, loading }) => {
                           index={index}
                           droppableId="ongoing"
                           droppableId="finished"
+                          key={index}
                         />
                       ))
                     )}
@@ -177,19 +190,11 @@ const Kanban = ({ tasks, loadTaskList, modifyTask, setLoading, loading }) => {
   );
 };
 Kanban.propTypes = {
-  loadTagList: PropTypes.func.isRequired,
-  loadTaskList: PropTypes.func.isRequired,
   modifyTask: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
-  tasks: dashboard.tasks,
-  filterTasks: dashboard.filterTasks,
   loading: dashboard.loading,
 });
 export default connect(mapStateToProps, {
-  loadTaskList,
-  loadTagList,
   modifyTask,
-  setLoading,
 })(Kanban);
