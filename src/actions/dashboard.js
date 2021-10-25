@@ -285,7 +285,7 @@ export const sortByTime = (order, tag) => async (dispatch) => {
 export const filterByDesc = (pattern) => (dispatch) => {
   dispatch({
     type: FILTER_BY_DESC,
-    payload: pattern,
+    payload: pattern.toLowerCase(),
   });
 };
 export const toggleBackDrop = () => (dispatch) => {

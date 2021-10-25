@@ -18,12 +18,14 @@ export const setAlert =
     setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), timeout);
   };
 
-export const setLoading = () => (dispatch) => {
-  dispatch({
-    type: SET_LOADING,
-    payload: true,
-  });
-};
+export const setLoading =
+  (stt = true) =>
+  (dispatch) => {
+    dispatch({
+      type: SET_LOADING,
+      payload: stt,
+    });
+  };
 export const manualToggle = () => (dispatch) => {
   dispatch({
     type: TOGGLE_MANUAL,

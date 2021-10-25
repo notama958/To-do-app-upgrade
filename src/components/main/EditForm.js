@@ -23,8 +23,9 @@ const EditForm = ({
   const [tagDropDown, setTagDropDown] = useState(false);
   const [chosenTag, setChosenTag] = useState(tag);
   const [reminder, setReminder] = useState(alarm !== null ? true : false);
-  // const [date, setDate] = useState(getCurrentTime('date', alarm));
-  const [date, setDate] = useState(new Date(alarm));
+  const [date, setDate] = useState(
+    alarm !== null ? new Date(alarm) : new Date()
+  );
   const [minute, setMinute] = useState(
     alarm !== null ? new Date(alarm).getMinutes() : '00'
   );
@@ -33,6 +34,7 @@ const EditForm = ({
   );
   const [content, setContent] = useState(desc);
   const onSubmit = () => {
+    console.log(date);
     let taskForm = form();
     taskForm.id = id;
     taskForm.desc = content;

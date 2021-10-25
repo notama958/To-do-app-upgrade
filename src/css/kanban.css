@@ -37,7 +37,6 @@
 }
 .kanban-content {
   height: '300px';
-  overflow-y: scroll;
   width: 100%;
   overflow-x: hidden;
 }
