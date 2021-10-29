@@ -8,7 +8,10 @@ import view from '../../img/view.PNG';
 import alarm from '../../img/alarm.PNG';
 import normal from '../../img/normal.PNG';
 import kanban2 from '../../img/kanban-2.PNG';
-
+/**
+ * This child component renders the instruction panel at Home.js
+ *
+ */
 const Guide = () => {
   return (
     <div className="guide">
@@ -24,9 +27,9 @@ const Guide = () => {
           <img src={taskform} className="x2" />
           <p>
             Add form with text field, tag selection and reminder(optional) when
-            finished mark as "Mark as done". Reminder helps user to add deadline
-            to finish the task, first choose the date then choose the time
-            (hh:mm)
+            when you completed the task mark it as "Mark as done". Reminder
+            helps user to add deadline to finish the task, first choose the date
+            then choose the time (hh:mm)
           </p>
         </div>
         <div className="tip-child">
@@ -44,7 +47,7 @@ const Guide = () => {
           Main watcher for tasks, user can filter by description, sort by time
           created, delete/edit individual task. There is a quickly add bar at
           the bottom to add new task instantly. Newly added task are put in the
-          front. Notice!! "all task view", using quickly add bar means task will
+          front. Notice!! at "All" view, using quickly add bar means task will
           have "normal" tag.
         </p>
       </div>

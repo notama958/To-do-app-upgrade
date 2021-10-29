@@ -12,7 +12,11 @@ import { getCurrentTime, setLoading } from '../../actions/alert';
 import { v4 as uuidv4 } from 'uuid';
 import Spinner from '../layout/Spinner';
 import DatePicker from 'react-date-picker';
-// import DatePicker from 'react-date-picker/dist/entry.nostyle';
+/**
+ * This component renders add new task modal for user add
+ * @param {*} store's props and functions to modify db at actions/dashboard
+ * @returns
+ */
 const TaskForm = ({
   tags,
   toggleBackDrop,
@@ -22,18 +26,19 @@ const TaskForm = ({
   setLoading,
   loading,
 }) => {
-  const [tagDropDown, setTagDropDown] = useState(false);
-  const [chosenTag, setChosenTag] = useState('normal');
-  const [date, setDate] = useState(new Date());
+  const [tagDropDown, setTagDropDown] = useState(false); // tag dropdown selection boolean
+  const [chosenTag, setChosenTag] = useState('normal'); // what tag suer choose, default is "normal"
+  const [date, setDate] = useState(new Date()); //reminder default date is current date
   const [minute, setMinute] = useState(
-    getCurrentTime('time', null).split(':')[1]
+    getCurrentTime('time', null).split(':')[1] // get a format of "00"
   );
-  const [hour, setHour] = useState(getCurrentTime('time', null).split(':')[0]);
-  const [done, setDone] = useState(false);
-  const [alarm, setAlarm] = useState(false);
-  const [desc, setDesc] = useState('');
-  let taskForm = form();
-  const setTagForm = (desc, status, alarm, tag) => {
+  const [hour, setHour] = useState(getCurrentTime('time', null).split(':')[0]); // get a format of "00"
+  const [done, setDone] = useState(false); //mark as done boolean
+  const [alarm, setAlarm] = useState(false); // reminder boolean
+  const [desc, setDesc] = useState(''); // hold description from user input
+  let taskForm = form(); // create a blank task form
+  // create task form
+  const setTaskForm = (desc, status, alarm, tag) => {
     taskForm.id = uuidv4();
     taskForm.desc = desc;
     taskForm.created = new Date();
@@ -42,9 +47,13 @@ const TaskForm = ({
     taskForm.tag = tag;
   };
 
+  //submit form
+  // first fill the form
+  // then render spinner
+  // call addTask
+  // reload  all tasks available
   const onSubmit = (e) => {
-    //submit form
-    setTagForm(
+    setTaskForm(
       desc,
       done ? 'checked' : 'unchecked',
       alarm
@@ -52,7 +61,6 @@ const TaskForm = ({
         : null,
       chosenTag
     );
-    // console.log(taskForm);
     setLoading();
     addTask(taskForm);
     loadTaskList('all');
@@ -168,8 +176,6 @@ const TaskForm = ({
               }
             />
           </div>
-
-          {/* <TimePicker onChange={(e) => setTimeValue(e)} value={timeValue} /> */}
         </div>
       ) : (
         ''

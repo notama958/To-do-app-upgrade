@@ -14,7 +14,6 @@ export const REMOVE_TAG = 'REMOVE_TAG';
 export const MODIFY_TAG = 'MODIFY_TAG';
 export const SORT_LIST = 'SORT_LIST';
 export const FILTER_BY_DESC = 'FILTER_BY_DESC';
-// export const REMOVE_KEYWORD = 'REMOVE_KEYWORD';
 
 export const TAG_SELECTED = 'TAG_SELECTED';
 export const EDIT_TASK = 'EDIT_TASK';

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
 import {
   modifyTag,
@@ -8,6 +7,11 @@ import {
   toggleEditTagForm,
 } from '../../actions/dashboard';
 import { setAlert, setLoading } from '../../actions/alert';
+/**
+ * This component renders the Edit Tag form
+ * @param {*} store's props and functions to modify db at actions/dashboard
+ * @returns
+ */
 const TagForm = ({
   modifyTag,
   toggleBackDrop,
@@ -17,14 +21,19 @@ const TagForm = ({
   editTag,
   tasks,
 }) => {
-  const [tag, setTag] = useState(editTag.name);
+  const [tag, setTag] = useState(editTag.name); // hold tag value
+  // submit form
+  // first render spinner
+  // then create a tag object with modified value
+  // call modifyTag
   const onSubmit = () => {
     setLoading();
     if (tag !== '') {
       const tagObj = { id: editTag.id, name: tag };
       modifyTag(editTag.id, tagObj, editTag);
     } else {
-      setAlert('EMPTY TAG NAME', 'danger');
+      setLoading(false); // stop the forever spinner
+      setAlert('EMPTY TAG NAME', 'danger'); // setAlert if sthin wrong
     }
   };
   return (

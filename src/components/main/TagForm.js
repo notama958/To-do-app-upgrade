@@ -4,6 +4,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
 import { addTag, toggleBackDrop, toggleTagForm } from '../../actions/dashboard';
 import { setAlert, setLoading } from '../../actions/alert';
+/**
+ * This component renders tag form for Add new tag function
+ * @param {*} store's props and functions to modify db at actions/dashboard
+ * @returns
+ */
 const TagForm = ({
   tags,
   addTag,
@@ -12,7 +17,11 @@ const TagForm = ({
   setAlert,
   setLoading,
 }) => {
-  const [tag, setTag] = useState('');
+  const [tag, setTag] = useState(''); // hold user input
+  // submit form
+  // first load spinner
+  // create new object
+  // call toggleTagForm to add new tag
   const onSubmit = () => {
     setLoading();
     try {

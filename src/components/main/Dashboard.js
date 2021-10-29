@@ -27,25 +27,25 @@ import Spinner from '../layout/Spinner';
 import Alert from '../layout/Alert';
 import DelForm from './DelForm';
 import EditTagForm from './EditTagForm';
+/**
+ * Styling object for Kanban button
+ */
 const linkStyle = {
   padding: '0',
   margin: '0',
-  // borderRadius: '2rem',
-  // paddingLeft: '1rem',
-  // paddingRight: '1rem',
-  // border: '3px solid white',
-  // textAlign: 'center',
-  // itemAlign: 'center',
 };
+/**
+ * This component is the main activity components
+ * User can add/modify/delete/sort,filter,... their tasks
+ * @params {*} includes store's props and functions from actions/dashboard.js
+ */
 const Dashboard = ({
-  tasks,
   loading,
   filterTasks,
   tags,
   backdrop,
   task_form,
   tag_form,
-  editTag,
   edit_tag_form,
   edit_form,
   currentTag,
@@ -63,23 +63,29 @@ const Dashboard = ({
   delTag,
   delTask,
 }) => {
-  const [enterBar, setEnterBar] = useState('');
-  const [greeting, updateGreeting] = useState(Greeting());
-  const [filterValue, setFilter] = useState('');
+  const [enterBar, setEnterBar] = useState(''); // get the enterBar value
+  const [greeting, updateGreeting] = useState(Greeting()); // check the timing <String>
+  const [filterValue, setFilter] = useState(''); // get the keyword entered
+  // filter by description function after user click filter icon
+  // call setLoading() to render the spinner icons
+  // call filterByDesc(<String>) to filter the tasks contain the "keyword"
   const filterBtn = () => {
-    // console.log(filter);
     setLoading();
     filterByDesc(filterValue);
-    // setFilterTasks(tasks.filter((e) => e.desc.includes(filterValue)));
   };
+
   useEffect(() => {
-    setLoading();
-    loadTaskList(currentTag);
-    loadTagList();
-    filterByDesc('');
+    setLoading(); // render the spinner icons
+    loadTaskList(currentTag); // load the list corresponds to the currentTag it is
+    // the tag could be "all" "normal" " priority" ,..
+    loadTagList(); // load tag list
+    filterByDesc(''); // ensure there is no filter by keyword
     const interval = setInterval(() => Greeting(), 18000000);
-    return () => clearInterval(interval);
+    // gretting user based on time "Morning" "Afternoon" "Evening"
+    return () => clearInterval(interval); // clear the interval
   }, [loadTaskList, loadTagList, filterByDesc]);
+
+  // for the quickly add bar
   const quickAdd = () => {
     if (enterBar !== '') {
       let createdForm = form();
@@ -156,7 +162,6 @@ const Dashboard = ({
             ) : (
               tags.map((el) => <Tag key={el.id} tag={el} />)
             )}
-            {/* {console.log(tags)} */}
           </ul>
         </div>
       </div>
@@ -208,6 +213,7 @@ const Dashboard = ({
             {loading ? (
               <Spinner />
             ) : (
+              // new tag should be added at front in the modal box
               filterTasks
                 .slice(0)
                 .reverse()
@@ -233,7 +239,6 @@ const Dashboard = ({
         </div>
       </div>
       {backdrop ? <div className="backdrop visible "></div> : ''}
-      {/* {tag_form ? <TagForm /> : ''} */}
       {tag_form ? <TagForm /> : ''}
       {edit_tag_form ? <EditTagForm /> : ''}
       {task_form ? <TaskForm /> : ''}
@@ -266,7 +271,6 @@ Dashboard.propTypes = {
 };
 const mapStateToProps = ({ dashboard }) => ({
   local_time: dashboard.local_time,
-  tasks: dashboard.tasks,
   filterTasks: dashboard.filterTasks,
   tags: dashboard.tags,
   backdrop: dashboard.backdrop,

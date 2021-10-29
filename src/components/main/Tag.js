@@ -4,7 +4,6 @@ import {
   loadTaskList,
   delTag,
   loadTagList,
-  chosenTag,
   filterByDesc,
   toggleDelForm,
   toggleBackDrop,
@@ -12,22 +11,18 @@ import {
   toggleEditTagForm,
 } from '../../actions/dashboard';
 import { connect } from 'react-redux';
-
+/**
+ * This child component renders each tag element in the list
+ * @param {*} store's props and functions to modify db at actions/dashboard
+ * @returns
+ */
 const Tag = ({
   tag,
   loadTaskList,
-  delTag,
   toggleDelForm,
   toggleBackDrop,
-  toggleTagForm,
   toggleEditTagForm,
-  loadTagList,
 }) => {
-  // const delTagHandler = async (name, id) => {
-  //   let taskFilteredByTag = await chosenTag(id);
-  //   console.log(taskFilteredByTag);
-  // };
-
   return (
     <Fragment>
       <li
@@ -76,7 +71,6 @@ Tag.propTypes = {
   loadTaskList: PropTypes.func.isRequired,
   delTag: PropTypes.func.isRequired,
   loadTagList: PropTypes.func.isRequired,
-  chosenTag: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
   toggleDelForm: PropTypes.func.isRequired,
   toggleBackDrop: PropTypes.func.isRequired,
@@ -91,7 +85,6 @@ export default connect(mapStateToProps, {
   loadTaskList,
   delTag,
   loadTagList,
-  chosenTag,
   filterByDesc,
   toggleDelForm,
   toggleBackDrop,

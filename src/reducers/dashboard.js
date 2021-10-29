@@ -21,23 +21,22 @@ import {
   TOGGLE_EDIT_TAG_FORM,
 } from '../actions/types';
 
-// set alert messages
 const initState = {
-  tasks: [],
-  currentTag: 'all',
-  editTask: null,
-  editTag: null,
-  tags: [],
-  backdrop: false,
-  task_form: false,
-  edit_form: false,
-  edit_tag_form: false,
-  tag_form: false,
-  filterTasks: [],
-  keyword: '',
-  loading: false,
-  del_form: false,
-  delItem: null,
+  tasks: [], // hold task list
+  currentTag: 'all', // what tag is selected now ?
+  editTask: null, // what task user want to edit?
+  editTag: null, // what tag user want to edit?
+  tags: [], // hold tag list
+  backdrop: false, // back dim screen
+  task_form: false, // task form switcher
+  edit_form: false, // task edit form switcher
+  edit_tag_form: false, // tag edit form switcher
+  tag_form: false, // tag form switcher
+  filterTasks: [], // filtered task with keyword (default keyword="")
+  keyword: '', // keyword for filtering
+  loading: false, // spinner switcher
+  del_form: false, // delete task form switcher
+  delItem: null, // hold deleted task
 };
 export default function (state = initState, action) {
   const { type, payload } = action;
@@ -83,7 +82,7 @@ export default function (state = initState, action) {
           ...state,
           tasks: [...state.tasks, payload],
           filterTasks: state.tasks.filter((e) =>
-            e.desc.includes(state.keyword)
+            e.desc.toLowerCase().includes(state.keyword)
           ),
           loading: false,
         };
@@ -95,13 +94,14 @@ export default function (state = initState, action) {
       let arr = state.tasks.filter((el) => el.id !== payload.id);
       arr.push(payload);
       let filterByTag = arr.filter((e) => {
-        if (state.currentTag === 'all') return e;
-        if (state.currentTag === e.tag) return e;
+        if (state.currentTag === 'all' || state.currentTag === e.tag) return e;
       });
       return {
         ...state,
         tasks: arr,
-        filterTasks: filterByTag.filter((e) => e.desc.includes(state.keyword)),
+        filterTasks: filterByTag.filter((e) =>
+          e.desc.toLowerCase().includes(state.keyword)
+        ),
         loading: false,
       };
 
@@ -117,14 +117,18 @@ export default function (state = initState, action) {
       return {
         ...state,
         tasks: payload.data,
-        filterTasks: payload.data.filter((e) => e.desc.includes(state.keyword)),
+        filterTasks: payload.data.filter((e) =>
+          e.desc.toLowerCase().includes(state.keyword)
+        ),
         loading: false,
       };
     case FILTER_BY_DESC:
       return {
         ...state,
         keyword: payload,
-        filterTasks: state.tasks.filter((e) => e.desc.includes(payload)),
+        filterTasks: state.tasks.filter((e) =>
+          e.desc.toLowerCase().includes(payload)
+        ),
         loading: false,
       };
 

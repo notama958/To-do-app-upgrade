@@ -10,6 +10,11 @@ import { getCurrentTime, setLoading } from '../../actions/alert';
 import { form } from '../layout/form';
 import Spinner from '../layout/Spinner';
 import DatePicker from 'react-date-picker';
+/**
+ * This component renders the Edit Task form
+ * @param {*} store's props and functions to modify db at actions/dashboard
+ * @returns
+ */
 const EditForm = ({
   editTask: { id, desc, tag, created, alarm, status },
   tags,
@@ -19,20 +24,32 @@ const EditForm = ({
   modifyTask,
   loading,
 }) => {
+  // mark as done tickbox
   const [done, setDone] = useState(status === 'checked' ? true : false);
+  // dropdown at tag selection
   const [tagDropDown, setTagDropDown] = useState(false);
+  // hold chosen tag
   const [chosenTag, setChosenTag] = useState(tag);
+  // reminder tickbox
   const [reminder, setReminder] = useState(alarm !== null ? true : false);
+  // hold reminder's date
   const [date, setDate] = useState(
     alarm !== null ? new Date(alarm) : new Date()
   );
+  // hold reminder's minute
   const [minute, setMinute] = useState(
     alarm !== null ? new Date(alarm).getMinutes() : '00'
   );
+  // hold reminder's hour
   const [hour, setHour] = useState(
     alarm !== null ? new Date(alarm).getHours() : '00'
   );
+  // hold description of task
   const [content, setContent] = useState(desc);
+  // submit function
+  // first modify based on user input
+  // then activate Spinner by setLoading
+  // call modifyTask(id, object)
   const onSubmit = () => {
     console.log(date);
     let taskForm = form();
@@ -120,13 +137,6 @@ const EditForm = ({
       </div>
       {reminder ? (
         <div className="reminder-visible">
-          {/* <input
-            type="date"
-            min={getCurrentTime('date', null)}
-            value={date}
-            className="calendar"
-            onChange={(e) => setDate(e.target.value)}
-          /> */}
           <DatePicker value={date} onChange={setDate} minDate={new Date()} />
           <div className="hour-minute">
             <input
