@@ -1,18 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// connect for redux and react
 import { connect } from 'react-redux';
-
+/**
+ * This component for Alert notification rendering
+ * @param {Array} alerts
+ * @returns React elements
+ */
 const Alert = ({ alerts }) =>
   alerts !== null &&
   alerts.length > 0 &&
   alerts.map((alert) => (
     <div key={alert.id} className={`alert alert-${alert.alertType}`}>
-      {console.log(alert.alertType)}
+      {/* {console.log(alert.alertType)} */}
       {alert.msg}
     </div>
   ));
-// create props alerts for alert
 Alert.propTypes = {
   alerts: PropTypes.array.isRequired,
 };

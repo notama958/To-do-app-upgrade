@@ -99,9 +99,15 @@
   }
   .menu.tags:hover .dropdown {
     display: block;
+    /* background-color: red; */
     visibility: visible;
     position: fixed;
   }
+  /* .menu.tags i:active .dropdown {
+    background-color: white;
+    transform: translateX(3px);
+    visibility: visible;
+  } */
   /* end of nav bar on the left */
   /* container on the right side */
   .container-right {

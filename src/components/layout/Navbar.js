@@ -3,7 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { manualToggle } from '../../actions/alert';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import '../../css/index.css';
+/**
+ *
+ * This component render the Navbar layout
+ * @params {Function} manualToggle => to toggle the Manual panel
+ */
 
 const Navbar = ({ manualToggle }) => {
   const [location, setLocation] = useState(useLocation());

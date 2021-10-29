@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import NotFound from '../layout/NotFound';
-// import Alert from '../layout/Alert';
 import Dashboard from './Dashboard';
 import Kanban from './Kanban';
+// Navigation for user endpoints
 const Routes = () => {
   return (
     <section>

@@ -3,6 +3,9 @@ import Navbar from './layout/Navbar';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Guide from './layout/Guide';
+/**
+ * This component renders the Home page where you can read the manual instruction
+ */
 const Home = ({ manual }) => {
   return (
     <Fragment>

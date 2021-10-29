@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Draggable } from 'react-beautiful-dnd';
-import { loadTaskList, loadTagList } from '../../actions/dashboard';
 import Moment from 'react-moment';
-
+/**
+ * To apply style before and while dragging items
+ * @param {Boolean} isDragging
+ * @param {Object} draggableStyle
+ * @param {String} droppableId
+ * @returns Object
+ */
 const getItemStyle = (isDragging, draggableStyle, droppableId) => ({
-  // some basic styles to make the items look a bit nicer
   userSelect: 'none',
   padding: '10px',
   margin: `5px`,
@@ -20,13 +23,12 @@ const getItemStyle = (isDragging, draggableStyle, droppableId) => ({
   // styles we need to apply on draggables
   ...draggableStyle,
 });
-
-const DragItem = ({ item, index, droppableId, loadTaskList, loadTagList }) => {
-  useEffect(() => {
-    loadTaskList('all');
-    loadTagList();
-  }, []);
-  // console.log(list);
+/**
+ *
+ * This child component renders one draggable item
+ *
+ */
+const DragItem = ({ item, index, droppableId }) => {
   return (
     <Draggable
       key={item.id}
@@ -58,14 +60,8 @@ const DragItem = ({ item, index, droppableId, loadTaskList, loadTagList }) => {
   );
 };
 
-DragItem.propTypes = {
-  loadTagList: PropTypes.func.isRequired,
-  loadTaskList: PropTypes.func.isRequired,
-};
 const mapStateToProps = ({ dashboard }) => ({
   tasks: dashboard.tasks,
   currentTag: dashboard.currentTag,
 });
-export default connect(mapStateToProps, { loadTagList, loadTaskList })(
-  DragItem
-);
+export default connect(mapStateToProps)(DragItem);

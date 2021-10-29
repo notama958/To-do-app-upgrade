@@ -12,19 +12,24 @@ import {
   filterByDesc,
   toggleDelForm,
 } from '../../actions/dashboard';
+// check if the reminder date is due or not
 const checkDate = (d) => {
   return d === null ? false : new Date(d) > new Date() ? false : true;
 };
+/**
+ * This child component renders each Task element
+ * @param {*} store's props and functions to modify db at actions/dashboard
+ * @returns
+ */
 const Task = ({
   task,
-  delTask,
   toggleBackDrop,
   toggleEditTaskForm,
   toggleDelForm,
   setEditTask,
   setLoading,
 }) => {
-  const [dueTask, setDueTask] = useState(checkDate(task.alarm));
+  const [dueTask, setDueTask] = useState(checkDate(task.alarm)); // hold boolean check for reminder date
   return (
     <Fragment>
       <div
@@ -46,6 +51,7 @@ const Task = ({
             onClick={(e) => {
               setLoading();
               setEditTask(task);
+              // toggle the edit form
               toggleBackDrop();
               toggleEditTaskForm();
             }}
@@ -55,6 +61,7 @@ const Task = ({
           <button
             onClick={(e) => {
               toggleBackDrop();
+              //toggle delete form
               toggleDelForm(true, { type: 'task', item: task });
             }}
           >

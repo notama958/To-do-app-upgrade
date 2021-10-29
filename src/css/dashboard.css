@@ -64,11 +64,12 @@
   position: relative;
   margin-top: 0.5rem;
   width: 100%;
-  border: 1px solid black;
+  border: groove lightgray;
   text-align: left;
   overflow-y: scroll;
   padding: 5px;
   border-radius: 0.5em;
+  scrollbar-color: #4362ee #c2d2e4;
 }
 .menu.tags li {
   display: flex;
@@ -87,7 +88,7 @@
 }
 
 .menu.tags::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
+  background-color: lightblue;
 
   outline: 1px solid rgb(130, 162, 195);
 }
@@ -298,6 +299,7 @@
   overflow-y: scroll;
   width: 100%;
   height: 75%;
+  scrollbar-color: #0a4c95 #c2d2e4;
 }
 .task-item {
   padding: 10px;
@@ -393,6 +395,7 @@
 }
 
 .task-list::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
+  background-color: lightblue;
+
   outline: 1px solid rgb(130, 162, 195);
 }

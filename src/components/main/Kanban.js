@@ -4,13 +4,13 @@ import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import Navbar from '../layout/Navbar';
 import DragItem from '../layout/DragItem';
-import { loadTaskList, loadTagList, modifyTask } from '../../actions/dashboard';
-import { setAlert, setLoading } from '../../actions/alert';
+import { modifyTask } from '../../actions/dashboard';
+import { setAlert } from '../../actions/alert';
 import Spinner from '../layout/Spinner';
 import axios from 'axios';
+
 // get onGoing list and Finished list
 const getData = (list) => {
-  // console.log(list);
   let onGoing = [],
     finished = [];
   onGoing = list.filter((el) => el.status === 'unchecked');
@@ -61,13 +61,15 @@ const move = (
 };
 
 const Kanban = ({ modifyTask }) => {
-  const [list, setList] = useState([]);
-  const [onGoing, setOnGoing] = useState([]);
-  const [finished, setFinished] = useState([]);
-  const [isLoading, setIsloading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  // setLoading();
+  const [list, setList] = useState([]); // hodl current list
+  const [onGoing, setOnGoing] = useState([]); // hold on-going list
+  const [finished, setFinished] = useState([]); // hold completed list
+  const [isLoading, setIsloading] = useState(false); // for render Spinner
+  const [isError, setIsError] = useState(false); // if sthing wrong happens
   useEffect(() => {
+    // calling all tasks
+    // divide into on-going and finished
+    //
     const res = async () => {
       setIsError(false);
       setIsloading(true);
@@ -84,8 +86,11 @@ const Kanban = ({ modifyTask }) => {
     };
     res();
   }, []);
+  // When the Drag action ends
+  // Case 1: user drag outside droppable container
+  // Case 2: Drop within the initial droppable  container
+  // Case 3: Drop between the droppable containers
   const onDragEnd = (result) => {
-    // console.log(result);
     const { source, destination } = result;
 
     // dropped outside the list

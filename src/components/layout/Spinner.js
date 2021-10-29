@@ -1,5 +1,8 @@
 import React, { Fragment } from 'react';
-
+/**
+ * This component renders a spiner icon when the web is progressing requests
+ *
+ */
 const Spinner = () => {
   return (
     <Fragment>

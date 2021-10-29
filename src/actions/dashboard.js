@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setAlert } from './alert';
+import { setAlert } from './alert'; // to use setAlert function
 import {
   EMPTY_LIST,
   EMPTY_TAGS,
@@ -20,34 +20,14 @@ import {
   TOGGLE_EDIT_TASK_FORM,
   TOGGLE_EDIT_TAG_FORM,
   EDIT_TASK,
-  REMOVE_KEYWORD,
   TOGGLE_DEL_FORM,
 } from './types';
+
 /**
- * GET: /all
- * desc: get array of tasks in json
+ * GET: tags/
+ * desc: get array of tags in json
  *
  */
-export const loadTaskList = (tag) => async (dispatch) => {
-  try {
-    let res;
-    if (tag !== 'all') res = await axios.get(`list?tag=${tag}`);
-    else res = await axios.get('list');
-    dispatch({
-      type: LOAD_TASKS_LIST,
-      payload: { tag: tag, data: res.data },
-    });
-  } catch (err) {
-    dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB', 'danger'));
-    dispatch({
-      type: EMPTY_LIST,
-      payload: {
-        msg: 'not found',
-        status: 404,
-      },
-    });
-  }
-};
 export const loadTagList = () => async (dispatch) => {
   try {
     const res = await axios.get('tags');
@@ -68,7 +48,11 @@ export const loadTagList = () => async (dispatch) => {
   }
 };
 
-// modify tag
+/**
+ * PUT: tags/${id}
+ * desc: edit the tag in tags list and modify every task using this tag
+ * this might drop the connection to the db sometimes
+ */
 export const modifyTag = (id, newtagData, oldtagData) => async (dispatch) => {
   try {
     let beforeTagChanged = await axios.get(`list?tag=${oldtagData.name}`);
@@ -110,7 +94,11 @@ export const modifyTag = (id, newtagData, oldtagData) => async (dispatch) => {
     });
   }
 };
-// add tag: JSON with empty data array
+/**
+ * GET: POST/
+ * desc: add a new tag to the tags list
+ *
+ */
 export const addTag = (tag) => async (dispatch) => {
   try {
     const res = await axios.post('tags', tag);
@@ -130,7 +118,11 @@ export const addTag = (tag) => async (dispatch) => {
     });
   }
 };
-// delete tag:
+/**
+ * DELETE: tags/${id}
+ * desc: remove one tag from tags list and modify any task using this tag
+ * this might drop the connection to the db sometimes
+ */
 export const delTag =
   ({ id, name }) =>
   async (dispatch) => {
@@ -175,10 +167,38 @@ export const delTag =
     }
   };
 
-//add tag
+/**
+ * GET: list/?tag=${tag}
+ * desc: get array of tasks (can be use to filter task by tag name) in json
+ *
+ */
+export const loadTaskList = (tag) => async (dispatch) => {
+  try {
+    let res;
+    if (tag !== 'all') res = await axios.get(`list?tag=${tag}`);
+    else res = await axios.get('list');
+    dispatch({
+      type: LOAD_TASKS_LIST,
+      payload: { tag: tag, data: res.data },
+    });
+  } catch (err) {
+    dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB', 'danger'));
+    dispatch({
+      type: EMPTY_LIST,
+      payload: {
+        msg: 'not found',
+        status: 404,
+      },
+    });
+  }
+};
+/**
+ * POST: list/
+ * desc: add new task to list
+ *
+ */
 export const addTask = (taskForm) => async (dispatch) => {
   try {
-    // console.log(taskForm);
     const res = await axios.post('list', taskForm);
     dispatch({
       type: ADD_TASK,
@@ -197,7 +217,11 @@ export const addTask = (taskForm) => async (dispatch) => {
     });
   }
 };
-//edit task
+/**
+ * PATCH: list/${id}
+ * desc: modify a task in list
+ *
+ */
 export const modifyTask = (id, taskForm) => async (dispatch) => {
   try {
     const res = await axios.patch(`list/${id}`, taskForm);
@@ -217,7 +241,11 @@ export const modifyTask = (id, taskForm) => async (dispatch) => {
     });
   }
 };
-//delete task
+/**
+ * DELETE: list/${id}
+ * desc: remove task from list
+ *
+ */
 export const delTask =
   ({ id }) =>
   async (dispatch) => {
@@ -239,23 +267,19 @@ export const delTask =
       });
     }
   };
+// * desc: save the task need to be edit to store
 export const setEditTask = (task) => (dispatch) => {
   dispatch({
     type: EDIT_TASK,
     payload: task,
   });
 };
-//
-export const chosenTag = async (tag) => {
-  try {
-    const res = await axios.get(`list?tag=${tag}`);
-    console.log(res.data);
-    return res.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
+/**
+ * GET: list?tag=<tag_name>&_sort=created&order=${order}
+ * desc: sort the current list in the modal view ( perhaps it's viewing in tag group)
+ * by created time A-Z or Z-A
+ *
+ */
 export const sortByTime = (order, tag) => async (dispatch) => {
   try {
     // console.log(tag);
@@ -263,9 +287,7 @@ export const sortByTime = (order, tag) => async (dispatch) => {
       tag !== 'all'
         ? await axios.get(`list?tag=${tag}&_sort=created&_order=${order}`)
         : await axios.get(`list?_sort=created&_order=${order}`);
-    // if (tag !== 'all')
-    //   res = await axios.get(`list?tag=${tag}_sort=created&_order=${order}`);
-    // else res = await axios.get(`list?_sort=created&_order=${order}`);
+
     dispatch({
       type: SORT_LIST,
       payload: { data: res.data, order: order },
@@ -282,38 +304,45 @@ export const sortByTime = (order, tag) => async (dispatch) => {
     });
   }
 };
+// filter the task list with keyword input
 export const filterByDesc = (pattern) => (dispatch) => {
   dispatch({
     type: FILTER_BY_DESC,
-    payload: pattern,
+    payload: pattern.toLowerCase(),
   });
 };
+// switch true/fasle backdrop
 export const toggleBackDrop = () => (dispatch) => {
   dispatch({
     type: TOGGLE_BACKDROP,
   });
 };
+// switch true/fasle task_form
 export const toggleTaskForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_TASK_FORM,
   });
 };
+// switch true/fasle edit_form
 export const toggleEditTaskForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_EDIT_TASK_FORM,
   });
 };
+// switch true/fasle edit_tag_form
 export const toggleEditTagForm = (tag) => (dispatch) => {
   dispatch({
     type: TOGGLE_EDIT_TAG_FORM,
     payload: tag,
   });
 };
+// switch true/fasle tag_form
 export const toggleTagForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_TAG_FORM,
   });
 };
+// switch true/fasle del_form
 export const toggleDelForm = (status, delItem) => (dispatch) => {
   dispatch({
     type: TOGGLE_DEL_FORM,

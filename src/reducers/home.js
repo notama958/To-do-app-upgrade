@@ -5,7 +5,6 @@ import {
   TOGGLE_MANUAL,
 } from '../actions/types';
 
-// set alert messages
 const initState = { manual: false };
 export default function (state = initState, action) {
   const { type } = action;

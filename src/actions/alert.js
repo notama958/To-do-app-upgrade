@@ -7,6 +7,8 @@ import {
 } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
+// dispatch the alert to store
+// sending payload as object type
 export const setAlert =
   (msg, alertType, timeout = 6000) =>
   (dispatch) => {
@@ -18,12 +20,17 @@ export const setAlert =
     setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), timeout);
   };
 
-export const setLoading = () => (dispatch) => {
-  dispatch({
-    type: SET_LOADING,
-    payload: true,
-  });
-};
+// switch true/false boolean loading
+export const setLoading =
+  (stt = true) =>
+  (dispatch) => {
+    dispatch({
+      type: SET_LOADING,
+      payload: stt,
+    });
+  };
+
+// switch true/false boolean manual at home
 export const manualToggle = () => (dispatch) => {
   dispatch({
     type: TOGGLE_MANUAL,
@@ -32,13 +39,16 @@ export const manualToggle = () => (dispatch) => {
 export const getCurrentTime = (label, date) => {
   let currentDate = date === null ? new Date() : new Date(date);
 
+  // extract the time  format "hh:mm"
   if (label == 'time') {
     return (
       currentDate.getHours().toString() +
       ':' +
       currentDate.getMinutes().toString()
     );
-  } else if (label == 'date') {
+  }
+  // extract the time  format "yyyy-mm-dd"
+  else if (label == 'date') {
     return (
       currentDate.getFullYear() +
       '-' +
@@ -54,6 +64,7 @@ export const getCurrentTime = (label, date) => {
   return currentDate;
 };
 
+// get the greeting based on time
 export const Greeting = () => {
   const current = new Date();
   const hh = current.getHours();

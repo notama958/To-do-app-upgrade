@@ -1,8 +1,12 @@
 import React, { Fragment } from 'react';
 import Navbar from './Navbar';
 import { connect } from 'react-redux';
-// import Spinner from '../layout/Spinner';
 import Guide from './Guide';
+/**
+ * This component renders the Not found page when users go to unknown endpoints
+ * @param {Boolean} manual => a store's prop
+ * @returns
+ */
 const NotFound = ({ manual }) => {
   return (
     <Fragment>
