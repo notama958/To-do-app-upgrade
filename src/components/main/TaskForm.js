@@ -41,7 +41,6 @@ const TaskForm = ({
   const setTaskForm = (desc, status, alarm, tag) => {
     taskForm.id = uuidv4();
     taskForm.desc = desc;
-    taskForm.created = new Date();
     taskForm.status = status;
     taskForm.alarm = alarm;
     taskForm.tag = tag;
