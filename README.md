@@ -6,7 +6,7 @@
 - React-router-dom
 - redux-devtools-extension - fancy UI debugging on browser
 - redux-thunk - middleware
-- uuid - for alert
+- uuid
 - axios
 - react-beautiful-dnd
 - react-date-picker
