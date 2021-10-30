@@ -36,7 +36,7 @@ const DelForm = ({
         <label>⚠️Delete this item⚠️</label>
       </div>
       <div className=" modal__layout">
-        <label>❌Action cannot be undone❌</label>
+        <label>❌Action cannot undo❌</label>
         {isTask ? (
           <p
             style={{
@@ -44,6 +44,7 @@ const DelForm = ({
               width: '100%',
               overflowWrap: 'break-word',
               height: '50px',
+              fontSize: '15px',
             }}
           >
             {delItem.item.desc},{' '}
@@ -64,6 +65,7 @@ const DelForm = ({
               width: '100%',
               overflowWrap: 'break-word',
               height: '50px',
+              fontSize: '15px',
             }}
           >
             Delete this <small>{delItem.item.name}</small> means{' '}
