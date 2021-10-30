@@ -6,7 +6,7 @@ export const form = () => {
   let taskForm = {
     id: null,
     desc: '',
-    created: null,
+    created: new Date(),
     status: '',
     alarm: null,
     tag: '',

@@ -51,7 +51,7 @@ const EditForm = ({
   // then activate Spinner by setLoading
   // call modifyTask(id, object)
   const onSubmit = () => {
-    console.log(date);
+    // console.log(date);
     let taskForm = form();
     taskForm.id = id;
     taskForm.desc = content;
@@ -60,7 +60,7 @@ const EditForm = ({
       ? new Date(getCurrentTime('date', date) + ' ' + hour + ':' + minute)
       : null;
     taskForm.tag = chosenTag;
-    delete taskForm['created'];
+    // delete taskForm['created'];
     setLoading();
     modifyTask(id, taskForm);
   };
