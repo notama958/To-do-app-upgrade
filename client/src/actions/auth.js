@@ -87,8 +87,10 @@ export const login =
       dispatch(loadUser());
     } catch (err) {
       const errors = err.response.data.errors;
+
+      console.log(errors);
       if (errors && errors instanceof Array) {
-        errors.forEach((error) => dispatch(setAlert(error.payload, 'danger')));
+        errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
       } else {
         dispatch({
           type: LOGIN_FAIL,

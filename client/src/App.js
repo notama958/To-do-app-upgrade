@@ -5,13 +5,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import Home from './components/Home'; // Home page
 import MyRoutes from './components/main/MyRoutes'; // other routes
-// loading CSS
-import './css/app.css';
-import './css/index.css';
-import './css/dashboard.css';
-import './css/form.css';
-import './css/kanban.css';
-import './css/mobile-version.css';
+
 // actions
 import setAuthToken from './actions/set_token';
 import { loadUser } from './actions/auth';

@@ -155,9 +155,11 @@ img {
 .btn-white.learn-more {
   border: 0;
   background-color: whitesmoke;
+  padding: 0px;
+  /* border: 1px solid black; */
+  padding-right: 10px;
 }
 .btn-white.learn-more:hover {
-  background: white;
   opacity: 50%;
   border-color: #f67722;
   font-weight: bold;

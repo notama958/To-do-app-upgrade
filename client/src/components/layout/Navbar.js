@@ -14,23 +14,8 @@ const Navbar = ({ manualToggle, logout, isAuthenticated, loading }) => {
   const [location, setLocation] = useState(useLocation()); // check location for kanban page
   const authLinks = (
     <ul>
-      {/*let the dashboard few links to other pages */}
       <li>
         <Link to="/profiles">Profile</Link>
-      </li>
-      <li>
-        {location.pathname.split('/')[1] !== 'kanban' ? (
-          <button
-            className="btn btn-white learn-more "
-            onClick={(e) => manualToggle(e)}
-          >
-            Learn more
-          </button>
-        ) : (
-          <Link to="/dashboard">
-            <i className="fas fa-arrow-circle-left fa-2x"></i>
-          </Link>
-        )}
       </li>
       <li>
         <Link onClick={logout} to="#!">
@@ -43,17 +28,16 @@ const Navbar = ({ manualToggle, logout, isAuthenticated, loading }) => {
   // create link before log in
   const guestLinks = (
     <ul>
-      {location.pathname.split('/')[1] === '' ? (
-        <button
-          className="btn btn-white learn-more "
-          onClick={(e) => manualToggle(e)}
-        >
-          Learn more
-        </button>
-      ) : (
+      {location.pathname.split('/')[1] === 'register' ? (
         <li>
           <Link to="/login">Login</Link>
         </li>
+      ) : location.pathname.split('/')[1] === 'login' ? (
+        <li>
+          <Link to="/register">register</Link>
+        </li>
+      ) : (
+        ''
       )}
     </ul>
   );
@@ -64,6 +48,18 @@ const Navbar = ({ manualToggle, logout, isAuthenticated, loading }) => {
           <i className="fab fa-optin-monster" style={{ color: `black` }}></i>{' '}
           To-do list
         </Link>
+        {location.pathname.split('/')[1] !== 'kanban' ? (
+          <button
+            className="btn btn-white learn-more "
+            onClick={(e) => manualToggle(e)}
+          >
+            Learn more
+          </button>
+        ) : (
+          <Link to="/dashboard">
+            <i className="fas fa-arrow-circle-left fa-2x"></i>
+          </Link>
+        )}
       </h1>
       {!loading && (
         <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
