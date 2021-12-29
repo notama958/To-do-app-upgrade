@@ -21,16 +21,16 @@ const Home = ({ manual, isAuthenticated }) => {
             <h1 className="x-large">TO-DO LIST</h1>
             <p className="lead">Simple note for everyone</p>
             <div className="take-a-note">
-              {!isAuthenticated ? (
+              {isAuthenticated ? (
                 <Link to="/dashboard" className="btn btn-primary">
                   Welcome
                 </Link>
               ) : (
-                <div>
-                  <Link to="/dashboard" className="btn btn-primary">
+                <div className="user-actions">
+                  <Link to="/login" className="btn btn-dark login">
                     Login
                   </Link>
-                  <Link to="/dashboard" className="btn btn-primary">
+                  <Link to="/register" className="btn btn-light register">
                     Register
                   </Link>
                 </div>

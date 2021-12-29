@@ -192,3 +192,17 @@ img {
     -ms-transform: rotate(680deg);
   }
 }
+.user-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 200px;
+}
+.login {
+  color: white;
+  font-weight: bold;
+}
+.register {
+  color: #333;
+  font-weight: bold;
+}
