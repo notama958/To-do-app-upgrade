@@ -9,9 +9,10 @@ import PropTypes from 'prop-types';
  * This component renders the Home page where you can read the manual instruction
  */
 const Home = ({ manual, isAuthenticated }) => {
-  if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
-  }
+  // if (isAuthenticated) {
+  //   return <Redirect to="/dashboard" />;
+  // }
+  console.log(localStorage);
   return (
     <Fragment>
       <Navbar />

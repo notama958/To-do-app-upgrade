@@ -91,6 +91,7 @@ img {
   color: whitesmoke;
   text-align: center;
   align-items: center;
+  position: relative;
 }
 .alert-danger {
   background: #dc3545;

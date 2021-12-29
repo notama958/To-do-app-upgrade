@@ -14,6 +14,7 @@ const initState = {
   isAuthenticated: null,
   loading: true,
   user: null,
+  error: null,
 };
 
 export default function (state = initState, action) {
@@ -35,6 +36,7 @@ export default function (state = initState, action) {
         isAuthenticated: true,
         loading: false,
       };
+    // remove localStorage token and remove all user infos
     case LOGIN_FAIL:
     case AUTH_ERROR:
     case REGISTER_FAIL:
@@ -46,6 +48,8 @@ export default function (state = initState, action) {
         token: null,
         isAuthenticated: false,
         loading: false,
+        error: payload,
+        user: null,
       };
     default:
       return state;

@@ -20,7 +20,6 @@ export const loadUser = () => async (dispatch) => {
   }
   try {
     // use route auth GET
-    console.log('hellow orld');
     const res = await axios.get('/api/users');
     dispatch({
       type: USER_LOADED,
@@ -35,17 +34,17 @@ export const loadUser = () => async (dispatch) => {
 
 // register user
 export const register =
-  ({ name, email, password }) =>
+  ({ username, email, password }) =>
   async (dispatch) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',
       },
     };
-    const body = JSON.stringify({ name, email, password });
+    const body = JSON.stringify({ username, email, password });
     try {
       const res = await axios.post('/api/users/register', body, config);
-      console.log(res.data);
+      // response data is user token
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
@@ -54,13 +53,16 @@ export const register =
       dispatch(loadUser());
     } catch (err) {
       const errors = err.response.data.errors;
-      console.log(errors);
-      if (errors) {
+
+      if (errors && errors instanceof Array) {
         errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      } else {
+        dispatch({
+          type: REGISTER_FAIL,
+          payload: 'register failed, please retry again',
+        });
+        dispatch(setAlert('register failed, please retry again', 'danger'));
       }
-      dispatch({
-        type: REGISTER_FAIL,
-      });
     }
   };
 
@@ -75,8 +77,8 @@ export const login =
     };
     const body = JSON.stringify({ email, password });
     try {
-      const res = await axios.post('/api/auth', body, config);
-      console.log(res.data);
+      const res = await axios.post('/api/users/login', body, config);
+      // reponse data is the user token
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
@@ -85,12 +87,15 @@ export const login =
       dispatch(loadUser());
     } catch (err) {
       const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      if (errors && errors instanceof Array) {
+        errors.forEach((error) => dispatch(setAlert(error.payload, 'danger')));
+      } else {
+        dispatch({
+          type: LOGIN_FAIL,
+          payload: 'login fail, please retry again',
+        });
+        dispatch(setAlert('login fail, please retry again', 'danger'));
       }
-      dispatch({
-        type: LOGIN_FAIL,
-      });
     }
   };
 
