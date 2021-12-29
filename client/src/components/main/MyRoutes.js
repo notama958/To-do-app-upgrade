@@ -4,7 +4,7 @@ import NotFound from '../layout/NotFound';
 import Dashboard from './Dashboard';
 import Kanban from './Kanban';
 // Navigation for user endpoints
-const Routes = () => {
+const MyRoutes = () => {
   return (
     <section>
       <Switch>
@@ -16,4 +16,4 @@ const Routes = () => {
   );
 };
 
-export default Routes;
+export default MyRoutes;
