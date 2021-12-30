@@ -35,7 +35,8 @@ export const TOGGLE_DEL_FORM = 'TOGGLE_DEL_FORM';
 export const TOGGLE_DEL_TAG_FORM = 'TOGGLE_DEL_TAG_FORM';
 
 //spinner
-export const SET_LOADING = 'SET_LOADING';
+export const TAG_LOADING = 'TAG_LOADING';
+export const TASK_LOADING = 'TASK_LOADING';
 
 // authentication
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';

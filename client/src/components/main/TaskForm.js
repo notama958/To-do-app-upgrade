@@ -8,7 +8,7 @@ import {
   addTask,
   loadTaskList,
 } from '../../actions/dashboard';
-import { getCurrentTime, setLoading } from '../../actions/alert';
+import { getCurrentTime, taskLoading } from '../../actions/alert';
 import { v4 as uuidv4 } from 'uuid';
 import Spinner from '../layout/Spinner';
 import DatePicker from 'react-date-picker';
@@ -23,7 +23,7 @@ const TaskForm = ({
   toggleTaskForm,
   addTask,
   loadTaskList,
-  setLoading,
+  taskLoading,
   loading,
 }) => {
   const [tagDropDown, setTagDropDown] = useState(false); // tag dropdown selection boolean
@@ -60,7 +60,7 @@ const TaskForm = ({
         : null,
       chosenTag
     );
-    setLoading();
+    taskLoading();
     addTask(taskForm);
     loadTaskList('all');
   };
@@ -212,7 +212,7 @@ TaskForm.propTypes = {
   toggleTaskForm: PropTypes.func.isRequired,
   addTask: PropTypes.func.isRequired,
   loadTaskList: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
+  taskLoading: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {
@@ -220,5 +220,5 @@ export default connect(mapStateToProps, {
   toggleTaskForm,
   addTask,
   loadTaskList,
-  setLoading,
+  taskLoading,
 })(TaskForm);

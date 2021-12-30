@@ -50,7 +50,7 @@ const getUserbyEmail = (email) => {
 };
 
 // load tasks belong to user
-const getList = (user_id) => {
+const getList = (user_id, order) => {
   return db('list')
     .join('tag', 'tag.tag_id', '=', 'list.tag_id')
     .where('list.user_id', user_id)
@@ -62,7 +62,8 @@ const getList = (user_id) => {
       'list.alarm',
       'list.user_id',
       'tag.tagname'
-    );
+    )
+    .orderBy('created', order);
 };
 //
 // load tag belongs to user
@@ -82,7 +83,17 @@ const getTag = (owner_id) => {
 const sortByTime = (order, tag_id, user_id) => {
   // order is asc or desc
   return db('list')
-    .where({ tag_id: tag_id, user_id: user_id })
+    .join('tag', 'tag.tag_id', '=', 'list.tag_id')
+    .where({ 'tag.tag_id': tag_id, 'list.user_id': user_id })
+    .select(
+      'list.task_id',
+      'list.desc',
+      'list.status',
+      'list.created',
+      'list.alarm',
+      'list.user_id',
+      'tag.tagname'
+    )
     .orderBy('created', order);
 };
 // this is for testing only

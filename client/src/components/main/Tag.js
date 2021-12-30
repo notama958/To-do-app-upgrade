@@ -11,6 +11,7 @@ import {
   toggleEditTagForm,
 } from '../../actions/dashboard';
 import { connect } from 'react-redux';
+
 /**
  * This child component renders each tag element in the list
  * @param {*} store's props and functions to modify db at actions/dashboard
@@ -27,14 +28,14 @@ const Tag = ({
     <Fragment>
       <li
         onClick={(e) => {
-          loadTaskList(tag.name);
+          loadTaskList(tag.tag_id, tag.tagname, 'desc');
         }}
       >
-        <p>{tag.name}</p>
+        <p>{tag.tagname}</p>
         <div>
-          {tag.name !== 'priority' &&
-          tag.name !== 'normal' &&
-          tag.name !== 'important' ? (
+          {tag.tagname !== 'priority' &&
+          tag.tagname !== 'normal' &&
+          tag.tagname !== 'important' ? (
             <button
               onClick={(e) => {
                 toggleBackDrop();
@@ -46,9 +47,9 @@ const Tag = ({
           ) : (
             ''
           )}{' '}
-          {tag.name !== 'priority' &&
-          tag.name !== 'normal' &&
-          tag.name !== 'important' ? (
+          {tag.tagname !== 'priority' &&
+          tag.tagname !== 'normal' &&
+          tag.tagname !== 'important' ? (
             <button>
               <i
                 className="fas fa-edit"

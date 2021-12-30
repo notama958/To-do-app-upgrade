@@ -13,7 +13,7 @@ const faker = require('faker');
  */
 router.get('/me', auth, async (req, res) => {
   try {
-    const tasks = await db.getList(req.user.id);
+    const tasks = await db.getList(req.user.id, req.body.order);
     return res.status(200).json(tasks);
   } catch (err) {
     console.log(err);
@@ -136,7 +136,7 @@ router.delete('/:id', auth, async (req, res) => {
 
 // TESTED OKAY
 /**
- * @route    GET list/?tag_id&order
+ * @route    GET list?tag_id&order
  * @desc     get task list by userid, tag_id and order by created time
  * @access    private
  */

@@ -2,8 +2,8 @@ import {
   SET_ALERT,
   REMOVE_ALERT,
   TOGGLE_MANUAL,
-  GET_TIME,
-  SET_LOADING,
+  TASK_LOADING,
+  TAG_LOADING,
 } from './types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -20,12 +20,21 @@ export const setAlert =
     setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), timeout);
   };
 
-// switch true/false boolean loading
-export const setLoading =
+// switch true/false boolean task loading
+export const taskLoading =
   (stt = true) =>
   (dispatch) => {
     dispatch({
-      type: SET_LOADING,
+      type: TASK_LOADING,
+      payload: stt,
+    });
+  };
+// switch true/false boolean tag loading
+export const tagLoading =
+  (stt = true) =>
+  (dispatch) => {
+    dispatch({
+      type: TAG_LOADING,
       payload: stt,
     });
   };

@@ -6,7 +6,7 @@ import {
   toggleEditTaskForm,
   modifyTask,
 } from '../../actions/dashboard';
-import { getCurrentTime, setLoading } from '../../actions/alert';
+import { getCurrentTime, taskLoading } from '../../actions/alert';
 import { form } from '../layout/form';
 import Spinner from '../layout/Spinner';
 import DatePicker from 'react-date-picker';
@@ -20,7 +20,7 @@ const EditForm = ({
   tags,
   toggleBackDrop,
   toggleEditTaskForm,
-  setLoading,
+  taskLoading,
   modifyTask,
   loading,
 }) => {
@@ -48,7 +48,7 @@ const EditForm = ({
   const [content, setContent] = useState(desc);
   // submit function
   // first modify based on user input
-  // then activate Spinner by setLoading
+  // then activate Spinner by taskLoading
   // call modifyTask(id, object)
   const onSubmit = () => {
     // console.log(date);
@@ -61,7 +61,7 @@ const EditForm = ({
       : null;
     taskForm.tag = chosenTag;
     // delete taskForm['created'];
-    setLoading();
+    taskLoading();
     modifyTask(id, taskForm);
   };
   return (
@@ -202,7 +202,7 @@ EditForm.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,
   toggleEditTaskForm: PropTypes.func.isRequired,
   modifyTask: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
+  taskLoading: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   tags: dashboard.tags,
@@ -214,5 +214,5 @@ export default connect(mapStateToProps, {
   toggleBackDrop,
   toggleEditTaskForm,
   modifyTask,
-  setLoading,
+  taskLoading,
 })(EditForm);

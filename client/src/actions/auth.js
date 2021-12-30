@@ -16,7 +16,7 @@ import setAuthToken from './set_token';
 // get user token and save to local storage
 export const loadUser = () => async (dispatch) => {
   if (localStorage.token) {
-    setAuthToken(localStorage.token);
+    setAuthToken(localStorage.token); // attach to axios header
   }
   try {
     // use route auth GET
@@ -49,7 +49,8 @@ export const register =
         type: REGISTER_SUCCESS,
         payload: res.data,
       });
-      //load user token to local storage
+      // load user token to local storage
+      // attach the token to any axios request's header
       dispatch(loadUser());
     } catch (err) {
       const errors = err.response.data.errors;
@@ -83,9 +84,12 @@ export const login =
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
+
       //load user token to local storage
+      // attach the token to any axios request's header
       dispatch(loadUser());
     } catch (err) {
+      console.log(err);
       const errors = err.response.data.errors;
 
       console.log(errors);
@@ -106,5 +110,3 @@ export const logout = () => (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
 };
-
-//

@@ -4,6 +4,7 @@ import { manualToggle } from '../../actions/alert';
 import { logout } from '../../actions/auth';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 /**
  *
  * This component renders the Navbar layout
