@@ -53,7 +53,7 @@ const Dashboard = ({
   tag_loading,
   backdrop,
   toggleBackDrop,
-  // Task related
+  // Tag related
   tag_form,
   filterTasks,
   tags,
@@ -63,6 +63,7 @@ const Dashboard = ({
   toggleTagForm,
   delTag,
   // Task related
+  tasks,
   task_form,
   edit_form,
   loadTaskList,
@@ -100,6 +101,12 @@ const Dashboard = ({
   }, [loadTagList, filterByDesc]);
 
   useEffect(() => {
+    console.log('--------------------');
+    console.log(tasks);
+    console.log(filterTasks);
+    console.log('--------------------');
+  }, [tasks, filterTasks]);
+  useEffect(() => {
     //reload user info
     if (isAuthenticated && !user) loadUser();
     if (!isAuthenticated) return <Redirect to="/" />;
@@ -107,11 +114,9 @@ const Dashboard = ({
 
   // filter by description function after user click filter icon
   // call task_loading() to render the spinner icons
-  // call task_loading() to render the spinner icons
   // call filterByDesc(<String>) to filter the tasks contain the "keyword"
   const filterBtn = () => {
     taskLoading();
-    filterByDesc(filterValue);
     filterByDesc(filterValue);
   };
 
@@ -119,16 +124,25 @@ const Dashboard = ({
   const quickAdd = () => {
     if (enterBar !== '') {
       let createdForm = form();
-      createdForm.id = uuidv4();
       createdForm.desc = enterBar;
-      createdForm.status = 'unchecked';
+      createdForm.status = 0;
       createdForm.created = new Date();
-      createdForm.tag = currentTag === 'all' ? 'normal' : currentTag;
+      createdForm.tagname = currentTag === 'all' ? 'normal' : currentTag;
+      createdForm.tag_id =
+        currentTag === 'all'
+          ? tags.filter((el) => el.tagname === 'normal')[0].tag_id
+          : tags.filter((el) => el.tagname === currentTag)[0].tag_id;
       taskLoading();
       addTask(createdForm);
       filterByDesc('');
       setEnterBar('');
-      currentTag === 'all' ? loadTaskList('all') : loadTaskList(currentTag);
+      currentTag === 'all'
+        ? loadTaskList('all', 'all', 'desc')
+        : loadTaskList(
+            tags.filter((el) => el.tagname === currentTag)[0].tag_id,
+            currentTag,
+            'desc'
+          );
     }
   };
   return (
@@ -226,8 +240,7 @@ const Dashboard = ({
               <div className="sort-tags">
                 <div
                   onClick={(e) => {
-                    task_loading();
-                    sortByTime(currentTag, 'desc');
+                    taskLoading();
                     sortByTime(currentTag, 'desc');
                   }}
                 >
@@ -235,8 +248,7 @@ const Dashboard = ({
                 </div>
                 <div
                   onClick={(e) => {
-                    task_loading();
-                    sortByTime('asc', currentTag);
+                    taskLoading();
                     sortByTime('asc', currentTag);
                   }}
                 >
@@ -251,10 +263,7 @@ const Dashboard = ({
               <Spinner />
             ) : (
               // new tag should be added at front in the modal box
-              filterTasks
-                .slice(0)
-                .reverse()
-                .map((el) => <Task task={el} key={el.id} />)
+              filterTasks.map((el) => <Task task={el} key={el.id} />)
             )}
 
             <div className="enter-bar">
@@ -313,6 +322,7 @@ const mapStateToProps = ({ dashboard, auth }) => ({
   tag_loading: dashboard.tag_loading,
   backdrop: dashboard.backdrop,
   //task
+  tasks: dashboard.tasks,
   filterTasks: dashboard.filterTasks,
   task_form: dashboard.task_form,
   edit_form: dashboard.edit_form,

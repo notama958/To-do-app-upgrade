@@ -9,7 +9,6 @@ import {
   loadTaskList,
 } from '../../actions/dashboard';
 import { getCurrentTime, taskLoading } from '../../actions/alert';
-import { v4 as uuidv4 } from 'uuid';
 import Spinner from '../layout/Spinner';
 import DatePicker from 'react-date-picker';
 /**
@@ -24,10 +23,10 @@ const TaskForm = ({
   addTask,
   loadTaskList,
   taskLoading,
-  loading,
+  tag_loading,
 }) => {
   const [tagDropDown, setTagDropDown] = useState(false); // tag dropdown selection boolean
-  const [chosenTag, setChosenTag] = useState('normal'); // what tag suer choose, default is "normal"
+  const [chosenTag, setChosenTag] = useState('normal'); // what tag user chooses, default is "normal"
   const [date, setDate] = useState(new Date()); //reminder default date is current date
   const [minute, setMinute] = useState(
     getCurrentTime('time', null).split(':')[1] // get a format of "00"
@@ -38,12 +37,12 @@ const TaskForm = ({
   const [desc, setDesc] = useState(''); // hold description from user input
   let taskForm = form(); // create a blank task form
   // create task form
-  const setTaskForm = (desc, status, alarm, tag) => {
-    taskForm.id = uuidv4();
+  const setTaskForm = (desc, status, alarm, tag_id, tagname) => {
     taskForm.desc = desc;
     taskForm.status = status;
     taskForm.alarm = alarm;
-    taskForm.tag = tag;
+    taskForm.tag_id = tag_id;
+    taskForm.tagname = tagname;
   };
 
   //submit form
@@ -54,15 +53,17 @@ const TaskForm = ({
   const onSubmit = (e) => {
     setTaskForm(
       desc,
-      done ? 'checked' : 'unchecked',
+      done,
       alarm
         ? new Date(getCurrentTime('date', date) + ' ' + hour + ':' + minute)
         : null,
+      tags.filter((el) => el.tagname === chosenTag)[0].tag_id,
       chosenTag
     );
+    console.log(taskForm);
     taskLoading();
     addTask(taskForm);
-    loadTaskList('all');
+    loadTaskList('all', 'all', 'desc');
   };
 
   return (
@@ -98,18 +99,18 @@ const TaskForm = ({
           />
           {tagDropDown ? (
             <div className="tag-dropdown visible ">
-              {loading ? (
+              {tag_loading ? (
                 <Spinner />
               ) : (
                 tags.map((el, id) => (
                   <li
                     key={id}
                     onClick={(e) => {
-                      setChosenTag(el['name']);
+                      setChosenTag(el.tagname);
                       setTagDropDown(!tagDropDown);
                     }}
                   >
-                    {el['name']}
+                    {el.tagname}
                   </li>
                 ))
               )}
@@ -205,7 +206,7 @@ const TaskForm = ({
 };
 const mapStateToProps = ({ dashboard }) => ({
   tags: dashboard.tags,
-  loading: dashboard.loading,
+  tag_loading: dashboard.tag_loading,
 });
 TaskForm.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,

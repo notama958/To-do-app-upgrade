@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { tagLoading } from '../../actions/alert';
+import { tagLoading, taskLoading } from '../../actions/alert';
 import {
   toggleDelForm,
   toggleBackDrop,
@@ -22,6 +22,7 @@ const DelForm = ({
   delItem,
   type,
   tagLoading,
+  taskLoading,
   delFunc,
   tasks,
 }) => {
@@ -69,8 +70,8 @@ const DelForm = ({
             }}
           >
             Delete this <small>{delItem.item.name}</small> means{' '}
-            {tasks.filter((e) => e.tag === delItem.item.name).length} (tasks)
-            will be changed to normal
+            {tasks.filter((e) => e.tagname === delItem.item.tagname).length}{' '}
+            (tasks) will be changed to normal
           </p>
         ) : (
           ''
@@ -89,7 +90,8 @@ const DelForm = ({
         <button
           className="btn btn-danger"
           onClick={(e) => {
-            tagLoading();
+            if (isTag) tagLoading();
+            if (isTask) taskLoading();
             delFunc(delItem.item);
             toggleDelForm(false, null);
             toggleBackDrop();
@@ -117,4 +119,5 @@ export default connect(mapStateToProps, {
   toggleDelForm,
   toggleBackDrop,
   tagLoading,
+  taskLoading,
 })(DelForm);

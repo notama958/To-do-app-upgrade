@@ -33,8 +33,10 @@ const Task = ({
   return (
     <Fragment>
       <div
-        className={`task-item ${task.status} ${dueTask ? 'due' : ''}`}
-        key={task.id}
+        className={`task-item ${task.status === 1 ? 'checked' : 'unchecked'} ${
+          dueTask ? 'due' : ''
+        }`}
+        key={task.task_id}
       >
         <p>
           <b>
@@ -43,7 +45,7 @@ const Task = ({
             {task.desc}
           </b>
           {' - '}
-          <small style={{ fontStyle: 'normal' }}>{task.tag}</small>{' '}
+          <small style={{ fontStyle: 'normal' }}>{task.tagname}</small>{' '}
           {task.alarm !== null ? <i className="far fa-calendar-alt"></i> : ''}
         </p>
         <div className="control-btns">

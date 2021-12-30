@@ -21,6 +21,8 @@ import {
   TOGGLE_EDIT_TAG_FORM,
   EDIT_TASK,
   TOGGLE_DEL_FORM,
+  TASK_ERROR,
+  TAG_ERROR,
 } from './types';
 
 //------------------------TAG ACTIONS----------------------------//
@@ -66,6 +68,9 @@ export const modifyTag = (id, newtagData) => async (dispatch) => {
   } catch (err) {
     console.log(err);
     dispatch(setAlert('CANNOT MODIFY TAG', 'danger'));
+    dispatch({
+      type: TAG_ERROR, // stop spinner loading
+    });
   }
 };
 /** TESTED OKAY
@@ -75,7 +80,6 @@ export const modifyTag = (id, newtagData) => async (dispatch) => {
  */
 export const addTag = (tag) => async (dispatch) => {
   try {
-    console.log(tag);
     const res = await axios.post('/api/tag', tag);
     dispatch({
       type: ADD_TAG,
@@ -85,16 +89,12 @@ export const addTag = (tag) => async (dispatch) => {
   } catch (err) {
     dispatch(setAlert('CANNOT ADD TAG', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TAG_ERROR, // stop spinner loading
     });
   }
 };
 
-/**
+/** TESTED OKAY
  * DELETE: api/tag/${id}
  * desc: remove one tag from tags list
  * params: id (tag_id)
@@ -111,6 +111,9 @@ export const delTag =
       dispatch(setAlert('TAG REMOVED', 'success'));
     } catch (err) {
       dispatch(setAlert('CANNOT DELETE TAG', 'danger'));
+      dispatch({
+        type: TAG_ERROR, // stop spinner loading
+      });
     }
   };
 //------------------------TASK ACTIONS----------------------------//
@@ -127,7 +130,6 @@ export const loadTaskList = (tagid, tagname, order) => async (dispatch) => {
     } else {
       res = await axios.get(`/api/list?tag_id=${tagid}&order=${order}`);
     }
-    console.log(res.data);
     dispatch({
       type: LOAD_TASKS_LIST,
       payload: {
@@ -154,21 +156,20 @@ export const loadTaskList = (tagid, tagname, order) => async (dispatch) => {
  */
 export const addTask = (taskForm) => async (dispatch) => {
   try {
+    let newTaskForm = Object.assign({}, taskForm);
+    delete taskForm.tagname;
+    delete newTaskForm.tag_id;
     const res = await axios.post('/api/list', taskForm);
     dispatch({
       type: ADD_TASK,
-      payload: res.data,
+      payload: newTaskForm,
     });
-    dispatch(setAlert('Added Task', 'success'));
+    dispatch(setAlert('TASK ADDED', 'success'));
   } catch (err) {
-    dispatch(setAlert('CANNOT ADD TASK', 'danger'));
     console.log(err);
+    dispatch(setAlert('CANNOT ADD TASK', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TASK_ERROR, // stop spinner loading
     });
   }
 };
@@ -178,22 +179,21 @@ export const addTask = (taskForm) => async (dispatch) => {
  * desc: modify a task in list
  *
  */
-export const modifyTask = (id, taskForm) => async (dispatch) => {
+export const modifyTask = (taskForm) => async (dispatch) => {
   try {
-    const res = await axios.patch(`/api/list/${id}`, taskForm);
+    let newTaskForm = Object.assign({}, taskForm);
+    delete taskForm.tagname;
+    delete newTaskForm.tag_id;
+    const res = await axios.put(`/api/list`, taskForm);
     dispatch({
       type: MODIFY_TASK,
-      payload: res.data,
+      payload: newTaskForm,
     });
-    dispatch(setAlert('Modified Task', 'success'));
+    dispatch(setAlert('TASK MODIFIED', 'success'));
   } catch (err) {
     dispatch(setAlert('CANNOT EDIT TASK', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TASK_ERROR, // stop spinner loading
     });
   }
 };
@@ -203,23 +203,19 @@ export const modifyTask = (id, taskForm) => async (dispatch) => {
  *
  */
 export const delTask =
-  ({ id }) =>
+  ({ task_id }) =>
   async (dispatch) => {
     try {
-      const res = await axios.delete(`list/${id}`);
+      const res = await axios.delete(`api/list/${task_id}`);
       dispatch({
         type: REMOVE_TASK,
-        payload: id,
+        payload: task_id,
       });
-      dispatch(setAlert('Removed Task', 'success'));
+      dispatch(setAlert('TASK REMOVED', 'success'));
     } catch (err) {
       dispatch(setAlert('CANNOT DELETE TASK', 'danger'));
       dispatch({
-        type: SERVER_ERROR,
-        payload: {
-          msg: err.response.statusText,
-          status: err.response.status,
-        },
+        type: TASK_ERROR, // stop spinner loading
       });
     }
   };

@@ -20,6 +20,8 @@ import {
   TAG_LOADING,
   TOGGLE_DEL_FORM,
   TOGGLE_EDIT_TAG_FORM,
+  TASK_ERROR,
+  TAG_ERROR,
 } from '../actions/types';
 
 const initState = {
@@ -79,30 +81,25 @@ export default function (state = initState, action) {
         currentTag: payload.tagname,
       };
     case ADD_TASK:
-      if (state.currentTag === payload.tag)
-        return {
-          ...state,
-          tasks: [...state.tasks, payload],
-          filterTasks: state.tasks.filter((e) =>
-            e.desc.toLowerCase().includes(state.keyword)
-          ),
-          task_loading: false,
-        };
+      let sortedTasks = state.tasks.sort().push(payload);
+
       return {
         ...state,
-        loading: false,
+        tasks: sortedTasks,
+        filterTasks: sortedTasks.filter((e) =>
+          e.desc.toLowerCase().includes(state.keyword)
+        ),
+        task_loading: false,
       };
+
     case MODIFY_TASK:
-      let arr = state.tasks.filter((el) => el.tag_id !== payload.tag_id);
+      console.log(state.tasks);
+      let arr = state.tasks.filter((el) => el.tagname !== payload.tagname);
       arr.push(payload);
-      let filterByTag = arr.filter((e) => {
-        if (state.currentTag === 'all' || state.currentTag === e.tagname)
-          return e;
-      });
       return {
         ...state,
         tasks: arr,
-        filterTasks: filterByTag.filter((e) =>
+        filterTasks: arr.filter((e) =>
           e.desc.toLowerCase().includes(state.keyword)
         ),
         task_loading: false,
@@ -111,8 +108,8 @@ export default function (state = initState, action) {
     case REMOVE_TASK:
       return {
         ...state,
-        tasks: state.tasks.filter((el) => el.id !== payload),
-        filterTasks: state.filterTasks.filter((el) => el.id !== payload),
+        tasks: state.tasks.filter((el) => el.task_id !== payload),
+        filterTasks: state.filterTasks.filter((el) => el.task_id !== payload),
         task_loading: false,
       };
 
@@ -162,7 +159,10 @@ export default function (state = initState, action) {
       return { ...state, task_loading: payload };
     case TAG_LOADING:
       return { ...state, tag_loading: payload };
-    case SERVER_ERROR:
+    case TASK_ERROR:
+      return { ...state, task_loading: false };
+    case TAG_ERROR:
+      return { ...state, tag_loading: false };
     default:
       return { ...state };
   }

@@ -18,6 +18,7 @@ export const EDIT_TASK = 'EDIT_TASK';
 export const SORT_LIST = 'SORT_LIST';
 export const FILTER_BY_DESC = 'FILTER_BY_DESC';
 
+export const TASK_ERROR = 'TASK_ERROR';
 //tag
 export const LOAD_TAGS_LIST = 'LOAD_TAGS_LIST';
 export const EMPTY_TAGS = 'EMPTY_TAGS';
@@ -26,6 +27,7 @@ export const REMOVE_TAG = 'REMOVE_TAG';
 export const MODIFY_TAG = 'MODIFY_TAG';
 export const TAG_SELECTED = 'TAG_SELECTED';
 
+export const TAG_ERROR = 'TAG_ERROR';
 // toggle form
 export const TOGGLE_TASK_FORM = 'TOGGLE_TASK_FORM';
 export const TOGGLE_EDIT_TASK_FORM = 'TOGGLE_EDIT_TASK_FORM';

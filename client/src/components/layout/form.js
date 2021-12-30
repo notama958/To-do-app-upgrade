@@ -4,12 +4,12 @@
  */
 export const form = () => {
   let taskForm = {
-    id: null,
+    task_id: null,
     desc: '',
     created: new Date(),
-    status: '',
+    status: 0,
     alarm: null,
-    tag: '',
+    tag_id: null,
   };
   return taskForm;
 };

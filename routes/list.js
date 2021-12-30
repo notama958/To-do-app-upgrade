@@ -60,6 +60,7 @@ router.post(
     try {
       console.log(taskObj);
       const result = await db.addTask(taskObj);
+      console.log(result);
       return res.status(200).json({ msg: 'task added' });
     } catch (err) {
       console.error(err.message);

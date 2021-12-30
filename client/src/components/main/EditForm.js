@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -16,7 +16,7 @@ import DatePicker from 'react-date-picker';
  * @returns
  */
 const EditForm = ({
-  editTask: { id, desc, tag, created, alarm, status },
+  editTask: { task_id, desc, tagname, created, alarm, status },
   tags,
   toggleBackDrop,
   toggleEditTaskForm,
@@ -25,11 +25,11 @@ const EditForm = ({
   loading,
 }) => {
   // mark as done tickbox
-  const [done, setDone] = useState(status === 'checked' ? true : false);
+  const [done, setDone] = useState(status === 1 ? true : false);
   // dropdown at tag selection
   const [tagDropDown, setTagDropDown] = useState(false);
   // hold chosen tag
-  const [chosenTag, setChosenTag] = useState(tag);
+  const [chosenTag, setChosenTag] = useState(tagname);
   // reminder tickbox
   const [reminder, setReminder] = useState(alarm !== null ? true : false);
   // hold reminder's date
@@ -46,6 +46,10 @@ const EditForm = ({
   );
   // hold description of task
   const [content, setContent] = useState(desc);
+  useEffect(() => {
+    console.log(status);
+  }, []);
+
   // submit function
   // first modify based on user input
   // then activate Spinner by taskLoading
@@ -53,16 +57,17 @@ const EditForm = ({
   const onSubmit = () => {
     // console.log(date);
     let taskForm = form();
-    taskForm.id = id;
+    taskForm.task_id = task_id;
     taskForm.desc = content;
-    taskForm.status = done ? 'checked' : 'unchecked';
+    taskForm.status = done ? 1 : 0;
     taskForm.alarm = reminder
       ? new Date(getCurrentTime('date', date) + ' ' + hour + ':' + minute)
       : null;
-    taskForm.tag = chosenTag;
-    // delete taskForm['created'];
+    taskForm.tag_id = tags.filter((el) => el.tagname === chosenTag)[0].tag_id;
+    taskForm.tagname = tagname;
+    console.log(taskForm);
     taskLoading();
-    modifyTask(id, taskForm);
+    modifyTask(taskForm);
   };
   return (
     <div className="modal__content ">
@@ -105,11 +110,11 @@ const EditForm = ({
                   <li
                     key={id}
                     onClick={(e) => {
-                      setChosenTag(el['name']);
+                      setChosenTag(el.tagname);
                       setTagDropDown(!tagDropDown);
                     }}
                   >
-                    {el['name']}
+                    {el.tagname}
                   </li>
                 ))
               )}
@@ -207,7 +212,7 @@ EditForm.propTypes = {
 const mapStateToProps = ({ dashboard }) => ({
   tags: dashboard.tags,
   editTask: dashboard.editTask,
-  loading: dashboard.loading,
+  task_loading: dashboard.task_loading,
 });
 
 export default connect(mapStateToProps, {
