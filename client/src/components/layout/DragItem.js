@@ -23,16 +23,17 @@ const getItemStyle = (isDragging, draggableStyle, droppableId) => ({
   // styles we need to apply on draggables
   ...draggableStyle,
 });
+
 /**
- *
  * This child component renders one draggable item
  *
  */
 const DragItem = ({ item, index, droppableId }) => {
+  console.log(item);
   return (
     <Draggable
-      key={item.id}
-      draggableId={item.id}
+      key={item.task_id}
+      draggableId={item.task_id.toString()}
       index={index}
       droppableId={droppableId}
     >
@@ -47,7 +48,7 @@ const DragItem = ({ item, index, droppableId }) => {
             droppableId
           )}
         >
-          {item.desc} <small>- {item.tag}</small>
+          {item.desc} <small>- {item.tagname}</small>
           <p>
             <i>
               created on{' '}
