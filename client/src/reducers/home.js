@@ -1,10 +1,6 @@
-import {
-  ADD_MANUAL,
-  REMOVE_ALERT,
-  REMOVE_MANUAL,
-  TOGGLE_MANUAL,
-} from '../actions/types';
+import { TOGGLE_MANUAL } from '../actions/types';
 
+//home landing page redux store's prop
 const initState = { manual: false };
 export default function (state = initState, action) {
   const { type } = action;

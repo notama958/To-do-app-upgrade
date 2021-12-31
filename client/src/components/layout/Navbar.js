@@ -9,6 +9,9 @@ import { connect } from 'react-redux';
  *
  * This component renders the Navbar layout
  * @params {Function} manualToggle => to toggle the Manual panel
+ * @params {Function} logout => to logout
+ * @params {prop} isAuthenticated, loading => to check authentication and renders corresponding components
+ *
  */
 
 const Navbar = ({ manualToggle, logout, isAuthenticated, loading }) => {

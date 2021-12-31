@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { form } from '../layout/form';
+//actions
 import {
   toggleTaskForm,
   toggleBackDrop,
@@ -9,8 +10,10 @@ import {
   loadTaskList,
 } from '../../actions/dashboard';
 import { getCurrentTime, taskLoading } from '../../actions/alert';
+//components
 import Spinner from '../layout/Spinner';
 import DatePicker from 'react-date-picker';
+
 /**
  * This component renders add new task modal for user add
  * @param {*} store's props and functions to modify db at actions/dashboard
@@ -60,7 +63,6 @@ const TaskForm = ({
       tags.filter((el) => el.tagname === chosenTag)[0].tag_id,
       chosenTag
     );
-    console.log(taskForm);
     taskLoading();
     addTask(taskForm);
     loadTaskList('all', 'all', 'desc');

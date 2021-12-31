@@ -26,6 +26,7 @@ import {
   EMPTY_LIST,
 } from '../actions/types';
 
+//dashboard redux store's prop
 const initState = {
   tasks: [], // hold task list
   currentTag: 'all', // what tag is selected now ?

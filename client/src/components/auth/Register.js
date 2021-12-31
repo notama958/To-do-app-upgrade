@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 //actions
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
-// navbar
+// components
 import Navbar from '../layout/Navbar';
 import Alert from '../layout/Alert';
+
+//this component renders register form
 const Register = ({ isAuthenticated, register }) => {
   const [formData, setFormData] = useState({
     username: '',
@@ -23,8 +25,8 @@ const Register = ({ isAuthenticated, register }) => {
     });
   const onSubmit = (e) => {
     e.preventDefault();
+    //password retype check
     if (password !== password2) {
-      // set alert to errors
       setAlert('Password not match', 'danger');
     } else {
       register({ username, email, password });
@@ -47,16 +49,12 @@ const Register = ({ isAuthenticated, register }) => {
           {/** Add submit*/}
           <form className="form" onSubmit={(e) => onSubmit(e)}>
             <div className="form-group">
-              {/*place name value here */}
               <input
                 type="text"
                 placeholder="Name"
                 name="username"
-                /*{name} is formData prop*/
                 value={username}
-                /*call function onChange */
                 onChange={(e) => onChange(e)}
-                /*required*/
               />
             </div>
             <div className="form-group">
@@ -65,9 +63,7 @@ const Register = ({ isAuthenticated, register }) => {
                 placeholder="Email Address"
                 name="email"
                 value={email}
-                /*call function onChange */
                 onChange={(e) => onChange(e)}
-                /*required /** need it */
               />
             </div>
             <div className="form-group">
@@ -78,7 +74,6 @@ const Register = ({ isAuthenticated, register }) => {
                 value={password}
                 /*call function onChange */
                 onChange={(e) => onChange(e)}
-                /*minLength="6"*/
               />
             </div>
             <div className="form-group">
@@ -87,9 +82,7 @@ const Register = ({ isAuthenticated, register }) => {
                 placeholder="Confirm Password"
                 name="password2"
                 value={password2}
-                /*call function onChange */
                 onChange={(e) => onChange(e)}
-                /*minLength="6"*/
               />
             </div>
             <input type="submit" className="btn btn-primary" value="Register" />

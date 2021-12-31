@@ -6,13 +6,12 @@ import Guide from './layout/Guide';
 import PropTypes from 'prop-types';
 
 /**
- * This component renders the Home page where you can read the manual instruction
+ * This component Home Landing page
+ * authenticated user can go to /dashboard, unauthorized/unregistered users need to login/register
+ * @param {*} store's props to check authentication and toggle instruction manual
+ * @returns
  */
 const Home = ({ manual, isAuthenticated }) => {
-  // if (isAuthenticated) {
-  //   return <Redirect to="/dashboard" />;
-  // }
-  console.log(localStorage);
   return (
     <Fragment>
       <Navbar />
@@ -46,14 +45,14 @@ const Home = ({ manual, isAuthenticated }) => {
             </div>
           </div>
         ) : (
-          console.log(manual)
+          ''
         )}
       </section>
     </Fragment>
   );
 };
 Home.propTypes = {
-  isAuthenticated: PropTypes.object.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   manual: PropTypes.bool.isRequired,
 };
 const mapStateToProps = ({ home, auth }) => ({

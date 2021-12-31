@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+//actions
 import {
   toggleBackDrop,
   toggleEditTaskForm,
   modifyTask,
 } from '../../actions/dashboard';
 import { getCurrentTime, taskLoading } from '../../actions/alert';
+//components
 import { form } from '../layout/form';
 import Spinner from '../layout/Spinner';
 import DatePicker from 'react-date-picker';
@@ -46,16 +48,12 @@ const EditForm = ({
   );
   // hold description of task
   const [content, setContent] = useState(desc);
-  useEffect(() => {
-    console.log(status);
-  }, []);
 
   // submit function
   // first modify based on user input
   // then activate Spinner by taskLoading
   // call modifyTask(id, object)
   const onSubmit = () => {
-    // console.log(date);
     let taskForm = form();
     taskForm.task_id = task_id;
     taskForm.desc = content;
@@ -65,7 +63,7 @@ const EditForm = ({
       : null;
     taskForm.tag_id = tags.filter((el) => el.tagname === chosenTag)[0].tag_id;
     taskForm.tagname = chosenTag;
-    console.log(taskForm);
+    // console.log(taskForm);
     taskLoading();
     modifyTask(taskForm);
   };

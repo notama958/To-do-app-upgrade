@@ -6,7 +6,8 @@ import Kanban from './Kanban';
 import PrivateRoutes from './PrivateRoutes';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
-// Navigation for user endpoints
+
+// Navigation pages
 const MyRoutes = () => {
   return (
     <section>

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+//actions
 import {
   modifyTag,
   toggleBackDrop,
   toggleEditTagForm,
 } from '../../actions/dashboard';
 import { setAlert, tagLoading } from '../../actions/alert';
+
 /**
  * This component renders the Edit Tag form
  * @param {*} store's props and functions to modify db at actions/dashboard

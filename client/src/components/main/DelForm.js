@@ -14,7 +14,7 @@ import Moment from 'react-moment';
  * This component renders the delete task/tag form
  * User can only delete user-defined tags, system's tag like "normal" "priority" "important" cannot be deleted
  * When user delete tag that contains some tasks inside these will be changed to "normal" tag
- * @params {*} store's props and functions to modify db at actions/dashboard.js
+ * @params {*} redux store's props and functions to modify db at actions/dashboard.js
  */
 const DelForm = ({
   toggleDelForm,

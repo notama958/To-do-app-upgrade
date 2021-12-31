@@ -60,6 +60,13 @@ const move = (
   return result;
 };
 
+/**
+ * This component renders sided-by-side table for all tasks,
+ * user can quickly switch the status of the task by drag and drop
+ * between the 2 tables
+ * @param {*} store's props and functions to modify db at actions/dashboard
+ * @returns
+ */
 const Kanban = ({ modifyTask, task_loading, taskLoading, tasks }) => {
   const [list, setList] = useState([]); // hodl current list
   const [onGoing, setOnGoing] = useState([]); // hold on-going list

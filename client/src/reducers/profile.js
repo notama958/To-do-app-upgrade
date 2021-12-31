@@ -3,7 +3,6 @@ import {
   PROFILE_ERROR,
   CLEAR_PROFILE,
   UPDATE_PROFILE,
-  GET_ALL_PROFILES,
 } from '../actions/types';
 
 const initialState = {

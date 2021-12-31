@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
+//actions
 import { taskLoading } from '../../actions/alert';
 import {
   delTask,
@@ -12,6 +13,7 @@ import {
   filterByDesc,
   toggleDelForm,
 } from '../../actions/dashboard';
+
 // check if the reminder date is due or not
 const checkDate = (d) => {
   return d === null ? false : new Date(d) > new Date() ? false : true;

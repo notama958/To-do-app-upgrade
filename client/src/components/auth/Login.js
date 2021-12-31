@@ -4,10 +4,10 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 //actions
 import { login } from '../../actions/auth';
-//navbar
+//components
 import Navbar from '../layout/Navbar';
-// alerts
 import Alert from '../layout/Alert';
+
 // This component renders login form
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -62,7 +62,6 @@ const Login = ({ login, isAuthenticated }) => {
                 value={password}
                 /*call function onChange */
                 onChange={(e) => onChange(e)}
-                minLength="6"
               />
             </div>
 

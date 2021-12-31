@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
+//component
 import { addTag, toggleBackDrop, toggleTagForm } from '../../actions/dashboard';
+//actions
 import { setAlert, tagLoading } from '../../actions/alert';
+
 /**
  * This component renders tag form for Add new tag function
  * @param {*} store's props and functions to modify db at actions/dashboard

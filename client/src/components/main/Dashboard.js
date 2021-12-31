@@ -3,8 +3,8 @@ import { Link, Redirect } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { form } from '../layout/form';
-import { v4 as uuidv4 } from 'uuid';
+
+//actions
 import {
   getCurrentTime,
   Greeting,
@@ -23,6 +23,9 @@ import {
   delTag,
   delTask,
 } from '../../actions/dashboard';
+
+// components
+import { form } from '../layout/form';
 import Task from './Task';
 import Tag from './Tag';
 import TaskForm from './TaskForm';
@@ -63,7 +66,6 @@ const Dashboard = ({
   toggleTagForm,
   delTag,
   // Task related
-  tasks,
   task_form,
   edit_form,
   loadTaskList,
@@ -76,7 +78,6 @@ const Dashboard = ({
   delTask,
   //auth
   isAuthenticated,
-  auth_loading,
   user,
 }) => {
   const [enterBar, setEnterBar] = useState(''); // get the enterBar value
@@ -86,18 +87,20 @@ const Dashboard = ({
   useEffect(() => {
     // greeting user based on time "Morning" "Afternoon" "Evening"
     const intervalOne = setInterval(() => Greeting(), 18000000);
+    // check authentication and redirect to home page
     const intervalTwo = setInterval(() => {
       if (isAuthenticated && !user) loadUser();
       if (!isAuthenticated) return <Redirect to="/" />;
     }, 5 * 3600 * 1000); // check after 5 hours
+    //clear the interval
     return () => {
       clearInterval(intervalOne);
       clearInterval(intervalTwo);
-    }; // clear the interval
+    };
   }, []);
 
   useEffect(() => {
-    // the tag could be "all" "normal" "priority" ,..
+    // load tag list
     tagLoading();
     loadTagList();
     // load the list corresponds to the currentTag
@@ -201,7 +204,7 @@ const Dashboard = ({
             {tag_loading ? (
               <Spinner />
             ) : (
-              tags.map((el) => <Tag key={el.id} tag={el} />)
+              tags.map((el, id) => <Tag key={id} tag={el} />)
             )}
           </ul>
         </div>
@@ -227,6 +230,7 @@ const Dashboard = ({
                 type="text"
                 value={filterValue}
                 onChange={(e) => {
+                  //filter tasks by description
                   setFilter(e.target.value);
                   taskLoading();
                   filterByDesc(e.target.value);
@@ -238,6 +242,7 @@ const Dashboard = ({
               <div className="sort-tags">
                 <div
                   onClick={(e) => {
+                    // A-Z sort by created time
                     taskLoading();
                     sortByTime(
                       (currentTag === 'all') | (currentTag === '')
@@ -252,6 +257,7 @@ const Dashboard = ({
                 </div>
                 <div
                   onClick={(e) => {
+                    // Z-A sort by created time
                     taskLoading();
                     sortByTime(
                       (currentTag === 'all') | (currentTag === '')
@@ -272,8 +278,8 @@ const Dashboard = ({
             {task_loading ? (
               <Spinner />
             ) : (
-              // new tag should be added at front in the modal box
-              filterTasks.map((el) => <Task task={el} key={el.id} />)
+              // new tag should be added at in beginning in the modal box
+              filterTasks.map((el, id) => <Task task={el} key={id} />)
             )}
 
             <div className="enter-bar">
@@ -295,17 +301,19 @@ const Dashboard = ({
         </div>
       </div>
       {backdrop ? <div className="backdrop visible "></div> : ''}
+
       {tag_form ? <TagForm /> : ''}
       {edit_tag_form ? <EditTagForm /> : ''}
+      {delItem !== null && delItem.type === 'tag' && del_form ? (
+        <DelForm delFunc={(e) => delTag(e)} type="tag" />
+      ) : (
+        ''
+      )}
+
       {task_form ? <TaskForm /> : ''}
       {edit_form ? <EditForm /> : ''}
       {delItem !== null && delItem.type === 'task' && del_form ? (
         <DelForm delFunc={(e) => delTask(e)} type="task" />
-      ) : (
-        ''
-      )}
-      {delItem !== null && delItem.type === 'tag' && del_form ? (
-        <DelForm delFunc={(e) => delTag(e)} type="tag" />
       ) : (
         ''
       )}
@@ -321,8 +329,6 @@ Dashboard.propTypes = {
   sortByTime: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
   addTask: PropTypes.func.isRequired,
-  task_loading: PropTypes.func.isRequired,
-  tag_loading: PropTypes.func.isRequired,
   delTask: PropTypes.func.isRequired,
   delTag: PropTypes.func.isRequired,
 };

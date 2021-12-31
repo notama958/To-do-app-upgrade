@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+//actions
 import {
   loadTaskList,
   delTag,
@@ -10,7 +12,6 @@ import {
   toggleTagForm,
   toggleEditTagForm,
 } from '../../actions/dashboard';
-import { connect } from 'react-redux';
 
 /**
  * This child component renders each tag element in the list

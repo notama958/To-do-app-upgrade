@@ -9,6 +9,7 @@ import {
   DELETE_ACCOUNT,
 } from '../actions/types';
 
+//authentication redux store's prop
 const initState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
