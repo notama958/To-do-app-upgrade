@@ -16,5 +16,5 @@
 ```
     cd root
     npm start
-    json-server -w db.json -p 3010
+
 ```

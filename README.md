@@ -3,8 +3,8 @@
 ## Latest Updates
 
 - [x] User can now login/register
+- [x] User can view their dashboard and perfom actions
 - [ ] User can now view profile
-- [ ] User can view their dashboard and perfom actions
 
 ## Description
 
@@ -26,7 +26,19 @@
 
 ## Folder structure
 
-- update later
+- will be updated soon
+
+## Setup
+
+- will be updated soon
+
+## Backend
+
+- will be updated soon
+
+## Deployment
+
+- will be updated soon
 
 # Author
 
