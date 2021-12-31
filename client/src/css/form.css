@@ -144,7 +144,8 @@ label {
 .modal__content .header {
   display: block;
   position: relative;
-  width: 100%;
+  width: fit-content;
+  height: fit-content;
   color: black;
   border-bottom: 3px solid grey;
 }

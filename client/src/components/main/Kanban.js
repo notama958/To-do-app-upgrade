@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+//components
 import Navbar from '../layout/Navbar';
 import DragItem from '../layout/DragItem';
-import { modifyTask } from '../../actions/dashboard';
-import { setAlert } from '../../actions/alert';
 import Spinner from '../layout/Spinner';
-import axios from 'axios';
+//actions
+import { modifyTask } from '../../actions/dashboard';
+import { setAlert, taskLoading } from '../../actions/alert';
 
 // get onGoing list and Finished list
 const getData = (list) => {
   let onGoing = [],
     finished = [];
-  onGoing = list.filter((el) => el.status === 'unchecked');
-  finished = list.filter((el) => el.status === 'checked');
+  onGoing = list.filter((el) => el.status === 0);
+  finished = list.filter((el) => el.status === 1);
   return { onGoing: onGoing, finished: finished };
 };
 // styling for drag container
@@ -42,17 +44,15 @@ const move = (
   droppableDestination,
   modifyTask
 ) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
+  const sourceClone = Array.from(source); // clone source arr
+  const destClone = Array.from(destination); // clone destination arr
   const [removed] = sourceClone.splice(droppableSource.index, 1); // remove from source
   if (droppableDestination.droppableId === 'droppable-2') {
-    removed.status = 'checked';
-    console.log('checked them');
+    removed.status = 1;
   } else if (droppableDestination.droppableId === 'droppable-1') {
-    console.log('unchecked them');
-    removed.status = 'unchecked';
+    removed.status = 0;
   }
-  modifyTask(removed.id, removed);
+  modifyTask(removed);
   destClone.splice(droppableDestination.index, 0, removed); // add to destination
   const result = {};
   result[droppableSource.droppableId] = sourceClone;
@@ -60,11 +60,10 @@ const move = (
   return result;
 };
 
-const Kanban = ({ modifyTask }) => {
+const Kanban = ({ modifyTask, task_loading, taskLoading, tasks }) => {
   const [list, setList] = useState([]); // hodl current list
   const [onGoing, setOnGoing] = useState([]); // hold on-going list
   const [finished, setFinished] = useState([]); // hold completed list
-  const [isLoading, setIsloading] = useState(false); // for render Spinner
   const [isError, setIsError] = useState(false); // if sthing wrong happens
   useEffect(() => {
     // calling all tasks
@@ -72,9 +71,9 @@ const Kanban = ({ modifyTask }) => {
     //
     const res = async () => {
       setIsError(false);
-      setIsloading(true);
+      taskLoading();
       try {
-        const result = await axios('/list');
+        const result = await axios('/api/list/me');
         setList(result.data);
         setOnGoing(getData(result.data).onGoing);
         setFinished(getData(result.data).finished);
@@ -82,10 +81,10 @@ const Kanban = ({ modifyTask }) => {
         setIsError(true);
         setAlert('SOMETHING WRONG', 'danger');
       }
-      setIsloading(false);
+      taskLoading(false);
     };
     res();
-  }, []);
+  }, [tasks]);
   // When the Drag action ends
   // Case 1: user drag outside droppable container
   // Case 2: Drop within the initial droppable  container
@@ -140,7 +139,7 @@ const Kanban = ({ modifyTask }) => {
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {isLoading || list.length === 0 ? (
+                    {task_loading || list.length === 0 ? (
                       <Spinner />
                     ) : (
                       onGoing.map((item, index) => (
@@ -171,7 +170,7 @@ const Kanban = ({ modifyTask }) => {
                     ref={provided.innerRef}
                     style={getListStyle(snapshot.isDraggingOver)}
                   >
-                    {isLoading || list.length === 0 ? (
+                    {task_loading || list.length === 0 ? (
                       <Spinner />
                     ) : (
                       finished.map((item, index) => (
@@ -197,10 +196,13 @@ const Kanban = ({ modifyTask }) => {
 };
 Kanban.propTypes = {
   modifyTask: PropTypes.func.isRequired,
+  taskLoading: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
-  loading: dashboard.loading,
+  task_loading: dashboard.task_loading,
+  tasks: dashboard.tasks,
 });
 export default connect(mapStateToProps, {
   modifyTask,
+  taskLoading,
 })(Kanban);
