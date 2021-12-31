@@ -10,6 +10,7 @@ export const form = () => {
     status: 0,
     alarm: null,
     tag_id: null,
+    tagname: null,
   };
   return taskForm;
 };

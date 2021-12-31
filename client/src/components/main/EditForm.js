@@ -64,7 +64,7 @@ const EditForm = ({
       ? new Date(getCurrentTime('date', date) + ' ' + hour + ':' + minute)
       : null;
     taskForm.tag_id = tags.filter((el) => el.tagname === chosenTag)[0].tag_id;
-    taskForm.tagname = tagname;
+    taskForm.tagname = chosenTag;
     console.log(taskForm);
     taskLoading();
     modifyTask(taskForm);

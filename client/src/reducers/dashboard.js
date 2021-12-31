@@ -22,6 +22,8 @@ import {
   TOGGLE_EDIT_TAG_FORM,
   TASK_ERROR,
   TAG_ERROR,
+  EMPTY_TAGS,
+  EMPTY_LIST,
 } from '../actions/types';
 
 const initState = {
@@ -81,8 +83,12 @@ export default function (state = initState, action) {
         currentTag: payload.tagname,
       };
     case ADD_TASK:
-      let sortedTasks = state.tasks.sort().push(payload);
-
+      let sortedTasks = [...state.tasks];
+      sortedTasks.push(payload);
+      sortedTasks.sort((a, b) => {
+        if (a > b) return -1;
+        return 1;
+      });
       return {
         ...state,
         tasks: sortedTasks,
@@ -93,9 +99,18 @@ export default function (state = initState, action) {
       };
 
     case MODIFY_TASK:
-      console.log(state.tasks);
-      let arr = state.tasks.filter((el) => el.tagname !== payload.tagname);
-      arr.push(payload);
+      let arr = state.tasks.filter((el) => el.task_id !== payload.task_id);
+      if (
+        state.currentTag === payload.tagname ||
+        state.currentTag === 'all' ||
+        state.currentTag === ''
+      ) {
+        arr.push(payload);
+        arr.sort((a, b) => {
+          if (a.created > b.created) return -1;
+          return 1;
+        });
+      }
       return {
         ...state,
         tasks: arr,
@@ -132,7 +147,7 @@ export default function (state = initState, action) {
         task_loading: false,
       };
 
-    case EDIT_TASK:
+    case EDIT_TASK: // set edit task
       return { ...state, editTask: payload, task_loading: false };
 
     case TOGGLE_BACKDROP:
@@ -159,9 +174,11 @@ export default function (state = initState, action) {
       return { ...state, task_loading: payload };
     case TAG_LOADING:
       return { ...state, tag_loading: payload };
+    case EMPTY_LIST:
     case TASK_ERROR:
       return { ...state, task_loading: false };
     case TAG_ERROR:
+    case EMPTY_TAGS:
       return { ...state, tag_loading: false };
     default:
       return { ...state };

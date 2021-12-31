@@ -7,13 +7,16 @@ const faker = require('faker');
 
 // TESTED OKAY
 /**
- * @route    GET list/
+ * @route    GET list/me?order
  * @desc     get task list for a user
  * @access    private
  */
 router.get('/me', auth, async (req, res) => {
   try {
-    const tasks = await db.getList(req.user.id, req.body.order);
+    const tasks = await db.getList(
+      req.user.id,
+      req.query.order ? req.query.order : 'desc'
+    );
     return res.status(200).json(tasks);
   } catch (err) {
     console.log(err);
@@ -60,7 +63,6 @@ router.post(
     try {
       console.log(taskObj);
       const result = await db.addTask(taskObj);
-      console.log(result);
       return res.status(200).json({ msg: 'task added' });
     } catch (err) {
       console.error(err.message);
@@ -143,6 +145,7 @@ router.delete('/:id', auth, async (req, res) => {
  */
 router.get('/', auth, async (req, res) => {
   try {
+    console.log(req.query.order);
     if (req.query.tag_id && req.query.order) {
       const list = await db.sortByTime(
         req.query.order,

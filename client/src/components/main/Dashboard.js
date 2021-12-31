@@ -82,12 +82,18 @@ const Dashboard = ({
   const [enterBar, setEnterBar] = useState(''); // get the enterBar value
   const [greeting, updateGreeting] = useState(Greeting()); // check the timing <String>
   const [filterValue, setFilter] = useState(''); // get the keyword entered
-  const [userToken, setUserToken] = useState();
 
   useEffect(() => {
     // greeting user based on time "Morning" "Afternoon" "Evening"
-    const interval = setInterval(() => Greeting(), 18000000);
-    return () => clearInterval(interval); // clear the interval
+    const intervalOne = setInterval(() => Greeting(), 18000000);
+    const intervalTwo = setInterval(() => {
+      if (isAuthenticated && !user) loadUser();
+      if (!isAuthenticated) return <Redirect to="/" />;
+    }, 5 * 3600 * 1000); // check after 5 hours
+    return () => {
+      clearInterval(intervalOne);
+      clearInterval(intervalTwo);
+    }; // clear the interval
   }, []);
 
   useEffect(() => {
@@ -99,18 +105,6 @@ const Dashboard = ({
     loadTaskList('all', currentTag, 'desc');
     filterByDesc('');
   }, [loadTagList, filterByDesc]);
-
-  useEffect(() => {
-    console.log('--------------------');
-    console.log(tasks);
-    console.log(filterTasks);
-    console.log('--------------------');
-  }, [tasks, filterTasks]);
-  useEffect(() => {
-    //reload user info
-    if (isAuthenticated && !user) loadUser();
-    if (!isAuthenticated) return <Redirect to="/" />;
-  }, [user]);
 
   // filter by description function after user click filter icon
   // call task_loading() to render the spinner icons
@@ -232,7 +226,11 @@ const Dashboard = ({
                 placeholder="filter by description"
                 type="text"
                 value={filterValue}
-                onChange={(e) => setFilter(e.target.value)}
+                onChange={(e) => {
+                  setFilter(e.target.value);
+                  taskLoading();
+                  filterByDesc(e.target.value);
+                }}
               />
               <i className="fas fa-filter" onClick={(e) => filterBtn(e)}></i>
             </div>
@@ -241,7 +239,13 @@ const Dashboard = ({
                 <div
                   onClick={(e) => {
                     taskLoading();
-                    sortByTime(currentTag, 'desc');
+                    sortByTime(
+                      (currentTag === 'all') | (currentTag === '')
+                        ? currentTag
+                        : tags.filter((e) => (e.tagname = currentTag))[0]
+                            .tag_id,
+                      'asc'
+                    );
                   }}
                 >
                   time a-z
@@ -249,7 +253,13 @@ const Dashboard = ({
                 <div
                   onClick={(e) => {
                     taskLoading();
-                    sortByTime('asc', currentTag);
+                    sortByTime(
+                      (currentTag === 'all') | (currentTag === '')
+                        ? currentTag
+                        : tags.filter((e) => (e.tagname = currentTag))[0]
+                            .tag_id,
+                      'desc'
+                    );
                   }}
                 >
                   time z-a

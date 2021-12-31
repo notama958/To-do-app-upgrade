@@ -124,12 +124,11 @@ export const delTag =
  */
 export const loadTaskList = (tagid, tagname, order) => async (dispatch) => {
   try {
-    let res;
-    if (tagid === 'all' || tagid === '') {
-      res = await axios.get(`/api/list/me`);
-    } else {
-      res = await axios.get(`/api/list?tag_id=${tagid}&order=${order}`);
-    }
+    const res =
+      tagid !== 'all' || tagid === ''
+        ? await axios.get(`/api/list?tag_id=${tagid}&order=${order}`)
+        : await axios.get(`/api/list/me?order=${order}`);
+
     dispatch({
       type: LOAD_TASKS_LIST,
       payload: {
@@ -206,7 +205,7 @@ export const delTask =
   ({ task_id }) =>
   async (dispatch) => {
     try {
-      const res = await axios.delete(`api/list/${task_id}`);
+      const res = await axios.delete(`/api/list/${task_id}`);
       dispatch({
         type: REMOVE_TASK,
         payload: task_id,
@@ -219,26 +218,20 @@ export const delTask =
       });
     }
   };
-// * desc: save the task need to be edit to store
-export const setEditTask = (task) => (dispatch) => {
-  dispatch({
-    type: EDIT_TASK,
-    payload: task,
-  });
-};
+
 /**
  * GET: list?tag=<tag_name>&_sort=created&order=${order}
  * desc: sort the current list in the modal view ( perhaps it's viewing in tag group)
  * by created time A-Z or Z-A
  *
  */
-export const sortByTime = (order, tag) => async (dispatch) => {
+export const sortByTime = (tagid, order) => async (dispatch) => {
   try {
     // console.log(tag);
     const res =
-      tag !== 'all'
-        ? await axios.get(`list?tag=${tag}&_sort=created&_order=${order}`)
-        : await axios.get(`list?_sort=created&_order=${order}`);
+      tagid !== 'all'
+        ? await axios.get(`/api/list?tag_id=${tagid}&order=${order}`)
+        : await axios.get(`/api/list/me?order=${order}`);
 
     dispatch({
       type: SORT_LIST,
@@ -246,13 +239,9 @@ export const sortByTime = (order, tag) => async (dispatch) => {
     });
     dispatch(setAlert('Sorted', 'success'));
   } catch (err) {
-    dispatch(setAlert('SERVER ERROR', 'danger'));
+    dispatch(setAlert('FAILED TO SORT', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TASK_ERROR, // stop spinner loading
     });
   }
 };
@@ -263,38 +252,45 @@ export const filterByDesc = (pattern) => (dispatch) => {
     payload: pattern.toLowerCase(),
   });
 };
-// switch true/fasle backdrop
+//  save the task need to be edit to store
+export const setEditTask = (task) => (dispatch) => {
+  dispatch({
+    type: EDIT_TASK,
+    payload: task,
+  });
+};
+// switch true/false backdrop
 export const toggleBackDrop = () => (dispatch) => {
   dispatch({
     type: TOGGLE_BACKDROP,
   });
 };
-// switch true/fasle task_form
+// switch true/false task_form
 export const toggleTaskForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_TASK_FORM,
   });
 };
-// switch true/fasle edit_form
+// switch true/false edit_form
 export const toggleEditTaskForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_EDIT_TASK_FORM,
   });
 };
-// switch true/fasle edit_tag_form
+// switch true/false edit_tag_form
 export const toggleEditTagForm = (tag) => (dispatch) => {
   dispatch({
     type: TOGGLE_EDIT_TAG_FORM,
     payload: tag,
   });
 };
-// switch true/fasle tag_form
+// switch true/false tag_form
 export const toggleTagForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_TAG_FORM,
   });
 };
-// switch true/fasle del_form
+// switch true/false del_form
 export const toggleDelForm = (status, delItem) => (dispatch) => {
   dispatch({
     type: TOGGLE_DEL_FORM,
