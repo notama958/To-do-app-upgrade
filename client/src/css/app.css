@@ -91,6 +91,7 @@ img {
   color: whitesmoke;
   text-align: center;
   align-items: center;
+  position: relative;
 }
 .alert-danger {
   background: #dc3545;
@@ -154,9 +155,11 @@ img {
 .btn-white.learn-more {
   border: 0;
   background-color: whitesmoke;
+  padding: 0px;
+  /* border: 1px solid black; */
+  padding-right: 10px;
 }
 .btn-white.learn-more:hover {
-  background: white;
   opacity: 50%;
   border-color: #f67722;
   font-weight: bold;
@@ -191,4 +194,18 @@ img {
     -o-transform: rotate(680deg);
     -ms-transform: rotate(680deg);
   }
+}
+.user-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 200px;
+}
+.login {
+  color: white;
+  font-weight: bold;
+}
+.register {
+  color: #333;
+  font-weight: bold;
 }

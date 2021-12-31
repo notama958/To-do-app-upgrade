@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setLoading } from '../../actions/alert';
+import { tagLoading, taskLoading } from '../../actions/alert';
 import {
   toggleDelForm,
   toggleBackDrop,
@@ -21,7 +21,8 @@ const DelForm = ({
   toggleBackDrop,
   delItem,
   type,
-  setLoading,
+  tagLoading,
+  taskLoading,
   delFunc,
   tasks,
 }) => {
@@ -69,8 +70,8 @@ const DelForm = ({
             }}
           >
             Delete this <small>{delItem.item.name}</small> means{' '}
-            {tasks.filter((e) => e.tag === delItem.item.name).length} (tasks)
-            will be changed to normal
+            {tasks.filter((e) => e.tagname === delItem.item.tagname).length}{' '}
+            (tasks) will be changed to normal
           </p>
         ) : (
           ''
@@ -89,11 +90,11 @@ const DelForm = ({
         <button
           className="btn btn-danger"
           onClick={(e) => {
-            setLoading();
+            if (isTag) tagLoading();
+            if (isTask) taskLoading();
             delFunc(delItem.item);
             toggleDelForm(false, null);
             toggleBackDrop();
-            loadTagList();
           }}
         >
           I'm Sure
@@ -105,12 +106,11 @@ const DelForm = ({
 DelForm.propTypes = {
   toggleDelForm: PropTypes.func.isRequired,
   delFunc: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   toggleBackDrop: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
-  loading: dashboard.loading,
+  tag_loading: dashboard.tag_loading,
   del_form: dashboard.del_form,
   delItem: dashboard.delItem,
   tasks: dashboard.tasks,
@@ -118,5 +118,6 @@ const mapStateToProps = ({ dashboard }) => ({
 export default connect(mapStateToProps, {
   toggleDelForm,
   toggleBackDrop,
-  setLoading,
+  tagLoading,
+  taskLoading,
 })(DelForm);

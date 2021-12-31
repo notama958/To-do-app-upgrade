@@ -6,7 +6,7 @@ import {
   toggleBackDrop,
   toggleEditTagForm,
 } from '../../actions/dashboard';
-import { setAlert, setLoading } from '../../actions/alert';
+import { setAlert, tagLoading } from '../../actions/alert';
 /**
  * This component renders the Edit Tag form
  * @param {*} store's props and functions to modify db at actions/dashboard
@@ -17,22 +17,22 @@ const TagForm = ({
   toggleBackDrop,
   toggleEditTagForm,
   setAlert,
-  setLoading,
+  tagLoading,
   editTag,
   tasks,
 }) => {
-  const [tag, setTag] = useState(editTag.name); // hold tag value
+  const [tag, setTag] = useState(editTag.tagname); // hold tag value
   // submit form
   // first render spinner
   // then create a tag object with modified value
   // call modifyTag
   const onSubmit = () => {
-    setLoading();
+    tagLoading();
     if (tag !== '') {
-      const tagObj = { id: editTag.id, name: tag };
-      modifyTag(editTag.id, tagObj, editTag);
+      const tagObj = { tagname: tag };
+      modifyTag(editTag.tag_id, tagObj);
     } else {
-      setLoading(false); // stop the forever spinner
+      tagLoading(false); // stop the forever spinner
       setAlert('EMPTY TAG NAME', 'danger'); // setAlert if sthin wrong
     }
   };
@@ -43,8 +43,8 @@ const TagForm = ({
       </div>
       <div className="modal__layout">
         <label>
-          There are {tasks.filter((e) => e.tag === editTag.name).length} task(s)
-          under this
+          There are {tasks.filter((e) => e.tagname === editTag.tagname).length}{' '}
+          task(s) under this
         </label>
         <input
           type="text"
@@ -84,12 +84,12 @@ TagForm.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,
   toggleEditTagForm: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
+  tagLoading: PropTypes.func.isRequired,
   editTag: PropTypes.object.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   backdrop: dashboard.backdrop,
-  loading: dashboard.loading,
+  tag_loading: dashboard.tag_loading,
   edit_tag_form: dashboard.edit_tag_form,
   editTag: dashboard.editTag,
   tasks: dashboard.tasks,
@@ -99,5 +99,5 @@ export default connect(mapStateToProps, {
   toggleBackDrop,
   toggleEditTagForm,
   setAlert,
-  setLoading,
+  tagLoading,
 })(TagForm);

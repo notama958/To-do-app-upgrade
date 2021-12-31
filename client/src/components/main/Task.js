@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
-import { setLoading } from '../../actions/alert';
+import { taskLoading } from '../../actions/alert';
 import {
   delTask,
   toggleBackDrop,
@@ -27,14 +27,16 @@ const Task = ({
   toggleEditTaskForm,
   toggleDelForm,
   setEditTask,
-  setLoading,
+  taskLoading,
 }) => {
   const [dueTask, setDueTask] = useState(checkDate(task.alarm)); // hold boolean check for reminder date
   return (
     <Fragment>
       <div
-        className={`task-item ${task.status} ${dueTask ? 'due' : ''}`}
-        key={task.id}
+        className={`task-item ${task.status === 1 ? 'checked' : 'unchecked'} ${
+          dueTask ? 'due' : ''
+        }`}
+        key={task.task_id}
       >
         <p>
           <b>
@@ -43,13 +45,13 @@ const Task = ({
             {task.desc}
           </b>
           {' - '}
-          <small style={{ fontStyle: 'normal' }}>{task.tag}</small>{' '}
+          <small style={{ fontStyle: 'normal' }}>{task.tagname}</small>{' '}
           {task.alarm !== null ? <i className="far fa-calendar-alt"></i> : ''}
         </p>
         <div className="control-btns">
           <button
             onClick={(e) => {
-              setLoading();
+              taskLoading();
               setEditTask(task);
               // toggle the edit form
               toggleBackDrop();
@@ -93,7 +95,7 @@ Task.propTypes = {
   toggleEditTaskForm: PropTypes.func.isRequired,
   setEditTask: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
+  taskLoading: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {
@@ -104,5 +106,5 @@ export default connect(mapStateToProps, {
   setEditTask,
   toggleEditTaskForm,
   filterByDesc,
-  setLoading,
+  taskLoading,
 })(Task);

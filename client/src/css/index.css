@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0.7rem 2rem;
-  position: fixed;
+  position: relative;
   z-index: 1;
   width: 100%;
   top: 0;
@@ -131,4 +131,14 @@
   width: 50%;
   height: 300px;
   margin: 5px;
+}
+.my-1 {
+  margin: 0.3rem 0;
+  color: black;
+  text-decoration: underline;
+  font-style: italic;
+}
+.my-1:hover {
+  color: whitesmoke;
+  transform: translate(5px, 5px);
 }

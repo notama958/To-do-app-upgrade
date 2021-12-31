@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { form } from '../layout/form';
 import { v4 as uuidv4 } from 'uuid';
-import { getCurrentTime, Greeting, setLoading } from '../../actions/alert';
+import {
+  getCurrentTime,
+  Greeting,
+  tagLoading,
+  taskLoading,
+} from '../../actions/alert';
 import {
   loadTaskList,
   loadTagList,
@@ -27,6 +32,7 @@ import Spinner from '../layout/Spinner';
 import Alert from '../layout/Alert';
 import DelForm from './DelForm';
 import EditTagForm from './EditTagForm';
+import { loadUser } from '../../actions/auth';
 /**
  * Styling object for Kanban button
  */
@@ -40,65 +46,97 @@ const linkStyle = {
  * @params {*} includes store's props and functions from actions/dashboard.js
  */
 const Dashboard = ({
-  loading,
+  // effects
+  tagLoading,
+  taskLoading,
+  task_loading,
+  tag_loading,
+  backdrop,
+  toggleBackDrop,
+  // Tag related
+  tag_form,
   filterTasks,
   tags,
-  backdrop,
-  task_form,
-  tag_form,
   edit_tag_form,
-  edit_form,
   currentTag,
-  loadTaskList,
   loadTagList,
-  toggleBackDrop,
-  toggleTaskForm,
   toggleTagForm,
+  delTag,
+  // Task related
+  tasks,
+  task_form,
+  edit_form,
+  loadTaskList,
+  toggleTaskForm,
   addTask,
   sortByTime,
   filterByDesc,
-  setLoading,
   del_form,
   delItem,
-  delTag,
   delTask,
+  //auth
+  isAuthenticated,
+  auth_loading,
+  user,
 }) => {
   const [enterBar, setEnterBar] = useState(''); // get the enterBar value
   const [greeting, updateGreeting] = useState(Greeting()); // check the timing <String>
   const [filterValue, setFilter] = useState(''); // get the keyword entered
-  // filter by description function after user click filter icon
-  // call setLoading() to render the spinner icons
-  // call filterByDesc(<String>) to filter the tasks contain the "keyword"
-  const filterBtn = () => {
-    setLoading();
-    filterByDesc(filterValue);
-  };
 
   useEffect(() => {
-    setLoading(); // render the spinner icons
-    loadTaskList(currentTag); // load the list corresponds to the currentTag it is
-    // the tag could be "all" "normal" " priority" ,..
-    loadTagList(); // load tag list
-    filterByDesc(''); // ensure there is no filter by keyword
-    const interval = setInterval(() => Greeting(), 18000000);
-    // gretting user based on time "Morning" "Afternoon" "Evening"
-    return () => clearInterval(interval); // clear the interval
-  }, [loadTaskList, loadTagList, filterByDesc]);
+    // greeting user based on time "Morning" "Afternoon" "Evening"
+    const intervalOne = setInterval(() => Greeting(), 18000000);
+    const intervalTwo = setInterval(() => {
+      if (isAuthenticated && !user) loadUser();
+      if (!isAuthenticated) return <Redirect to="/" />;
+    }, 5 * 3600 * 1000); // check after 5 hours
+    return () => {
+      clearInterval(intervalOne);
+      clearInterval(intervalTwo);
+    }; // clear the interval
+  }, []);
+
+  useEffect(() => {
+    // the tag could be "all" "normal" "priority" ,..
+    tagLoading();
+    loadTagList();
+    // load the list corresponds to the currentTag
+    taskLoading();
+    loadTaskList('all', currentTag, 'desc');
+    filterByDesc('');
+  }, [loadTagList, filterByDesc]);
+
+  // filter by description function after user click filter icon
+  // call task_loading() to render the spinner icons
+  // call filterByDesc(<String>) to filter the tasks contain the "keyword"
+  const filterBtn = () => {
+    taskLoading();
+    filterByDesc(filterValue);
+  };
 
   // for the quickly add bar
   const quickAdd = () => {
     if (enterBar !== '') {
       let createdForm = form();
-      createdForm.id = uuidv4();
       createdForm.desc = enterBar;
-      createdForm.status = 'unchecked';
+      createdForm.status = 0;
       createdForm.created = new Date();
-      createdForm.tag = currentTag === 'all' ? 'normal' : currentTag;
-      setLoading();
+      createdForm.tagname = currentTag === 'all' ? 'normal' : currentTag;
+      createdForm.tag_id =
+        currentTag === 'all'
+          ? tags.filter((el) => el.tagname === 'normal')[0].tag_id
+          : tags.filter((el) => el.tagname === currentTag)[0].tag_id;
+      taskLoading();
       addTask(createdForm);
       filterByDesc('');
       setEnterBar('');
-      currentTag === 'all' ? loadTaskList('all') : loadTaskList(currentTag);
+      currentTag === 'all'
+        ? loadTaskList('all', 'all', 'desc')
+        : loadTaskList(
+            tags.filter((el) => el.tagname === currentTag)[0].tag_id,
+            currentTag,
+            'desc'
+          );
     }
   };
   return (
@@ -149,15 +187,18 @@ const Dashboard = ({
           <button
             className="tags add"
             onClick={(e) => {
-              setLoading();
-              loadTaskList('all');
+              // load all tasks
+              taskLoading();
+              loadTaskList('all', 'all', 'desc');
+              // load tag list
+              tagLoading();
               loadTagList();
             }}
           >
             show all
           </button>
           <ul className="dropdown ">
-            {loading ? (
+            {tag_loading ? (
               <Spinner />
             ) : (
               tags.map((el) => <Tag key={el.id} tag={el} />)
@@ -168,7 +209,9 @@ const Dashboard = ({
       <div className="container-right">
         <Alert />
         <div className="modal greeting">
-          <h1>Good {greeting} ~ Master ~</h1>
+          <h1>
+            Good {greeting} ~ {user ? user[0].username : 'Master'} ~
+          </h1>
         </div>
         <div className="modal parent">
           <div className="title">
@@ -183,7 +226,11 @@ const Dashboard = ({
                 placeholder="filter by description"
                 type="text"
                 value={filterValue}
-                onChange={(e) => setFilter(e.target.value)}
+                onChange={(e) => {
+                  setFilter(e.target.value);
+                  taskLoading();
+                  filterByDesc(e.target.value);
+                }}
               />
               <i className="fas fa-filter" onClick={(e) => filterBtn(e)}></i>
             </div>
@@ -191,16 +238,28 @@ const Dashboard = ({
               <div className="sort-tags">
                 <div
                   onClick={(e) => {
-                    setLoading();
-                    sortByTime('desc', currentTag);
+                    taskLoading();
+                    sortByTime(
+                      (currentTag === 'all') | (currentTag === '')
+                        ? currentTag
+                        : tags.filter((e) => (e.tagname = currentTag))[0]
+                            .tag_id,
+                      'asc'
+                    );
                   }}
                 >
                   time a-z
                 </div>
                 <div
                   onClick={(e) => {
-                    setLoading();
-                    sortByTime('asc', currentTag);
+                    taskLoading();
+                    sortByTime(
+                      (currentTag === 'all') | (currentTag === '')
+                        ? currentTag
+                        : tags.filter((e) => (e.tagname = currentTag))[0]
+                            .tag_id,
+                      'desc'
+                    );
                   }}
                 >
                   time z-a
@@ -210,14 +269,11 @@ const Dashboard = ({
           </div>
 
           <div className="task-list">
-            {loading ? (
+            {task_loading ? (
               <Spinner />
             ) : (
               // new tag should be added at front in the modal box
-              filterTasks
-                .slice(0)
-                .reverse()
-                .map((el) => <Task task={el} key={el.id} />)
+              filterTasks.map((el) => <Task task={el} key={el.id} />)
             )}
 
             <div className="enter-bar">
@@ -265,24 +321,33 @@ Dashboard.propTypes = {
   sortByTime: PropTypes.func.isRequired,
   filterByDesc: PropTypes.func.isRequired,
   addTask: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
+  task_loading: PropTypes.func.isRequired,
+  tag_loading: PropTypes.func.isRequired,
   delTask: PropTypes.func.isRequired,
   delTag: PropTypes.func.isRequired,
 };
-const mapStateToProps = ({ dashboard }) => ({
-  local_time: dashboard.local_time,
-  filterTasks: dashboard.filterTasks,
-  tags: dashboard.tags,
+const mapStateToProps = ({ dashboard, auth }) => ({
+  // effects
+  task_loading: dashboard.task_loading,
+  tag_loading: dashboard.tag_loading,
   backdrop: dashboard.backdrop,
+  //task
+  tasks: dashboard.tasks,
+  filterTasks: dashboard.filterTasks,
   task_form: dashboard.task_form,
-  tag_form: dashboard.tag_form,
-  currentTag: dashboard.currentTag,
   edit_form: dashboard.edit_form,
-  loading: dashboard.loading,
   del_form: dashboard.del_form,
   delItem: dashboard.delItem,
+  //tag
+  tags: dashboard.tags,
+  tag_form: dashboard.tag_form,
+  currentTag: dashboard.currentTag,
   edit_tag_form: dashboard.edit_tag_form,
   editTag: dashboard.editTag,
+  //auth
+  isAuthenticated: auth.isAuthenticated,
+  auth_loading: auth.loading,
+  user: auth.user,
 });
 export default connect(mapStateToProps, {
   getCurrentTime,
@@ -296,5 +361,6 @@ export default connect(mapStateToProps, {
   sortByTime,
   filterByDesc,
   addTask,
-  setLoading,
+  taskLoading,
+  tagLoading,
 })(Dashboard);

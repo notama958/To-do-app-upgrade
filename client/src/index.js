@@ -1,7 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-// import reportWebVitals from './reportWebVitals';
+import store from './store';
+// loading CSS
+import './css/app.css';
+import './css/index.css';
+import './css/dashboard.css';
+import './css/form.css';
+import './css/kanban.css';
+import './css/mobile-version.css';
+import './css/auth.css';
 ReactDOM.render(
   <React.StrictMode>
     <App />

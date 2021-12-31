@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { v4 as uuidv4 } from 'uuid';
 import { connect } from 'react-redux';
 import { addTag, toggleBackDrop, toggleTagForm } from '../../actions/dashboard';
-import { setAlert, setLoading } from '../../actions/alert';
+import { setAlert, tagLoading } from '../../actions/alert';
 /**
  * This component renders tag form for Add new tag function
  * @param {*} store's props and functions to modify db at actions/dashboard
@@ -15,7 +15,7 @@ const TagForm = ({
   toggleBackDrop,
   toggleTagForm,
   setAlert,
-  setLoading,
+  tagLoading,
 }) => {
   const [tag, setTag] = useState(''); // hold user input
   // submit form
@@ -23,13 +23,13 @@ const TagForm = ({
   // create new object
   // call toggleTagForm to add new tag
   const onSubmit = () => {
-    setLoading();
+    tagLoading();
     try {
       if (tags.filter((e) => e.name === tag).length > 0) {
         throw 'DUPLICATE TAG NAME';
       }
       if (tag !== '') {
-        let tagObj = { id: uuidv4(), name: tag };
+        let tagObj = { tagname: tag };
         addTag(tagObj);
         toggleTagForm();
         toggleBackDrop();
@@ -38,7 +38,7 @@ const TagForm = ({
       }
     } catch (e) {
       setAlert(e, 'danger');
-      setLoading(false);
+      tagLoading(false);
       toggleTagForm();
       toggleBackDrop();
     }
@@ -86,7 +86,7 @@ TagForm.propTypes = {
   toggleBackDrop: PropTypes.func.isRequired,
   toggleTagForm: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
+  tagLoading: PropTypes.func.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
   tags: dashboard.tags,
@@ -96,5 +96,5 @@ export default connect(mapStateToProps, {
   toggleBackDrop,
   toggleTagForm,
   setAlert,
-  setLoading,
+  tagLoading,
 })(TagForm);

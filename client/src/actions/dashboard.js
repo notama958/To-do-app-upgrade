@@ -21,23 +21,26 @@ import {
   TOGGLE_EDIT_TAG_FORM,
   EDIT_TASK,
   TOGGLE_DEL_FORM,
+  TASK_ERROR,
+  TAG_ERROR,
 } from './types';
 
-/**
+//------------------------TAG ACTIONS----------------------------//
+
+/** TESTED OKAY
  * GET: tags/
  * desc: get array of tags in json
  *
  */
 export const loadTagList = () => async (dispatch) => {
   try {
-    const res = await axios.get('tags');
-
+    const res = await axios.get('/api/tag');
     dispatch({
       type: LOAD_TAGS_LIST,
       payload: res.data,
     });
   } catch (err) {
-    dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB', 'danger'));
+    dispatch(setAlert('CANNOT TAGS FROM THE SERVER DB', 'danger'));
     dispatch({
       type: EMPTY_TAGS,
       payload: {
@@ -49,59 +52,35 @@ export const loadTagList = () => async (dispatch) => {
 };
 
 /**
- * PUT: tags/${id}
- * desc: edit the tag in tags list and modify every task using this tag
- * this might drop the connection to the db sometimes
+ * PUT: /api/tag/${id}
+ * desc: edit the tag in tags list
+ * body: request body includes {"tagname":"XXXX"}
+ * params: id (tag_id)
  */
-export const modifyTag = (id, newtagData, oldtagData) => async (dispatch) => {
+export const modifyTag = (id, newtagData) => async (dispatch) => {
   try {
-    let beforeTagChanged = await axios.get(`list?tag=${oldtagData.name}`);
-    beforeTagChanged = beforeTagChanged.data;
-    const res = await axios.put(`tags/${id}`, newtagData);
-    (async function changing() {
-      await Promise.all(
-        beforeTagChanged.map(async (t) => {
-          const newObj = { id: t.id, tag: newtagData.name };
-          try {
-            const modifiedTask = await axios.patch(`list/${t.id}`, newObj);
-          } catch (err) {
-            dispatch(setAlert('SOMETHING WRONG', 'danger'));
-            dispatch({
-              type: SERVER_ERROR,
-              payload: {
-                msg: err.response.statusText,
-                status: err.response.status,
-              },
-            });
-          }
-        })
-      ).then((e) => console.log('finished modify tag'));
-    })();
+    const res = await axios.put(`/api/tag/${id}`, newtagData);
     dispatch({
       type: MODIFY_TAG,
-      payload: res.data,
+      payload: { tag_id: id, tagname: newtagData.tagname },
     });
     dispatch(setAlert('TAG MODIFED', 'success'));
   } catch (err) {
     console.log(err);
     dispatch(setAlert('CANNOT MODIFY TAG', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TAG_ERROR, // stop spinner loading
     });
   }
 };
-/**
+/** TESTED OKAY
  * GET: POST/
  * desc: add a new tag to the tags list
- *
+ * body: request body includes { "tagname": "XXXX"}
  */
 export const addTag = (tag) => async (dispatch) => {
   try {
-    const res = await axios.post('tags', tag);
+    const res = await axios.post('/api/tag', tag);
     dispatch({
       type: ADD_TAG,
       payload: res.data,
@@ -110,76 +89,52 @@ export const addTag = (tag) => async (dispatch) => {
   } catch (err) {
     dispatch(setAlert('CANNOT ADD TAG', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TAG_ERROR, // stop spinner loading
     });
   }
 };
-/**
- * DELETE: tags/${id}
- * desc: remove one tag from tags list and modify any task using this tag
- * this might drop the connection to the db sometimes
+
+/** TESTED OKAY
+ * DELETE: api/tag/${id}
+ * desc: remove one tag from tags list
+ * params: id (tag_id)
  */
 export const delTag =
-  ({ id, name }) =>
+  ({ tag_id, tagname }) =>
   async (dispatch) => {
     try {
-      let beforeTagChanged = await axios.get(`list?tag=${name}`);
-      beforeTagChanged = beforeTagChanged.data;
-      console.log(beforeTagChanged);
-      const res = await axios.delete(`tags/${id}`);
+      const res = await axios.delete(`api/tag/${tag_id}`);
       dispatch({
         type: REMOVE_TAG,
-        payload: id,
+        payload: tag_id,
       });
-      (async function changing() {
-        await Promise.all(
-          beforeTagChanged.map(async (t) => {
-            const newObj = { id: t.id, tag: 'normal' };
-            try {
-              const modifiedTask = await axios.patch(`list/${t.id}`, newObj);
-            } catch (err) {
-              dispatch(setAlert('SOMETHING WRONG', 'danger'));
-              dispatch({
-                type: SERVER_ERROR,
-                payload: {
-                  msg: err.response.statusText,
-                  status: err.response.status,
-                },
-              });
-            }
-          })
-        ).then((e) => console.log('finished modify tag'));
-      })();
       dispatch(setAlert('TAG REMOVED', 'success'));
     } catch (err) {
       dispatch(setAlert('CANNOT DELETE TAG', 'danger'));
       dispatch({
-        type: SERVER_ERROR,
-        payload: {
-          msg: err.response.statusText,
-          status: err.response.status,
-        },
+        type: TAG_ERROR, // stop spinner loading
       });
     }
   };
-
-/**
+//------------------------TASK ACTIONS----------------------------//
+/** TESTED OKAY
  * GET: list/?tag=${tag}
- * desc: get array of tasks (can be use to filter task by tag name) in json
- *
+ * desc: get array of tasks (can be use to filter task by tag name)
+ * body: request body includes {"tag_id":"XXXX","order":"asc|desc"}
  */
-export const loadTaskList = (tag) => async (dispatch) => {
+export const loadTaskList = (tagid, tagname, order) => async (dispatch) => {
   try {
-    let res;
-    if (tag !== 'all') res = await axios.get(`list?tag=${tag}`);
-    else res = await axios.get('list');
+    const res =
+      tagid !== 'all' || tagid === ''
+        ? await axios.get(`/api/list?tag_id=${tagid}&order=${order}`)
+        : await axios.get(`/api/list/me?order=${order}`);
+
     dispatch({
       type: LOAD_TASKS_LIST,
-      payload: { tag: tag, data: res.data },
+      payload: {
+        tag: tagid === 'all' || tagid === '' ? 'all' : tagname,
+        data: res.data,
+      },
     });
   } catch (err) {
     dispatch(setAlert('CANNOT FETCH FROM THE SERVER DB', 'danger'));
@@ -192,6 +147,7 @@ export const loadTaskList = (tag) => async (dispatch) => {
     });
   }
 };
+
 /**
  * POST: list/
  * desc: add new task to list
@@ -199,45 +155,44 @@ export const loadTaskList = (tag) => async (dispatch) => {
  */
 export const addTask = (taskForm) => async (dispatch) => {
   try {
-    const res = await axios.post('list', taskForm);
+    let newTaskForm = Object.assign({}, taskForm);
+    delete taskForm.tagname;
+    delete newTaskForm.tag_id;
+    const res = await axios.post('/api/list', taskForm);
     dispatch({
       type: ADD_TASK,
-      payload: res.data,
+      payload: newTaskForm,
     });
-    dispatch(setAlert('Added Task', 'success'));
+    dispatch(setAlert('TASK ADDED', 'success'));
   } catch (err) {
-    dispatch(setAlert('CANNOT ADD TASK', 'danger'));
     console.log(err);
+    dispatch(setAlert('CANNOT ADD TASK', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TASK_ERROR, // stop spinner loading
     });
   }
 };
+
 /**
  * PATCH: list/${id}
  * desc: modify a task in list
  *
  */
-export const modifyTask = (id, taskForm) => async (dispatch) => {
+export const modifyTask = (taskForm) => async (dispatch) => {
   try {
-    const res = await axios.patch(`list/${id}`, taskForm);
+    let newTaskForm = Object.assign({}, taskForm);
+    delete taskForm.tagname;
+    delete newTaskForm.tag_id;
+    const res = await axios.put(`/api/list`, taskForm);
     dispatch({
       type: MODIFY_TASK,
-      payload: res.data,
+      payload: newTaskForm,
     });
-    dispatch(setAlert('Modified Task', 'success'));
+    dispatch(setAlert('TASK MODIFIED', 'success'));
   } catch (err) {
     dispatch(setAlert('CANNOT EDIT TASK', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TASK_ERROR, // stop spinner loading
     });
   }
 };
@@ -247,46 +202,36 @@ export const modifyTask = (id, taskForm) => async (dispatch) => {
  *
  */
 export const delTask =
-  ({ id }) =>
+  ({ task_id }) =>
   async (dispatch) => {
     try {
-      const res = await axios.delete(`list/${id}`);
+      const res = await axios.delete(`/api/list/${task_id}`);
       dispatch({
         type: REMOVE_TASK,
-        payload: id,
+        payload: task_id,
       });
-      dispatch(setAlert('Removed Task', 'success'));
+      dispatch(setAlert('TASK REMOVED', 'success'));
     } catch (err) {
       dispatch(setAlert('CANNOT DELETE TASK', 'danger'));
       dispatch({
-        type: SERVER_ERROR,
-        payload: {
-          msg: err.response.statusText,
-          status: err.response.status,
-        },
+        type: TASK_ERROR, // stop spinner loading
       });
     }
   };
-// * desc: save the task need to be edit to store
-export const setEditTask = (task) => (dispatch) => {
-  dispatch({
-    type: EDIT_TASK,
-    payload: task,
-  });
-};
+
 /**
  * GET: list?tag=<tag_name>&_sort=created&order=${order}
  * desc: sort the current list in the modal view ( perhaps it's viewing in tag group)
  * by created time A-Z or Z-A
  *
  */
-export const sortByTime = (order, tag) => async (dispatch) => {
+export const sortByTime = (tagid, order) => async (dispatch) => {
   try {
     // console.log(tag);
     const res =
-      tag !== 'all'
-        ? await axios.get(`list?tag=${tag}&_sort=created&_order=${order}`)
-        : await axios.get(`list?_sort=created&_order=${order}`);
+      tagid !== 'all'
+        ? await axios.get(`/api/list?tag_id=${tagid}&order=${order}`)
+        : await axios.get(`/api/list/me?order=${order}`);
 
     dispatch({
       type: SORT_LIST,
@@ -294,13 +239,9 @@ export const sortByTime = (order, tag) => async (dispatch) => {
     });
     dispatch(setAlert('Sorted', 'success'));
   } catch (err) {
-    dispatch(setAlert('SERVER ERROR', 'danger'));
+    dispatch(setAlert('FAILED TO SORT', 'danger'));
     dispatch({
-      type: SERVER_ERROR,
-      payload: {
-        msg: err.response.statusText,
-        status: err.response.status,
-      },
+      type: TASK_ERROR, // stop spinner loading
     });
   }
 };
@@ -311,38 +252,45 @@ export const filterByDesc = (pattern) => (dispatch) => {
     payload: pattern.toLowerCase(),
   });
 };
-// switch true/fasle backdrop
+//  save the task need to be edit to store
+export const setEditTask = (task) => (dispatch) => {
+  dispatch({
+    type: EDIT_TASK,
+    payload: task,
+  });
+};
+// switch true/false backdrop
 export const toggleBackDrop = () => (dispatch) => {
   dispatch({
     type: TOGGLE_BACKDROP,
   });
 };
-// switch true/fasle task_form
+// switch true/false task_form
 export const toggleTaskForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_TASK_FORM,
   });
 };
-// switch true/fasle edit_form
+// switch true/false edit_form
 export const toggleEditTaskForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_EDIT_TASK_FORM,
   });
 };
-// switch true/fasle edit_tag_form
+// switch true/false edit_tag_form
 export const toggleEditTagForm = (tag) => (dispatch) => {
   dispatch({
     type: TOGGLE_EDIT_TAG_FORM,
     payload: tag,
   });
 };
-// switch true/fasle tag_form
+// switch true/false tag_form
 export const toggleTagForm = () => (dispatch) => {
   dispatch({
     type: TOGGLE_TAG_FORM,
   });
 };
-// switch true/fasle del_form
+// switch true/false del_form
 export const toggleDelForm = (status, delItem) => (dispatch) => {
   dispatch({
     type: TOGGLE_DEL_FORM,
