@@ -12,7 +12,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 // faker
 const faker = require('faker');
-const { required } = require('nodemon/lib/config');
 
 /**
  * @route  GET user/auth
@@ -24,8 +23,8 @@ router.get('/', auth, async (req, res) => {
     if (!req.user.id) {
       return res.status(401).json({ message: 'Token is invalid' });
     }
-    // request is passed from auth
     const user = await db.getUserById(req.user.id);
+    console.log('Info of user ', req.user.id);
     res.status(200).json(user);
   } catch (err) {
     console.log(err);
@@ -74,6 +73,7 @@ router.post(
           res.json({ token });
         }
       );
+      console.log('Login user ', user[0].user_id);
     } catch (err) {
       console.log(err);
       res.status(500).json({
@@ -121,7 +121,6 @@ router.post(
       };
       const salt = await brypt.genSalt(10);
       user.password = await brypt.hash(password, salt);
-      console.log(user);
       await db.userRegister(user);
       jwt.sign(
         {
@@ -136,6 +135,7 @@ router.post(
           res.json({ token });
         }
       );
+      console.log('Register user ', user.user_id);
     } catch (err) {
       console.log(err.message);
       res.status(500).send('something went wrong');
@@ -151,6 +151,7 @@ router.delete('/', auth, async (req, res) => {
   try {
     // remove user and any tags + tasks under this user
     await db.removeUser(req.user.id);
+    console.log('Delete user ', req.user.id);
     res.json({ msg: 'User removed' });
   } catch (err) {
     console.error(err);
@@ -175,6 +176,7 @@ router.put('/', auth, async (req, res) => {
       hashedPwd = await brypt.hash(password, salt);
       await db.updatePassword(req.user.id, hashedPwd);
     }
+    console.log('Update user ', req.user.id);
     res.json({ msg: 'User Updated' });
   } catch (err) {
     console.error(err);

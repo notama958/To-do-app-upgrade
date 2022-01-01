@@ -16,8 +16,7 @@ const faker = require('faker');
 router.get('/', auth, async (req, res) => {
   try {
     const tags = await db.getTag(req.user.id);
-    console.log(req.user.id);
-    console.log(tags);
+    console.log('GET/ tag list of user ', req.user.id);
     res.status(200).json(tags);
   } catch (err) {
     console.log(err);
@@ -58,6 +57,7 @@ router.post(
         owner_id: req.user.id,
       };
       const newTag = await db.addTag(tag);
+      console.log('Added a tag ', tag.tag_id);
       return res.status(200).json(tag);
     } catch (err) {
       console.log(err);
@@ -136,6 +136,7 @@ router.delete('/:id', auth, async (req, res) => {
     }
     // meet all criteria => delete it
     await db.delTag(req.params.id);
+    console.log('Deleted tag ', req.params.id);
     return res.status(200).json({ msg: 'tag deleted' });
   } catch (err) {
     console.log(err);

@@ -17,6 +17,7 @@ router.get('/me', auth, async (req, res) => {
       req.user.id,
       req.query.order ? req.query.order : 'desc'
     );
+    console.log('GET/ tasks from user ', req.user.id);
     return res.status(200).json(tasks);
   } catch (err) {
     console.log(err);
@@ -61,8 +62,8 @@ router.post(
       user_id: req.user.id,
     };
     try {
-      console.log(taskObj);
       const result = await db.addTask(taskObj);
+      console.log('A new task added ', taskObj.task_id);
       return res.status(200).json({ msg: 'task added' });
     } catch (err) {
       console.error(err.message);
@@ -108,6 +109,7 @@ router.put(
         return res.status(404).json({ msg: 'non existence task' });
       await db.modifyTask(taskObj, task_id);
       taskObj.task_id = task_id;
+      console.log('Modified task ', task_id);
       return res.status(200).json(taskObj);
     } catch (err) {
       console.error(err.message);
@@ -130,6 +132,7 @@ router.delete('/:id', auth, async (req, res) => {
       return res.status(404).json({ msg: 'non existence task' });
     }
     const deleted = await db.delTask(req.params.id);
+    console.log('Deleted task ', req.params.id);
     res.status(200).json({ msg: 'task deleted' });
   } catch (err) {
     console.error(err.message);
