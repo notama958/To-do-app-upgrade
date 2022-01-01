@@ -18,9 +18,13 @@ const Navbar = ({ manualToggle, logout, isAuthenticated, loading }) => {
   const [location, setLocation] = useState(useLocation()); // check location for kanban page
   const authLinks = (
     <ul>
-      <li>
-        <Link to="/profiles">Profile</Link>
-      </li>
+      {location.pathname.split('/')[1] !== 'profile' ? (
+        <li>
+          <Link to="/profile">Profile</Link>
+        </li>
+      ) : (
+        ''
+      )}
       <li>
         <Link onClick={logout} to="#!">
           <i className="fas fa-sign-out-alt"></i>{' '}

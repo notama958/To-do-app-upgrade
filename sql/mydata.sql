@@ -19,6 +19,10 @@ create table tag
     , owner_id          integer
     , constraint tag_id_primary_key
     primary key (tag_id)
+    , constraint    owner_id_foreign_key
+    foreign key (owner_id)
+    references  user (user_id)
+    on delete cascade
 
 );
 
@@ -34,13 +38,9 @@ create table list
     , alarm             timestamp  -- it's not mandatory to have alarm for a task
     , tag_id            integer         not null
     , user_id           integer         not null
-    , constraint    tag_id_foreign_key
-    foreign key (tag_id)
-    references  tag (tag_id)
-    on delete cascade
     , constraint    user_id_foreign_key
     foreign key (user_id)
-    references  user (userid)
+    references  user (user_id)
     on delete cascade
 
 );
@@ -58,3 +58,6 @@ values (100,"priority")
 , (101,"important")
 ,(102,"normal")
 ;
+
+-- foreign keys are not activated by default
+PRAGMA foreign_keys = ON;

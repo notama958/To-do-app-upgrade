@@ -4,8 +4,8 @@ const database = require('knex')(config);
 
 (async () => {
   return database
-    .raw('select 1+1 as result')
-    .then((res) => console.log('DB connected', res[0]))
+    .raw('PRAGMA foreign_keys = ON;') // -- foreign keys are not activated by default
+    .then(console.log('\nDB connected'))
     .catch((err) => {
       console.log('DB not connected');
       console.log(err);

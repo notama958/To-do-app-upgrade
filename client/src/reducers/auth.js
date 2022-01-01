@@ -6,7 +6,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
-  DELETE_ACCOUNT,
+  DELETE_PROFILE,
+  UPDATE_PROFILE,
 } from '../actions/types';
 
 //authentication redux store's prop
@@ -21,13 +22,15 @@ const initState = {
 export default function (state = initState, action) {
   const { type, payload } = action;
   switch (type) {
+    // load user
     case USER_LOADED:
       return {
         ...state,
         isAuthenticated: true,
         loading: false,
-        user: payload, // where to get username,email, avatar,
+        user: payload,
       };
+    //login successful
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem('token', payload.token);
@@ -37,11 +40,12 @@ export default function (state = initState, action) {
         isAuthenticated: true,
         loading: false,
       };
-    // remove localStorage token and remove all user infos
+    // login/register fail, delete account, auth error
+    case UPDATE_PROFILE:
     case LOGIN_FAIL:
     case AUTH_ERROR:
     case REGISTER_FAIL:
-    case DELETE_ACCOUNT:
+    case DELETE_PROFILE:
     case LOGOUT:
       localStorage.removeItem('token');
       return {

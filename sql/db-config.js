@@ -20,6 +20,10 @@ const getTagByName = (tagname) => {
 const getTagById = (tag_id) => {
   return db('tag').where('tag_id', tag_id).select();
 };
+//delete tags under user
+const removeTagsUnderUser = (user_id) => {
+  return db('tag').where('owner_id').del();
+};
 /**
  * Task relation
  */
@@ -48,9 +52,22 @@ const getUserById = (user_id) => {
 const getUserbyEmail = (email) => {
   return db('user').where('email', email).select();
 };
+// delete user
+const removeUser = (user_id) => {
+  return db('user').where('user_id', user_id).del();
+};
+//update username
+const updateUserName = (user_id, username) => {
+  return db('user').where('user_id', user_id).update({ username: username });
+};
+//update password
+const updatePassword = (user_id, password) => {
+  return db('user').where('user_id', user_id).update({ password: password });
+};
 
+//update password
 // load tasks belong to user
-const getList = (user_id, order) => {
+const getList = (user_id) => {
   return db('list')
     .join('tag', 'tag.tag_id', '=', 'list.tag_id')
     .where('list.user_id', user_id)
@@ -62,8 +79,7 @@ const getList = (user_id, order) => {
       'list.alarm',
       'list.user_id',
       'tag.tagname'
-    )
-    .orderBy('created', order);
+    );
 };
 //
 // load tag belongs to user
@@ -83,17 +99,7 @@ const getTag = (owner_id) => {
 const sortByTime = (order, tag_id, user_id) => {
   // order is asc or desc
   return db('list')
-    .join('tag', 'tag.tag_id', '=', 'list.tag_id')
-    .where({ 'tag.tag_id': tag_id, 'list.user_id': user_id })
-    .select(
-      'list.task_id',
-      'list.desc',
-      'list.status',
-      'list.created',
-      'list.alarm',
-      'list.user_id',
-      'tag.tagname'
-    )
+    .where({ tag_id: tag_id, user_id: user_id })
     .orderBy('created', order);
 };
 // this is for testing only
@@ -127,6 +133,9 @@ module.exports = {
   delTask,
   userRegister,
   userLogin,
+  removeUser,
+  updateUserName,
+  updatePassword,
   getList,
   getTag,
   getUser,
