@@ -217,7 +217,7 @@
   box-shadow: inset 4em 1.5em gold;
 }
 .filter input {
-  padding-left: 5px;
+  padding: 5px;
   /* border: 1px solid black; */
 }
 .filter i:active {
@@ -269,6 +269,8 @@
   align-items: center;
   text-align: center;
   justify-content: space-evenly;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 .modal.parent .enter-bar input {
   position: relative;
@@ -398,4 +400,22 @@
   background-color: lightblue;
 
   outline: 1px solid rgb(130, 162, 195);
+}
+.navigation-btns {
+  position: absolute;
+  padding: 20px;
+  right: 0;
+}
+
+.navigation-btns :first-child,
+.navigation-btns :last-child {
+  border-radius: 1rem;
+}
+
+.navigation-btns :first-child.profile {
+  color: black;
+}
+.navigation-btns :first-child.profile:hover,
+.navigation-btns :last-child:hover {
+  color: white;
 }

@@ -208,6 +208,19 @@
     left: 20%;
     animation: fade-slide-in 0.5s ease-out forwards;
   }
+  .navigation-btns {
+    position: absolute;
+    padding: 15px;
+    top: 5%;
+    left: 55%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .navigation-btns :first-child,
+  .navigation-btns :last-child {
+    border-radius: 1rem;
+    font-size: 12px;
+  }
 }
 @media (max-width: 500px) {
   .container {
@@ -317,5 +330,18 @@
   }
   .hour-minute input {
     width: 50px;
+  }
+  .navigation-btns {
+    position: absolute;
+    padding: 15px;
+    top: 5%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  .navigation-btns :first-child,
+  .navigation-btns :last-child {
+    border-radius: 1rem;
+    font-size: 10px;
   }
 }

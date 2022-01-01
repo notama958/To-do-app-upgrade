@@ -11,6 +11,9 @@
   color: black;
   z-index: 1;
 }
+.back {
+  color: white;
+}
 .profile-container > div {
   margin-top: 0 20px;
   /* margin: 0 10px; */

@@ -175,7 +175,7 @@ export const addTask = (taskForm) => async (dispatch) => {
 
 /**
  * PATCH: list/${id}
- * desc: modify a task in list
+ * desc: git c a task in list
  *
  */
 export const modifyTask = (taskForm) => async (dispatch) => {

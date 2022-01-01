@@ -56,17 +56,19 @@ const Navbar = ({ manualToggle, logout, isAuthenticated, loading }) => {
           <i className="fab fa-optin-monster" style={{ color: `black` }}></i>{' '}
           To-do list
         </Link>
-        {location.pathname.split('/')[1] !== 'kanban' ? (
+        {location.pathname.split('/')[1] === '' ? (
           <button
             className="btn btn-white learn-more "
             onClick={(e) => manualToggle(e)}
           >
             Learn more
           </button>
-        ) : (
+        ) : location.pathname.split('/')[1] === '' ? (
           <Link to="/dashboard">
-            <i className="fas fa-arrow-circle-left fa-2x"></i>
+            <i className="fas fa-arrow-circle-left "></i>
           </Link>
+        ) : (
+          ''
         )}
       </h1>
       {!loading && (
