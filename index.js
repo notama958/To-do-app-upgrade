@@ -3,7 +3,7 @@ const app = express();
 // Init middleware for getting request object value
 //
 app.use(express.json({ extended: false })); // to get the request
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('backend is working');
 });
 app.use('/api/users', require('./routes/user'));
