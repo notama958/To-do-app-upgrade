@@ -8,6 +8,9 @@ import {
   LOGIN_SUCCESS,
   LOGOUT,
   CLEAR_PROFILE,
+  UPDATE_PROFILE,
+  DELETE_PROFILE,
+  PROFILE_ERROR,
 } from './types';
 
 import { setAlert } from './alert';
@@ -109,4 +112,40 @@ export const login =
 export const logout = () => (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
+};
+
+//delete account and profile
+export const deleteAccount = () => async (dispatch) => {
+  if (window.confirm('Are you sure? this can NOT be undone')) {
+    try {
+      await axios.delete(`/api/users/`);
+      dispatch({
+        type: DELETE_PROFILE,
+      });
+      dispatch(setAlert('Your account has permanently deleted', 'success'));
+    } catch (err) {
+      dispatch(setAlert('Cannot delete the account', 'danger'));
+      dispatch({
+        type: PROFILE_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
+    }
+  }
+};
+
+// update user info includes: password, username
+export const updateAccount = (userForm) => async (dispatch) => {
+  try {
+    const res = await axios.put(`/api/users/`, userForm);
+    dispatch({
+      type: UPDATE_PROFILE,
+    });
+    dispatch(setAlert('Your new info is saved, thank you', 'success'));
+  } catch (err) {
+    dispatch(setAlert('Cannot update your account', 'danager'));
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
 };

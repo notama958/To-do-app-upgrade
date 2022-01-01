@@ -122,7 +122,6 @@ router.put(
  * @access    private
  */
 router.delete('/:id', auth, async (req, res) => {
-  console.log(req.user.id);
   try {
     // check tag existence and priviledge
     const wantToDelTag = await db.getTagById(req.params.id);

@@ -6,8 +6,9 @@ import Kanban from './Kanban';
 import PrivateRoutes from './PrivateRoutes';
 import Register from '../auth/Register';
 import Login from '../auth/Login';
+import Profile from '../profile/Profile';
 
-// Navigation pages
+// Includes Private and Normal routes
 const MyRoutes = () => {
   return (
     <section>
@@ -17,6 +18,7 @@ const MyRoutes = () => {
         {/* <Route exact path="/mine" component={profile}/> */}
         <PrivateRoutes exact path="/dashboard" component={Dashboard} />
         <PrivateRoutes exact path="/kanban" component={Kanban} />
+        <PrivateRoutes exact path="/profile" component={Profile} />
         <Route component={NotFound} />
       </Switch>
     </section>

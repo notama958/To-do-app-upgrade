@@ -12,6 +12,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 // faker
 const faker = require('faker');
+const { required } = require('nodemon/lib/config');
 
 /**
  * @route  GET user/auth
@@ -141,6 +142,46 @@ router.post(
     }
   }
 );
+
+//DELETE      user/
+//@ route       DELETE user/
+//@des         delete user
+//@access      private
+router.delete('/', auth, async (req, res) => {
+  try {
+    // remove user and any tags + tasks under this user
+    await db.removeUser(req.user.id);
+    res.json({ msg: 'User removed' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'server error' });
+  }
+});
+
+//PUT      user/
+//@ route       PUT user/
+//@des         update user info: username and password
+//@access      private
+router.put('/', auth, async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    // update username
+    if (username && username !== '')
+      await db.updateUserName(req.user.id, username);
+    // remove any tasks under this user
+    if (password && password !== '') {
+      const salt = await brypt.genSalt(10);
+      hashedPwd = await brypt.hash(password, salt);
+      await db.updatePassword(req.user.id, hashedPwd);
+    }
+    res.json({ msg: 'User Updated' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'server error' });
+  }
+});
+
 // for testing only
 
 router.get('/all', async (req, res) => {

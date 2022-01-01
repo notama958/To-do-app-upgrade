@@ -1,4 +1,17 @@
 /* Mobile Styles */
+@media (max-height: 700px) {
+  .profile-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: fit-content;
+    width: fit-content;
+    color: black;
+  }
+}
 @media (max-width: 720px) {
   #container-left {
     margin: 0;

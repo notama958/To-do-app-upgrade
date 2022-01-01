@@ -10,6 +10,7 @@ import './css/form.css';
 import './css/kanban.css';
 import './css/mobile-version.css';
 import './css/auth.css';
+import './css/profile.css';
 ReactDOM.render(
   <React.StrictMode>
     <App />

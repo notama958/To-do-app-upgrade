@@ -51,7 +51,7 @@ const Login = ({ login, isAuthenticated }) => {
                 value={email}
                 /*call function onChange */
                 onChange={(e) => onChange(e)}
-                required /** need it */
+                required
               />
             </div>
             <div className="form-group">
