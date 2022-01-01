@@ -35,7 +35,7 @@ import Spinner from '../layout/Spinner';
 import Alert from '../layout/Alert';
 import DelForm from './DelForm';
 import EditTagForm from './EditTagForm';
-import { loadUser } from '../../actions/auth';
+import { loadUser, logout } from '../../actions/auth';
 /**
  * Styling object for Kanban button
  */
@@ -79,6 +79,7 @@ const Dashboard = ({
   //auth
   isAuthenticated,
   user,
+  logout,
 }) => {
   const [enterBar, setEnterBar] = useState(''); // get the enterBar value
   const [greeting, updateGreeting] = useState(Greeting()); // check the timing <String>
@@ -211,6 +212,15 @@ const Dashboard = ({
       </div>
       <div className="container-right">
         <Alert />
+        <div className="navigation-btns">
+          <Link to="/profile" className="btn btn-white profile">
+            Profile
+          </Link>
+          <Link onClick={logout} to="#!" className="btn btn-dark">
+            <i className="fas fa-sign-out-alt"></i>{' '}
+            <span className="hide-sm">Logout</span>
+          </Link>
+        </div>
         <div className="modal greeting">
           <h1>
             Good {greeting} ~ {user ? user[0].username : 'Master'} ~
@@ -369,4 +379,5 @@ export default connect(mapStateToProps, {
   addTask,
   taskLoading,
   tagLoading,
+  logout,
 })(Dashboard);

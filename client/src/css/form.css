@@ -139,7 +139,8 @@ label {
   justify-content: space-around;
 }
 .hour-minute input {
-  width: 50px;
+  width: fit-content;
+  padding: 5px;
 }
 .modal__content .header {
   display: block;

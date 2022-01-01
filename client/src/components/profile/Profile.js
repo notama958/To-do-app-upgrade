@@ -70,7 +70,7 @@ const Profile = ({
           <Spinner />
         ) : (
           <div className="profile-container">
-            <Link to="/dashboard" className="btn btn-dark">
+            <Link to="/dashboard" className="btn btn-dark back">
               Back to Dashboard
             </Link>
             <div className="profile-title bg-white p-2">
