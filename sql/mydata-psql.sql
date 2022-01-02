@@ -1,21 +1,19 @@
-drop table if exists "user";
-drop table if exists "USER";
+drop table if exists "user" cascade;
 create table "user"
 (
     "user_id"             integer         not null unique
-    , "username"          varchar(15)     not null
-    , "email"             varchar(15)     not null
+    , "username"          varchar(50)     not null
+    , "email"             varchar(50)     not null
     , "password"          char(60)      not null
     , constraint user_id_primary_key
     primary key ("user_id")
 );
 
-drop table if exists "tag";
-drop table if exists "TAG";
+drop table if exists "tag" cascade;
 create table "tag"
 (
     "tag_id"              integer         not null unique
-    , "tagname"           varchar(15)     not null
+    , "tagname"           varchar(50)     not null
     , "owner_id"          integer
     , constraint tag_id_primary_key
     primary key (tag_id)
@@ -27,12 +25,11 @@ create table "tag"
 );
 
 
-drop table if exists "list";
-drop table if exists "LIST";
+drop table if exists "list" cascade;
 create table "list"
 (
     "task_id"             integer         not null unique
-    , "desc"              varchar(20)     not null
+    , "desc"              varchar(100)     not null
     , "status"            integer         not null
     , "created"           timestamp       not null
     , "alarm"             timestamp  -- it's not mandatory to have alarm for a task
@@ -47,11 +44,13 @@ create table "list"
 
 -- create function
 create or replace function update_when_delete_tag()
-returns trigger
-as $$
+    returns trigger
+    as
+$$
 begin
     update "list" set tag_id = (select tag_id from "tag" where tagname='normal')
     where "list".tag_id=old.tag_id;
+    return NULL;
 end;
 $$
 LANGUAGE plpgsql;
@@ -60,7 +59,7 @@ LANGUAGE plpgsql;
 drop trigger if exists auto_update on "tag";
 create trigger auto_update
 before delete on "tag"
-for each row
+for each statement
 execute procedure update_when_delete_tag();
 
 

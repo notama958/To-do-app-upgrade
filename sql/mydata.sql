@@ -3,8 +3,8 @@ drop table if exists USER;
 create table user
 (
     user_id             integer         not null unique
-    , username          varchar(15)     not null
-    , email             varchar(15)     not null
+    , username          varchar(50)     not null
+    , email             varchar(50)     not null
     , password          char(60)      not null
     , constraint user_id_primary_key
     primary key (user_id)
@@ -15,7 +15,7 @@ drop table if exists TAG;
 create table tag
 (
     tag_id              integer         not null unique
-    , tagname           varchar(15)     not null
+    , tagname           varchar(50)     not null
     , owner_id          integer
     , constraint tag_id_primary_key
     primary key (tag_id)
@@ -32,7 +32,7 @@ drop table if exists LIST;
 create table list
 (
     task_id             integer         not null unique
-    , desc              varchar(20)     not null
+    , desc              varchar(100)     not null
     , status            integer         not null
     , created           timestamp       not null
     , alarm             timestamp  -- it's not mandatory to have alarm for a task
