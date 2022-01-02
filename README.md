@@ -1,13 +1,12 @@
 # FULL-STACK WEB TO-DO-LIST
 
-## Latest Updates
-
-- [x] User can now login/register
-- [x] User can view their dashboard and perfom actions
-- [x] User can now view profile
-- [ ] deploy to heroku
-
 ## Known Bugs
+
+- [ ] cannnot add with button (task +)
+- [ ] sort tasks didn't work
+- [ ] delete account didnt work
+- [ ] delete tags didn't work
+- [ ] missing the return to dashboard arrow from kanban view
 
 ## Description
 
@@ -25,8 +24,8 @@
 
 3. database
 
-- ~~SQLite~~
-- PostgreSQL (heroku deploy)
+- SQLite (for local run)
+- PostgreSQL (for heroku deploy)
 - KnexJs
 
 ## Folder structure
@@ -137,22 +136,38 @@
 ## Setup
 
 > at root directory
+> in the local run I used the SQLite3, thus you should have a database file fed with **./sql/mydata.sql** placed in the **./sql** folder initially
+
+```bash
+    # in cygwin
+    sqlite3 --init .sqliterc mydata.db
+    # inside sqlite shell
+    sqlite> .read mydata.sql
+    # copy the local database file to app directory
+    cp -R mydata.db ./<name_of_the_app>/sql/
+```
 
 ```
+    cd <name_of_the_app> # root directory
+    npm i # install dependencies
     npm run dev # this run both backend + frontend in you local machine
 ```
 
-> docker container run
+> postgreSQL in heroku
 
-```
-    # I will update this asap
+- it's running as a separate add-ons to the heroku project, I fed it with predefined schema + data in the **./sql/mydata-psql.sql**
+
+```bash
+    # since the postgres heroku is sharable between different projects
+    heroku addons:attach <name_of_your_postgres_db_on_heroku> --app <the_app_you_want_to_add>
+    heroku pg:psql <name_of_your_postgres_db_on_heroku>  <  <your_sql_file> # for windows terminal double quote your < ==>> "<"
 ```
 
 ## Deployment
 
-> Currently, this hasn't worked as expected yet, I'm switching to postgres
+> Some bugs are remainning, I will update notices in **Known Bugs**
 
-- Heroku - please kindly check this [url](http://to-do-list-herku.herokuapp.com/)
+- Heroku - please kindly check this [http://to-do-list-herku.herokuapp.com/](http://to-do-list-herku.herokuapp.com/)
 
 # Author
 
