@@ -2,6 +2,11 @@ const dotenv = require('dotenv');
 dotenv.config();
 const pg = require('pg');
 
+// bypass authentication in production
+if (process.env.DATABASE_URL) {
+  pg.defaults.ssl = { rejectUnauthorized: false };
+}
+
 module.exports = {
   development: {
     client: 'sqlite3',
