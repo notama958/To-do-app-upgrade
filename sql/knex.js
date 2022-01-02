@@ -1,5 +1,7 @@
-const envr = process.env.ENVIRONMENT || 'development';
-const config = require('../knexfile.js')[envr];
+const dotenv = require('dotenv');
+dotenv.config();
+const envr = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[envr]; // production or development
 const database = require('knex')(config);
 
 (async () => {

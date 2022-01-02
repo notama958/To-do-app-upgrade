@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const dotenv = require('dotenv');
+dotenv.config();
 // Init middleware for getting request object value
 //
 app.use(express.json({ extended: false })); // to get the request
