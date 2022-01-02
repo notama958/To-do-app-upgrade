@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
+const pg = require('pg');
 
 module.exports = {
   development: {
@@ -17,7 +18,7 @@ module.exports = {
     directory: './sql/seeds',
   },
   production: {
-    client: 'psql',
+    client: 'pg',
     connection: process.env.DATABASE_URL,
     pool: { min: 2, max: 10 },
   },
