@@ -5,14 +5,15 @@ const db = require('./knex.js');
  */
 const addTag = (tag) => {
   // insert and return the insert object
-  return db('tag').insert(tag).returning('*');
+  return db('tag').insert(tag);
 };
 
 const modifyTag = (tag, tag_id) => {
   return db('tag').where({ tag_id: tag_id }).update(tag);
 };
+// returning is needed for psql
 const delTag = (id) => {
-  return db('tag').where('tag_id', id).del();
+  return db('tag').where('tag_id', id).del().returning('tag_id');
 };
 const getTagByName = (tagname) => {
   return db('tag').where('tagname', tagname).select();
@@ -28,7 +29,7 @@ const removeTagsUnderUser = (user_id) => {
  * Task relation
  */
 const addTask = (task) => {
-  return db('list').insert(task).returning('*');
+  return db('list').insert(task);
 };
 const modifyTask = (task, task_id) => {
   return db('list').where({ task_id, task_id }).update(task, '*');
@@ -53,8 +54,9 @@ const getUserbyEmail = (email) => {
   return db('user').where('email', email).select();
 };
 // delete user
+// returning is needed for psql
 const removeUser = (user_id) => {
-  return db('user').where('user_id', user_id).del();
+  return db('user').where('user_id', user_id).del().returning(user_id);
 };
 //update username
 const updateUserName = (user_id, username) => {
@@ -65,9 +67,8 @@ const updatePassword = (user_id, password) => {
   return db('user').where('user_id', user_id).update({ password: password });
 };
 
-//update password
 // load tasks belong to user
-const getList = (user_id) => {
+const getList = (user_id, order) => {
   return db('list')
     .join('tag', 'tag.tag_id', '=', 'list.tag_id')
     .where('list.user_id', user_id)
@@ -79,7 +80,8 @@ const getList = (user_id) => {
       'list.alarm',
       'list.user_id',
       'tag.tagname'
-    );
+    )
+    .orderBy('list.created', order);
 };
 //
 // load tag belongs to user
@@ -99,8 +101,18 @@ const getTag = (owner_id) => {
 const sortByTime = (order, tag_id, user_id) => {
   // order is asc or desc
   return db('list')
-    .where({ tag_id: tag_id, user_id: user_id })
-    .orderBy('created', order);
+    .join('tag', 'tag.tag_id', '=', 'list.tag_id')
+    .where({ 'list.user_id': user_id, 'list.tag_id': tag_id })
+    .select(
+      'list.task_id',
+      'list.desc',
+      'list.status',
+      'list.created',
+      'list.alarm',
+      'list.user_id',
+      'tag.tagname'
+    )
+    .orderBy('list.created', order);
 };
 // this is for testing only
 const getUser = () => {

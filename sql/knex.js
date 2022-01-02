@@ -6,7 +6,11 @@ const database = require('knex')(config);
 
 (async () => {
   return database
-    .raw('PRAGMA foreign_keys = ON;') // -- foreign keys are not activated by default
+    .raw(
+      process.env.NODE_ENV === 'development'
+        ? 'select 1+1;'
+        : 'PRAGMA foreign_keys = ON;'
+    ) // -- foreign keys are not activated by default in sqlite
     .then(console.log('\nDB connected'))
     .catch((err) => {
       console.log('DB not connected');

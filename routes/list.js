@@ -148,7 +148,6 @@ router.delete('/:id', auth, async (req, res) => {
  */
 router.get('/', auth, async (req, res) => {
   try {
-    console.log(req.query.order);
     if (req.query.tag_id && req.query.order) {
       const list = await db.sortByTime(
         req.query.order,
