@@ -16,7 +16,7 @@ module.exports = {
   seeds: {
     directory: './sql/seeds',
   },
-  productionL: {
+  production: {
     client: 'psql',
     connection: process.env.DATABASE_URL,
     pool: { min: 2, max: 10 },
