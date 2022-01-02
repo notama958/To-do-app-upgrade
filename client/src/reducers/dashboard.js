@@ -80,7 +80,14 @@ export default function (state = initState, action) {
           }
           return el;
         }),
+        tasks: state.tasks.map((el) => {
+          if (el.tagname === payload.oldtag) {
+            el.tagname = payload.tagname;
+          }
+          return el;
+        }),
         tag_loading: false,
+        task_loading: false,
         currentTag: payload.tagname,
       };
     case ADD_TASK:

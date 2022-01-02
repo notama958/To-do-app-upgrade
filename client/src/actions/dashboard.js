@@ -57,12 +57,16 @@ export const loadTagList = () => async (dispatch) => {
  * body: request body includes {"tagname":"XXXX"}
  * params: id (tag_id)
  */
-export const modifyTag = (id, newtagData) => async (dispatch) => {
+export const modifyTag = (id, newtagData, oldtagData) => async (dispatch) => {
   try {
     const res = await axios.put(`/api/tag/${id}`, newtagData);
     dispatch({
       type: MODIFY_TAG,
-      payload: { tag_id: id, tagname: newtagData.tagname },
+      payload: {
+        tag_id: id,
+        tagname: newtagData.tagname,
+        oldtag: oldtagData.tagname,
+      },
     });
     dispatch(setAlert('TAG MODIFED', 'success'));
   } catch (err) {
@@ -227,11 +231,10 @@ export const delTask =
  */
 export const sortByTime = (tagid, order) => async (dispatch) => {
   try {
-    // console.log(tag);
     const res =
-      tagid !== 'all'
-        ? await axios.get(`/api/list?tag_id=${tagid}&order=${order}`)
-        : await axios.get(`/api/list/me?order=${order}`);
+      tagid === 'all' || tagid === ''
+        ? await axios.get(`/api/list/me?order=${order}`)
+        : await axios.get(`/api/list?tag_id=${tagid}&order=${order}`);
 
     dispatch({
       type: SORT_LIST,

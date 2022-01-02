@@ -63,7 +63,7 @@ const Navbar = ({ manualToggle, logout, isAuthenticated, loading }) => {
           >
             Learn more
           </button>
-        ) : location.pathname.split('/')[1] === '' ? (
+        ) : location.pathname.split('/')[1] === 'kanban' ? (
           <Link to="/dashboard">
             <i className="fas fa-arrow-circle-left "></i>
           </Link>
