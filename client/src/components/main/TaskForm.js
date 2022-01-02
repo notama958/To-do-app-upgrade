@@ -56,7 +56,7 @@ const TaskForm = ({
   const onSubmit = (e) => {
     setTaskForm(
       desc,
-      done,
+      done ? 1 : 0, // in schema it's integer
       alarm
         ? new Date(getCurrentTime('date', date) + ' ' + hour + ':' + minute)
         : null,

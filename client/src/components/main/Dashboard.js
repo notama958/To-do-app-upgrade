@@ -257,7 +257,7 @@ const Dashboard = ({
                     sortByTime(
                       (currentTag === 'all') | (currentTag === '')
                         ? currentTag
-                        : tags.filter((e) => (e.tagname = currentTag))[0]
+                        : tags.filter((e) => e.tagname === currentTag)[0]
                             .tag_id,
                       'asc'
                     );
@@ -272,7 +272,7 @@ const Dashboard = ({
                     sortByTime(
                       (currentTag === 'all') | (currentTag === '')
                         ? currentTag
-                        : tags.filter((e) => (e.tagname = currentTag))[0]
+                        : tags.filter((e) => e.tagname === currentTag)[0]
                             .tag_id,
                       'desc'
                     );

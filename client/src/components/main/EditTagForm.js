@@ -7,7 +7,7 @@ import {
   toggleBackDrop,
   toggleEditTagForm,
 } from '../../actions/dashboard';
-import { setAlert, tagLoading } from '../../actions/alert';
+import { setAlert, tagLoading, taskLoading } from '../../actions/alert';
 
 /**
  * This component renders the Edit Tag form
@@ -20,8 +20,10 @@ const TagForm = ({
   toggleEditTagForm,
   setAlert,
   tagLoading,
+  taskLoading,
   editTag,
   tasks,
+  tags,
 }) => {
   const [tag, setTag] = useState(editTag.tagname); // hold tag value
   // submit form
@@ -30,11 +32,14 @@ const TagForm = ({
   // call modifyTag
   const onSubmit = () => {
     tagLoading();
+    taskLoading();
     if (tag !== '') {
       const tagObj = { tagname: tag };
-      modifyTag(editTag.tag_id, tagObj);
+      const oldTagName = tags.filter((e) => e.tag_id === editTag.tag_id)[0];
+      modifyTag(editTag.tag_id, tagObj, oldTagName);
     } else {
-      tagLoading(false); // stop the forever spinner
+      tagLoading(false); // stop the forever spinner\
+      taskLoading(false);
       setAlert('EMPTY TAG NAME', 'danger'); // setAlert if sthin wrong
     }
   };
@@ -87,6 +92,7 @@ TagForm.propTypes = {
   toggleEditTagForm: PropTypes.func.isRequired,
   setAlert: PropTypes.func.isRequired,
   tagLoading: PropTypes.func.isRequired,
+  taskLoading: PropTypes.func.isRequired,
   editTag: PropTypes.object.isRequired,
 };
 const mapStateToProps = ({ dashboard }) => ({
@@ -95,6 +101,7 @@ const mapStateToProps = ({ dashboard }) => ({
   edit_tag_form: dashboard.edit_tag_form,
   editTag: dashboard.editTag,
   tasks: dashboard.tasks,
+  tags: dashboard.tags,
 });
 export default connect(mapStateToProps, {
   modifyTag,
@@ -102,4 +109,5 @@ export default connect(mapStateToProps, {
   toggleEditTagForm,
   setAlert,
   tagLoading,
+  taskLoading,
 })(TagForm);
