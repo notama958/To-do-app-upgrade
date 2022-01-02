@@ -1,17 +1,21 @@
 /* Mobile Styles */
-@media (max-height: 700px) {
+@media (min-height: 500px) and (max-height: 750px) {
   .profile-container {
     position: absolute;
     top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    width: 100%;
+    left: 0%;
+    bottom: 0;
+    -webkit-transform: none;
+    transform: none;
+    width: 300px;
     height: fit-content;
     width: fit-content;
     color: black;
+    z-index: 1;
+    font-size: 8px;
   }
 }
+
 @media (max-width: 720px) {
   #container-left {
     margin: 0;
