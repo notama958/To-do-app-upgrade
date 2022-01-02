@@ -2,11 +2,11 @@
 
 ## Known Bugs
 
-- [ ] cannnot add with button (task +)
-- [ ] sort tasks didn't work
+- [x] ~~cannnot add with button (task +)~~
+- [x] ~~sort tasks didn't work~~
 - [ ] delete account didnt work
 - [ ] delete tags didn't work
-- [ ] missing the return to dashboard arrow from kanban view
+- [x] ~~missing the return to dashboard arrow from kanban view~~
 
 ## Description
 
