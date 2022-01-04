@@ -92,7 +92,7 @@ const Dashboard = ({
     const intervalTwo = setInterval(() => {
       if (isAuthenticated && !user) loadUser();
       if (!isAuthenticated) return <Redirect to="/" />;
-    }, 5 * 3600 * 1000); // check after 5 hours
+    }, 1 * 3600 * 1000); // re-check after 1 hour
     //clear the interval
     return () => {
       clearInterval(intervalOne);
@@ -112,7 +112,6 @@ const Dashboard = ({
 
   useEffect(() => {
     // load back to all category when delete the tag
-    loadTaskList();
     loadTaskList('all', 'all', 'desc');
   }, [tags, delTag]);
 
