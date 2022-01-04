@@ -136,7 +136,7 @@ export const deleteAccount = () => async (dispatch) => {
 // update user info includes: password, username
 export const updateAccount = (userForm) => async (dispatch) => {
   try {
-    const res = await axios.put(`/api/users/`, userForm);
+    await axios.put(`/api/users/`, userForm);
     dispatch({
       type: UPDATE_PROFILE,
     });

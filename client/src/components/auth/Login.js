@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -23,7 +23,6 @@ const Login = ({ login, isAuthenticated }) => {
     });
   const onSubmit = (e) => {
     e.preventDefault(); // stop reloading page
-    console.log(email, password);
     login({ email, password }); // login
   };
 

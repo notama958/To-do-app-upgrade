@@ -91,7 +91,7 @@ const Kanban = ({ modifyTask, task_loading, taskLoading, tasks }) => {
       taskLoading(false);
     };
     res();
-  }, [tasks]);
+  }, [tasks, taskLoading]);
   // When the Drag action ends
   // Case 1: user drag outside droppable container
   // Case 2: Drop within the initial droppable  container
@@ -184,7 +184,6 @@ const Kanban = ({ modifyTask, task_loading, taskLoading, tasks }) => {
                         <DragItem
                           item={item}
                           index={index}
-                          droppableId="ongoing"
                           droppableId="finished"
                           key={index}
                         />

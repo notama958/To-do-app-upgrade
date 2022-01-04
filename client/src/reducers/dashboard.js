@@ -15,7 +15,6 @@ import {
   SORT_LIST,
   EDIT_TASK,
   FILTER_BY_DESC,
-  REMOVE_KEYWORD,
   TASK_LOADING,
   TAG_LOADING,
   TOGGLE_DEL_FORM,
@@ -184,6 +183,7 @@ export default function (state = initState, action) {
     case TAG_ERROR:
     case EMPTY_TAGS:
       return { ...state, tag_loading: false };
+    case SERVER_ERROR:
     default:
       return { ...state };
   }

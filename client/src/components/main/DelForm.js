@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { tagLoading, taskLoading } from '../../actions/alert';
-import {
-  toggleDelForm,
-  toggleBackDrop,
-  loadTagList,
-  loadTaskList,
-} from '../../actions/dashboard';
+import { toggleDelForm, toggleBackDrop } from '../../actions/dashboard';
 import Moment from 'react-moment';
 /**
  *

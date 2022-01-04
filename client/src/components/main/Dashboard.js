@@ -87,18 +87,16 @@ const Dashboard = ({
 
   useEffect(() => {
     // greeting user based on time "Morning" "Afternoon" "Evening"
-    const intervalOne = setInterval(() => Greeting(), 18000000);
+    const interval = setInterval(() => Greeting(), 18000000);
     // check authentication and redirect to home page
-    const intervalTwo = setInterval(() => {
-      if (isAuthenticated && !user) loadUser();
-      if (!isAuthenticated) return <Redirect to="/" />;
-    }, 1 * 3600 * 1000); // re-check after 1 hour
-    //clear the interval
     return () => {
-      clearInterval(intervalOne);
-      clearInterval(intervalTwo);
+      clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated || !user) return <Redirect to="/" />;
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
     // load tag list
@@ -108,7 +106,7 @@ const Dashboard = ({
     taskLoading();
     loadTaskList('all', currentTag, 'desc');
     filterByDesc('');
-  }, [loadTagList, filterByDesc]);
+  }, [loadTagList, filterByDesc, loadTaskList]);
 
   useEffect(() => {
     // load back to all category when delete the tag

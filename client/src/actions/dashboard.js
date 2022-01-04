@@ -5,7 +5,6 @@ import {
   EMPTY_TAGS,
   LOAD_TAGS_LIST,
   LOAD_TASKS_LIST,
-  SERVER_ERROR,
   TOGGLE_BACKDROP,
   TOGGLE_TASK_FORM,
   TOGGLE_TAG_FORM,
@@ -59,7 +58,7 @@ export const loadTagList = () => async (dispatch) => {
  */
 export const modifyTag = (id, newtagData, oldtagData) => async (dispatch) => {
   try {
-    const res = await axios.put(`/api/tag/${id}`, newtagData);
+    await axios.put(`/api/tag/${id}`, newtagData);
     dispatch({
       type: MODIFY_TAG,
       payload: {
@@ -107,7 +106,7 @@ export const delTag =
   ({ tag_id, tagname }) =>
   async (dispatch) => {
     try {
-      const res = await axios.delete(`api/tag/${tag_id}`);
+      await axios.delete(`api/tag/${tag_id}`);
       dispatch({
         type: REMOVE_TAG,
         payload: tag_id,
@@ -162,7 +161,7 @@ export const addTask = (taskForm) => async (dispatch) => {
     let newTaskForm = Object.assign({}, taskForm);
     delete taskForm.tagname;
     delete newTaskForm.tag_id;
-    const res = await axios.post('/api/list', taskForm);
+    await axios.post('/api/list', taskForm);
     dispatch({
       type: ADD_TASK,
       payload: newTaskForm,
@@ -187,7 +186,7 @@ export const modifyTask = (taskForm) => async (dispatch) => {
     let newTaskForm = Object.assign({}, taskForm);
     delete taskForm.tagname;
     delete newTaskForm.tag_id;
-    const res = await axios.put(`/api/list`, taskForm);
+    await axios.put(`/api/list`, taskForm);
     dispatch({
       type: MODIFY_TASK,
       payload: newTaskForm,
@@ -209,7 +208,7 @@ export const delTask =
   ({ task_id }) =>
   async (dispatch) => {
     try {
-      const res = await axios.delete(`/api/list/${task_id}`);
+      await axios.delete(`/api/list/${task_id}`);
       dispatch({
         type: REMOVE_TASK,
         payload: task_id,

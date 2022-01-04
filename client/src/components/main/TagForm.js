@@ -27,7 +27,7 @@ const TagForm = ({
   const onSubmit = () => {
     tagLoading();
     try {
-      if (tags.filter((e) => e.name === tag).length > 0) {
+      if (tags.filter((e) => e.tagname === tag).length > 0) {
         throw 'DUPLICATE TAG NAME';
       }
       if (tag !== '') {
