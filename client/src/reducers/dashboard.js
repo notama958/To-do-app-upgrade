@@ -107,7 +107,7 @@ export default function (state = initState, action) {
 
     case MODIFY_TASK:
       let arr = state.tasks.filter((el) => el.task_id !== payload.task_id);
-      arr.push(payload);
+      if (state.currentTag === payload.tagname) arr.push(payload);
       arr.sort((a, b) => {
         if (new Date(a.created) > new Date(b.created)) return -1;
         return 1;
