@@ -94,7 +94,7 @@ export default function (state = initState, action) {
       let sortedTasks = [...state.tasks];
       sortedTasks.push(payload);
       sortedTasks.sort((a, b) => {
-        if (a > b) return -1;
+        if (a.created > b.created) return -1;
         return 1;
       });
       return {
@@ -121,6 +121,7 @@ export default function (state = initState, action) {
           e.desc.toLowerCase().includes(state.keyword)
         ),
         task_loading: false,
+        editTask: null, // revert back to null once finished
       };
 
     case REMOVE_TASK:
