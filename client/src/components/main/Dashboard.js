@@ -110,6 +110,12 @@ const Dashboard = ({
     filterByDesc('');
   }, [loadTagList, filterByDesc]);
 
+  useEffect(() => {
+    // load back to all category when delete the tag
+    loadTaskList();
+    loadTaskList('all', 'all', 'desc');
+  }, [tags, delTag]);
+
   // filter by description function after user click filter icon
   // call task_loading() to render the spinner icons
   // call filterByDesc(<String>) to filter the tasks contain the "keyword"
@@ -229,8 +235,9 @@ const Dashboard = ({
         <div className="modal parent">
           <div className="title">
             <h3>
-              {currentTag.charAt(0).toUpperCase() +
-                currentTag.slice(1).toLowerCase()}
+              {currentTag &&
+                currentTag.charAt(0).toUpperCase() +
+                  currentTag.slice(1).toLowerCase()}
               {'   '}({filterTasks.length})
             </h3>
             <div className="filter">
