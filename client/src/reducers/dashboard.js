@@ -108,17 +108,12 @@ export default function (state = initState, action) {
 
     case MODIFY_TASK:
       let arr = state.tasks.filter((el) => el.task_id !== payload.task_id);
-      if (
-        state.currentTag === payload.tagname ||
-        state.currentTag === 'all' ||
-        state.currentTag === ''
-      ) {
-        arr.push(payload);
-        arr.sort((a, b) => {
-          if (a.created > b.created) return -1;
-          return 1;
-        });
-      }
+      arr.push(payload);
+      arr.sort((a, b) => {
+        if (a.created > b.created) return -1;
+        return 1;
+      });
+
       return {
         ...state,
         tasks: arr,
