@@ -15,7 +15,6 @@ import {
   SORT_LIST,
   EDIT_TASK,
   FILTER_BY_DESC,
-  REMOVE_KEYWORD,
   TASK_LOADING,
   TAG_LOADING,
   TOGGLE_DEL_FORM,
@@ -94,7 +93,7 @@ export default function (state = initState, action) {
       let sortedTasks = [...state.tasks];
       sortedTasks.push(payload);
       sortedTasks.sort((a, b) => {
-        if (a > b) return -1;
+        if (new Date(a.created) > new Date(b.created)) return -1;
         return 1;
       });
       return {
@@ -108,17 +107,12 @@ export default function (state = initState, action) {
 
     case MODIFY_TASK:
       let arr = state.tasks.filter((el) => el.task_id !== payload.task_id);
-      if (
-        state.currentTag === payload.tagname ||
-        state.currentTag === 'all' ||
-        state.currentTag === ''
-      ) {
-        arr.push(payload);
-        arr.sort((a, b) => {
-          if (a.created > b.created) return -1;
-          return 1;
-        });
-      }
+      if (state.currentTag === payload.tagname) arr.push(payload);
+      arr.sort((a, b) => {
+        if (new Date(a.created) > new Date(b.created)) return -1;
+        return 1;
+      });
+
       return {
         ...state,
         tasks: arr,
@@ -126,6 +120,7 @@ export default function (state = initState, action) {
           e.desc.toLowerCase().includes(state.keyword)
         ),
         task_loading: false,
+        editTask: null, // revert back to null once finished
       };
 
     case REMOVE_TASK:
@@ -188,6 +183,7 @@ export default function (state = initState, action) {
     case TAG_ERROR:
     case EMPTY_TAGS:
       return { ...state, tag_loading: false };
+    case SERVER_ERROR:
     default:
       return { ...state };
   }

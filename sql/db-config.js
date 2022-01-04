@@ -13,7 +13,7 @@ const modifyTag = (tag, tag_id) => {
 };
 // returning is needed for psql
 const delTag = (id) => {
-  return db('tag').where('tag_id', id).del().returning('tag_id');
+  return db('tag').where('tag_id', id).returning('tag_id').del();
 };
 const getTagByName = (tagname) => {
   return db('tag').where('tagname', tagname).select();
@@ -21,10 +21,7 @@ const getTagByName = (tagname) => {
 const getTagById = (tag_id) => {
   return db('tag').where('tag_id', tag_id).select();
 };
-//delete tags under user
-const removeTagsUnderUser = (user_id) => {
-  return db('tag').where('owner_id').del();
-};
+
 /**
  * Task relation
  */
@@ -56,7 +53,7 @@ const getUserbyEmail = (email) => {
 // delete user
 // returning is needed for psql
 const removeUser = (user_id) => {
-  return db('user').where('user_id', user_id).del().returning(user_id);
+  return db('user').where('user_id', user_id).returning(user_id).del();
 };
 //update username
 const updateUserName = (user_id, username) => {

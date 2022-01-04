@@ -49,7 +49,7 @@ export const getCurrentTime = (label, date) => {
   let currentDate = date === null ? new Date() : new Date(date);
 
   // extract the time  format "hh:mm"
-  if (label == 'time') {
+  if (label === 'time') {
     return (
       currentDate.getHours().toString() +
       ':' +
@@ -57,7 +57,7 @@ export const getCurrentTime = (label, date) => {
     );
   }
   // extract the time  format "yyyy-mm-dd"
-  else if (label == 'date') {
+  else if (label === 'date') {
     return (
       currentDate.getFullYear() +
       '-' +

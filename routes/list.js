@@ -62,7 +62,7 @@ router.post(
       user_id: req.user.id,
     };
     try {
-      const result = await db.addTask(taskObj);
+      await db.addTask(taskObj);
       console.log('A new task added ', taskObj.task_id);
       return res.status(200).json({ msg: 'task added' });
     } catch (err) {

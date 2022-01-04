@@ -4,9 +4,10 @@
 
 - [x] ~~cannnot add with button (task +)~~
 - [x] ~~sort tasks didn't work~~
-- [ ] delete account didnt work
-- [ ] delete tags didn't work
+- [x] ~~delete account didnt work~~
 - [x] ~~missing the return to dashboard arrow from kanban view~~
+- [x] ~~delete tags didn't work~~
+- [x] ~~modify tasks has bugs~~
 
 ## Description
 

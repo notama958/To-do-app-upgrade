@@ -87,18 +87,16 @@ const Dashboard = ({
 
   useEffect(() => {
     // greeting user based on time "Morning" "Afternoon" "Evening"
-    const intervalOne = setInterval(() => Greeting(), 18000000);
+    const interval = setInterval(() => Greeting(), 18000000);
     // check authentication and redirect to home page
-    const intervalTwo = setInterval(() => {
-      if (isAuthenticated && !user) loadUser();
-      if (!isAuthenticated) return <Redirect to="/" />;
-    }, 5 * 3600 * 1000); // check after 5 hours
-    //clear the interval
     return () => {
-      clearInterval(intervalOne);
-      clearInterval(intervalTwo);
+      clearInterval(interval);
     };
   }, []);
+
+  useEffect(() => {
+    if (!isAuthenticated || !user) return <Redirect to="/" />;
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
     // load tag list
@@ -108,7 +106,12 @@ const Dashboard = ({
     taskLoading();
     loadTaskList('all', currentTag, 'desc');
     filterByDesc('');
-  }, [loadTagList, filterByDesc]);
+  }, [loadTagList, filterByDesc, loadTaskList]);
+
+  useEffect(() => {
+    // load back to all category when delete the tag
+    loadTaskList('all', 'all', 'desc');
+  }, [tags, delTag]);
 
   // filter by description function after user click filter icon
   // call task_loading() to render the spinner icons
@@ -229,8 +232,9 @@ const Dashboard = ({
         <div className="modal parent">
           <div className="title">
             <h3>
-              {currentTag.charAt(0).toUpperCase() +
-                currentTag.slice(1).toLowerCase()}
+              {currentTag &&
+                currentTag.charAt(0).toUpperCase() +
+                  currentTag.slice(1).toLowerCase()}
               {'   '}({filterTasks.length})
             </h3>
             <div className="filter">
