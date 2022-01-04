@@ -109,12 +109,9 @@ export default function (state = initState, action) {
       let arr = state.tasks.filter((el) => el.task_id !== payload.task_id);
       arr.push(payload);
       arr.sort((a, b) => {
-        console.log(typeof a.created);
-        console.log(typeof b.created);
         if (new Date(a.created) > new Date(b.created)) return -1;
         return 1;
       });
-      console.log('======================>>>>', arr);
 
       return {
         ...state,
