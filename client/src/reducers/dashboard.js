@@ -91,6 +91,7 @@ export default function (state = initState, action) {
       };
     case ADD_TASK:
       let sortedTasks = [...state.tasks];
+      payload.created = payload.created.getTime();
       sortedTasks.push(payload);
       sortedTasks.sort((a, b) => {
         if (a.created > b.created) return -1;
@@ -107,11 +108,15 @@ export default function (state = initState, action) {
 
     case MODIFY_TASK:
       let arr = state.tasks.filter((el) => el.task_id !== payload.task_id);
+      payload.created = payload.created.getTime();
       arr.push(payload);
       arr.sort((a, b) => {
+        console.log(typeof a.created);
+        console.log(typeof b.created);
         if (a.created > b.created) return -1;
         return 1;
       });
+      console.log('======================>>>>', arr);
 
       return {
         ...state,
