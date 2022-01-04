@@ -48,7 +48,7 @@ create or replace function update_when_delete_tag()
     as
 $$
 begin
-    update "list" set tag_id = 102
+    update "list"  set tag_id = 102
     where "list".tag_id=OLD.tag_id;
     return NEW;
 end;
@@ -58,8 +58,8 @@ LANGUAGE plpgsql;
 -- create trigger
 drop trigger if exists auto_update on "tag";
 create trigger auto_update
-before delete on "tag"
-for each statement
+after delete on "tag"
+for each row -- each row update
 execute procedure update_when_delete_tag();
 
 
